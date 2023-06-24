@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,28 +16,44 @@
         android:gravity="center"
         android:text="@string/loginT"
         android:textColor="@android:color/holo_blue_dark"
-        android:textSize="24sp">
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp">
     </TextView>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Email">
-    </EditText>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="ID">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Password">
-    </EditText>
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Password">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/bt_style"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/round_button"
+        android:clickable="true"
         android:textColor="@color/white"
         android:text="@string/loginBT">
-    </Button>
+    </TextView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,21 +63,25 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:gravity="center"
             android:layout_weight="5"
             android:textSize="17sp"
-            android:text="@string/forgotPW">
+            android:text="@string/forgotPW"
+            android:background="@drawable/click_text_in_loginpage"
+            android:clickable="true">
         </TextView>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:gravity="center"
             android:layout_weight="5"
             android:text="@string/createAcc"
+            android:background="@drawable/click_text_in_loginpage"
             android:textSize="17sp"
-            android:textColor="@android:color/holo_blue_dark">
+            android:textColor="@android:color/holo_blue_dark"
+            android:clickable="true">
         </TextView>
 
     </LinearLayout>
