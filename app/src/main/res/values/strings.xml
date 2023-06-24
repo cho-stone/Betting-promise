@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="loginT">LOGIN</string>
+    <string name="loginBT">LOG IN</string>
+    <string name="forgotPW">Forgot Password?</string>
+    <string name="createAcc">Create Account?</string>
 </resources>
