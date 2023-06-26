@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="loginT">LOGIN</string>
-    <string name="loginBT">LOG IN</string>
-    <string name="forgotPW">Forgot Password?</string>
-    <string name="createAcc">Create Account?</string>
+    <string name="loginT">로그인 화면</string>
+    <string name="loginBT">로그인</string>
+    <string name="forgotPW">아이디/비밀번호 찾기</string>
+    <string name="createAcc">회원가입</string>
+    <string name="id_dupli">중복확인</string>
+    <string name="reg">가입</string>
+    <string name="close">닫기</string>
 </resources>

@@ -27,7 +27,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="ID">
+            android:hint="아이디">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -39,7 +39,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Password">
+            android:hint="비밀번호">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -73,6 +73,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/btn_reg"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:gravity="center"
@@ -81,7 +82,7 @@
             android:background="@drawable/click_text_in_loginpage"
             android:textSize="17sp"
             android:textColor="@android:color/holo_blue_dark"
-            android:clickable="true">
+            android:onClick="onClick">
         </TextView>
 
     </LinearLayout>
