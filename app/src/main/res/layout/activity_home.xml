@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Home"
-    >
+    tools:context=".Home">
 
     <!--상단 리니어레이아웃-->
     <LinearLayout
@@ -80,21 +79,27 @@
             android:src="@drawable/settings_icon" />
 
     </LinearLayout>
+    <!--스크롤 뷰와 상단 리니어 레이아웃 경계선-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
+        android:background="?android:attr/dividerVertical" />
 
     <ScrollView
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivMainImage"
         android:layout_alignLeft="@+id/ivMainImage"
+        android:layout_weight="1"
         android:nestedScrollingEnabled="true">
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
 
     </ScrollView>
 
@@ -104,41 +109,44 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
+        <!--스크롤 뷰와 하단 리니어 레이아웃 경계선-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:layout_marginLeft="4dip"
             android:layout_marginRight="4dip"
-            android:background="?android:attr/dividerVertical"/>
+            android:background="?android:attr/dividerVertical" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <!--친구 목록 보기 버튼-->
             <Button
                 android:id="@+id/btnCall"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
                 android:text="친구"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="40dp"
-                android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"
-                android:background="?android:attr/dividerVertical"/>
+                android:layout_marginBottom="4dp"
+                android:background="?android:attr/dividerVertical" />
             <!--약속 목록 보기 버튼-->
             <Button
                 android:id="@+id/btnMessage"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
                 android:text="약속"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
             <!-- @android:string/cancel -->
         </LinearLayout>
     </LinearLayout>
