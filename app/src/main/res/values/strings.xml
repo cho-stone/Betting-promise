@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">약속배팅</string>
+    <string name="test_text">성공!</string>
     <string name="loginT">로그인 화면</string>
     <string name="loginBT">로그인</string>
     <string name="forgotPW">아이디/비밀번호 찾기</string>

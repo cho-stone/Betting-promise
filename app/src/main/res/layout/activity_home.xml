@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Home"
+    >
+
+    <!--상단 리니어레이아웃-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <!--포인트 출력 텍스트뷰-->
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="1000000"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <!--포인트 충전소 이동 이미지 버튼-->
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:onClick="btnCoinsClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/coins_icon" />
+
+        <!--약속 생성 이미지 버튼-->
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:onClick="btnCreateClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plus_icon" />
+
+        <!--친구 찾기 이미지 버튼-->
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:onClick="btnSearchClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/search_icon" />
+
+        <!--전적 보기 이미지 버튼-->
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:onClick="btnHistoryClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/trophy_icon" />
+
+        <!--설정 이미지 버튼-->
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:onClick="btnSettingsClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/settings_icon" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivMainImage"
+        android:layout_alignLeft="@+id/ivMainImage"
+        android:nestedScrollingEnabled="true">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--친구 목록 보기 버튼-->
+            <Button
+                android:id="@+id/btnCall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="친구"
+                android:textColor="@color/black"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="?android:attr/dividerVertical"/>
+            <!--약속 목록 보기 버튼-->
+            <Button
+                android:id="@+id/btnMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="약속"
+                android:textColor="@color/black"/>
+            <!-- @android:string/cancel -->
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

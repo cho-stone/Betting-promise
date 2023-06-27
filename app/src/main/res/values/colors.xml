@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="loginB">#00b2ed</color>
     <color name="loginBP">#3a5994</color>
+    <color name="transparent">#00ff0000</color><!--투명색-->
 </resources>
