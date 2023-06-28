@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,8 +25,30 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        context = this;                                                  //메인엑티비티 컨텍스트
 
+        //친구 찾기 버튼 클릭 이벤트 리스너
+        ImageButton search_friend_btn = findViewById(R.id.search_friend_btn);
+        search_friend_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(Home.this,  Search_Friend.class);
+                startActivity(intent);
+            }
+        });
+
+        //전적 검색 버튼 클릭 이벤트 리스너
+        ImageButton search_history_btn = findViewById(R.id.search_history_btn);
+        search_history_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(Home.this,  Search_History.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        context = this;                                                  //메인엑티비티 컨텍스트
         phoneBookList = new ArrayList<>();
         PhoneBook phoneBook1 = new PhoneBook(R.drawable.user_icon, "일하영", "010-0000-0000");
         PhoneBook phoneBook2 = new PhoneBook(R.drawable.user_icon, "이하영", "010-1111-1111");
@@ -65,6 +89,8 @@ public class Home extends AppCompatActivity {
 
 
     }
+
+
 
     public class PhoneBook {
         private int image;

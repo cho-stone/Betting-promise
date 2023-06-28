@@ -52,20 +52,20 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="btnSearchClicked"
             android:scaleType="fitCenter"
-            android:src="@drawable/search_icon" />
+            android:src="@drawable/search_icon"
+            android:id="@+id/search_friend_btn"/>
 
-        <!--전적 보기 이미지 버튼-->
+        <!--전적 검색 이미지 버튼-->
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="btnHistoryClicked"
             android:scaleType="fitCenter"
-            android:src="@drawable/trophy_icon" />
+            android:src="@drawable/trophy_icon"
+            android:id="@+id/search_history_btn"/>
 
         <!--설정 이미지 버튼-->
         <ImageButton
