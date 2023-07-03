@@ -1,119 +1,78 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class Home extends AppCompatActivity {
-    ArrayList<PhoneBook> phoneBookList;                     //객체 담을 리스트
-    LayoutInflater layoutInflater;
-    LinearLayout container;
-    View view;
-    Context context;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<User> arrayList;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //친구 찾기 버튼 클릭 이벤트 리스너
-        ImageButton search_friend_btn = findViewById(R.id.search_friend_btn);
-        search_friend_btn.setOnClickListener(new View.OnClickListener(){
+        recyclerView = findViewById(R.id.recyclerView); // 아이디 연결
+        recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
+        layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
+        recyclerView.setLayoutManager(layoutManager);
+        arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
+
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+
+        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Home.this,  Search_Friend.class);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //파이어베이스 데이터베이스의 데이터를 받아오는 곳
+                arrayList.clear(); //기존 배열리스트를 초기화
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
+                    arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+                }
+                adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                Log.e("MainActivity",String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
 
-        //전적 검색 버튼 클릭 이벤트 리스너
-        ImageButton search_history_btn = findViewById(R.id.search_history_btn);
-        search_history_btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Home.this,  Search_History.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-        context = this;                                                  //메인엑티비티 컨텍스트
-        phoneBookList = new ArrayList<>();
-        PhoneBook phoneBook1 = new PhoneBook(R.drawable.user_icon, "일하영", "010-0000-0000");
-        PhoneBook phoneBook2 = new PhoneBook(R.drawable.user_icon, "이하영", "010-1111-1111");
-        PhoneBook phoneBook3 = new PhoneBook(R.drawable.user_icon, "삼하영", "010-2222-2222");
-        PhoneBook phoneBook4 = new PhoneBook(R.drawable.user_icon, "사하영", "010-3333-3333");
-        PhoneBook phoneBook5 = new PhoneBook(R.drawable.user_icon, "오하영", "010-4444-4444");
-        PhoneBook phoneBook6 = new PhoneBook(R.drawable.user_icon, "육하영", "010-4444-4444");
-        PhoneBook phoneBook7 = new PhoneBook(R.drawable.user_icon, "칠하영", "010-4444-4444");
-        PhoneBook phoneBook8 = new PhoneBook(R.drawable.user_icon, "팔하영", "010-4444-4444");
-        PhoneBook phoneBook9 = new PhoneBook(R.drawable.user_icon, "구하영", "010-4444-4444");
-
-        phoneBookList.add(phoneBook1);
-        phoneBookList.add(phoneBook2);
-        phoneBookList.add(phoneBook3);
-        phoneBookList.add(phoneBook4);
-        phoneBookList.add(phoneBook5);
-        phoneBookList.add(phoneBook6);
-        phoneBookList.add(phoneBook7);
-        phoneBookList.add(phoneBook8);
-        phoneBookList.add(phoneBook9);
-
-        container = findViewById(R.id.container);
-        layoutInflater = LayoutInflater.from(this);  //그릴곳
-
-        for (int i = 0; i < (phoneBookList.size()); i++) {
-            view = layoutInflater.inflate(R.layout.activity_home_dynamic_layout, null, false);      //넣을 레이아웃 뷰에 넣음
-            //사진
-            ImageView imageView = view.findViewById(R.id.item_image);
-            imageView.setImageResource(phoneBookList.get(i).getImage());
-            //이름
-            TextView nameText = view.findViewById(R.id.item_name);
-            nameText.setText(phoneBookList.get(i).getName());
-            //번호
-            TextView phoneText = view.findViewById(R.id.item_num);
-            phoneText.setText(phoneBookList.get(i).getNum());
-            container.addView(view);
-        }
-
+        adapter = new CustomAdapter(arrayList, this);
+        recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
     }
 
-
-
-    public class PhoneBook {
-        private int image;
-        private String name;
-        private String num;
-
-        PhoneBook(int image, String name, String num) {
-            this.image = image;
-            this.name = name;
-            this.num = num;
-        }
-
-        public int getImage() {
-            return image;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getNum() {
-            return num;
-        }
+    public void btnSearchFriendClicked(View view) {
+        Intent intent = new Intent(this,Search_Friend.class);
+        startActivity(intent);
     }
 
+    public void btnSearchHistoryClicked(View view) {
+        Intent intent = new Intent(this,Search_History.class);
+        startActivity(intent);
+    }
 }

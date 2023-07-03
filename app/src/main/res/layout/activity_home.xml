@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Home">
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
     <!--상단 리니어레이아웃-->
     <LinearLayout
@@ -52,6 +52,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
+            android:onClick="btnSearchFriendClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/search_icon"
             android:id="@+id/search_friend_btn"/>
@@ -63,6 +64,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
+            android:onClick="btnSearchHistoryClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/trophy_icon"
             android:id="@+id/search_history_btn"/>
@@ -79,6 +81,7 @@
             android:src="@drawable/settings_icon" />
 
     </LinearLayout>
+
     <!--스크롤 뷰와 상단 리니어 레이아웃 경계선-->
     <View
         android:layout_width="match_parent"
@@ -87,21 +90,11 @@
         android:layout_marginRight="4dip"
         android:background="?android:attr/dividerVertical" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivMainImage"
-        android:layout_alignLeft="@+id/ivMainImage"
-        android:layout_weight="1"
-        android:nestedScrollingEnabled="true">
-
-        <LinearLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
-
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:id="@+id/layoutBottomButtons"
@@ -150,6 +143,4 @@
             <!-- @android:string/cancel -->
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>
