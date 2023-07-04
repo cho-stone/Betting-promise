@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 
 public class History {
-    private String promiseName;
-    private int numOfPlayer;
-    private int prize;
-    private int PrizeMoney;
+    private String promiseName;//약속 이름
+    private int numOfPlayer;//참가 인원
+    private int prize;//등수
+    private int PrizeMoney;//총 배팅 금액
+    private int numOfPrize;//이긴 사람 수
+    private String data;//약속 날짜+시간
 
     public History(){}
     public String getPromiseName() {
@@ -56,8 +58,7 @@ public class History {
         this.data = data;
     }
 
-    private int numOfPrize;
-    private String data;
+
 
 
 }
