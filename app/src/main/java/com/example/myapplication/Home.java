@@ -41,6 +41,7 @@ public class Home extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
 
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

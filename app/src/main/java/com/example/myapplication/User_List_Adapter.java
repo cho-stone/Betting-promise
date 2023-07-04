@@ -43,8 +43,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
                 .load(arrayList.get(position).getProfile())
                 .into(holder.iv_profile);//서버로부터 이미지 받아와서 item에 삽입
         holder.tv_id.setText(arrayList.get(position).getId());//서버로부터 텍스트 받아와서 item에 삽입
-        holder.tv_pw.setText(arrayList.get(position).getPw());
-        holder.tv_userName.setText(arrayList.get(position).getUserName());
+        holder.tv_nickName.setText(arrayList.get(position).getNickName());
 
     }
 
@@ -59,16 +58,14 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_profile;
         TextView tv_id;
-        TextView tv_pw;
-        TextView tv_userName;
+        TextView tv_nickName;
 
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.iv_profile = itemView.findViewById(R.id.iv_profile);
             this.tv_id = itemView.findViewById(R.id.tv_id);
-            this.tv_pw = itemView.findViewById(R.id.tv_pw);
-            this.tv_userName = itemView.findViewById(R.id.tv_userName);
+            this.tv_nickName = itemView.findViewById(R.id.tv_nickName);
         }
     }
 }

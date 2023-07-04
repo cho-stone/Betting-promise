@@ -3,16 +3,11 @@ package com.example.myapplication;
 
 public class History {
     private String promiseName;
-    private String firstPrize;
-    private String firstPrizeIcon;
-    private String secondPrize;
-    private String secondPrizeIcon;
-    private String thirdPrize;
-    private String thirdPrizeIcon;
+    private int numOfPlayer;
+    private int prize;
     private int PrizeMoney;
-    private String data;
-    private  int numOfPlayer;
 
+    public History(){}
     public String getPromiseName() {
         return promiseName;
     }
@@ -21,52 +16,20 @@ public class History {
         this.promiseName = promiseName;
     }
 
-    public String getFirstPrize() {
-        return firstPrize;
+    public int getNumOfPlayer() {
+        return numOfPlayer;
     }
 
-    public void setFirstPrize(String firstPrize) {
-        this.firstPrize = firstPrize;
+    public void setNumOfPlayer(int numOfPlayer) {
+        this.numOfPlayer = numOfPlayer;
     }
 
-    public String getFirstPrizeIcon() {
-        return firstPrizeIcon;
+    public int getPrize() {
+        return prize;
     }
 
-    public void setFirstPrizeIcon(String firstPrizeIcon) {
-        this.firstPrizeIcon = firstPrizeIcon;
-    }
-
-    public String getSecondPrize() {
-        return secondPrize;
-    }
-
-    public void setSecondPrize(String secondPrize) {
-        this.secondPrize = secondPrize;
-    }
-
-    public String getSecondPrizeIcon() {
-        return secondPrizeIcon;
-    }
-
-    public void setSecondPrizeIcon(String secondPrizeIcon) {
-        this.secondPrizeIcon = secondPrizeIcon;
-    }
-
-    public String getThirdPrize() {
-        return thirdPrize;
-    }
-
-    public void setThirdPrize(String thirdPrize) {
-        this.thirdPrize = thirdPrize;
-    }
-
-    public String getThirdPrizeIcon() {
-        return thirdPrizeIcon;
-    }
-
-    public void setThirdPrizeIcon(String thirdPrizeIcon) {
-        this.thirdPrizeIcon = thirdPrizeIcon;
+    public void setPrize(int prize) {
+        this.prize = prize;
     }
 
     public int getPrizeMoney() {
@@ -77,6 +40,14 @@ public class History {
         PrizeMoney = prizeMoney;
     }
 
+    public int getNumOfPrize() {
+        return numOfPrize;
+    }
+
+    public void setNumOfPrize(int numOfPrize) {
+        this.numOfPrize = numOfPrize;
+    }
+
     public String getData() {
         return data;
     }
@@ -85,11 +56,8 @@ public class History {
         this.data = data;
     }
 
-    public int getNumOfPlayer() {
-        return numOfPlayer;
-    }
+    private int numOfPrize;
+    private String data;
 
-    public void setNumOfPlayer(int numOfPlayer) {
-        this.numOfPlayer = numOfPlayer;
-    }
+
 }
