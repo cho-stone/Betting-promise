@@ -14,21 +14,23 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
+public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.CustomViewHolder> {
 
     private ArrayList<User> arrayList;
     private Context context;
 
 
-    public CustomAdapter(ArrayList<User> arrayList, Context context) {
+    public User_List_Adapter(ArrayList<User> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
+    //뷰홀더를 새로 만들 때마다  onCreateViewHolder 호출
+    //onCreateViewHolder = 뷰홀더, 뷰홀더와 연결된 뷰 생성
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent,false);
         CustomViewHolder holder = new CustomViewHolder(view);
 
 
@@ -36,6 +38,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     }
 
     @Override
+    //뷰홀더를 데이터와 연결할 때 onBindViewHolder 호출
+    //데이터 가져와서 뷰 홀더의 레이아웃을 채움
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         Glide.with(holder.itemView)
                 .load(arrayList.get(position).getProfile())
@@ -47,6 +51,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     }
 
     @Override
+    //데이터 세트 크기를 가져올 때 getItemCount 호출
     public int getItemCount() {
         //arrayList가 null인지 아닌지 판별
         //null이 아니면 arrayList.size()가져오고 null이면 0

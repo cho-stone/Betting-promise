@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +32,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        recyclerView = findViewById(R.id.recyclerView); // 아이디 연결
+        recyclerView = findViewById(R.id.userRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
         recyclerView.setLayoutManager(layoutManager);
@@ -61,16 +60,18 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        adapter = new CustomAdapter(arrayList, this);
+        adapter = new User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
     }
 
+    //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
         Intent intent = new Intent(this,Search_Friend.class);
         startActivity(intent);
     }
 
+    //Home에서 SearchHistory로 이동하는 버튼 구현
     public void btnSearchHistoryClicked(View view) {
         Intent intent = new Intent(this,Search_History.class);
         startActivity(intent);

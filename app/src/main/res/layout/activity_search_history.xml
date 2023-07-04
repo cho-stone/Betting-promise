@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Search_Friend">
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
-    <!-- 테스트 용-->
-    <ImageButton
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
+    <!-- 전적 검색 리사이클러뷰-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
-        android:scaleType="fitCenter"
-        android:src="@drawable/coins_icon"
-        android:id="@+id/search_history_btn"/>
 
 </LinearLayout>
