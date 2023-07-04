@@ -32,8 +32,6 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent,false);
         CustomViewHolder holder = new CustomViewHolder(view);
-
-
         return holder;
     }
 

@@ -9,8 +9,10 @@ public class History {
     private String secondPrizeIcon;
     private String thirdPrize;
     private String thirdPrizeIcon;
-    private String PrizeMoney;
+    private int PrizeMoney;
     private String data;
+    private  int numOfPlayer;
+
     public String getPromiseName() {
         return promiseName;
     }
@@ -67,11 +69,11 @@ public class History {
         this.thirdPrizeIcon = thirdPrizeIcon;
     }
 
-    public String getPrizeMoney() {
+    public int getPrizeMoney() {
         return PrizeMoney;
     }
 
-    public void setPrizeMoney(String prizeMoney) {
+    public void setPrizeMoney(int prizeMoney) {
         PrizeMoney = prizeMoney;
     }
 
@@ -81,5 +83,13 @@ public class History {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public int getNumOfPlayer() {
+        return numOfPlayer;
+    }
+
+    public void setNumOfPlayer(int numOfPlayer) {
+        this.numOfPlayer = numOfPlayer;
     }
 }

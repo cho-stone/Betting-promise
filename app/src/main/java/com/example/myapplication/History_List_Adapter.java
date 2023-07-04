@@ -32,8 +32,6 @@ public class History_List_Adapter extends RecyclerView.Adapter<History_List_Adap
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_item, parent,false);
         CustomViewHolder holder = new CustomViewHolder(view);
-
-
         return holder;
     }
 
@@ -45,7 +43,9 @@ public class History_List_Adapter extends RecyclerView.Adapter<History_List_Adap
                 .load(arrayList.get(position).getFirstPrizeIcon())
                 .into(holder.iv_prizeIcon);//서버로부터 이미지 받아와서 item에 삽입
         holder.tv_promiseName.setText(arrayList.get(position).getPromiseName());//서버로부터 텍스트 받아와서 item에 삽입
-        holder.tv_prizeMoney.setText(arrayList.get(position).getPrizeMoney());
+        if(arrayList.get(position).getPrizeMoney()/arrayList.get(position).getNumOfPlayer() >=0) {//약속 상금 / 참가 인원 >= 0 이면 스트링에 + 붙여준다.
+            holder.tv_prizeMoney.setText("+"+String.valueOf(arrayList.get(position).getPrizeMoney()/arrayList.get(position).getNumOfPlayer()));
+        }
         holder.tv_data.setText(arrayList.get(position).getData());
 
     }
