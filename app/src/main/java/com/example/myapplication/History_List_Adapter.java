@@ -42,16 +42,16 @@ public class History_List_Adapter extends RecyclerView.Adapter<History_List_Adap
         if(arrayList.get(position).getPrize() == 1   ) {
             Glide.with(holder.itemView)
                     .load(R.drawable.first_prize_icon)
-                    .into(holder.iv_prizeIcon);//서버로부터 이미지 받아와서 item에 삽입
+                    .into(holder.iv_prizeIcon);//서버로부터 prize가져와서 1등이면 first_prize_icon을 iv_prizeIcon으로 넘겨준다
         } else if (arrayList.get(position).getPrize() == 2 ) {
             Glide.with(holder.itemView)
                     .load(R.drawable.second_prize_icon)
-                    .into(holder.iv_prizeIcon);//서버로부터 이미지 받아와서 item에 삽입
+                    .into(holder.iv_prizeIcon);//서버로부터 prize가져와서 2등이면 second_prize_icon을 iv_prizeIcon으로 넘겨준다
 
         } else if (arrayList.get(position).getPrize() == 3) {
             Glide.with(holder.itemView)
                     .load(R.drawable.third_prize_icon)
-                    .into(holder.iv_prizeIcon);//서버로부터 이미지 받아와서 item에 삽입
+                    .into(holder.iv_prizeIcon);//서버로부터 prize가져와서 3등이면 third_prize_icon을 iv_prizeIcon으로 넘겨준다
         }
         holder.tv_promiseName.setText(arrayList.get(position).getPromiseName());//서버로부터 텍스트 받아와서 item에 삽입
         if(arrayList.get(position).getPrizeMoney()/arrayList.get(position).getNumOfPlayer() >=0) {//약속 상금 / 참가 인원 >= 0 이면 스트링에 + 붙여준다.
