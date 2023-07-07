@@ -7,7 +7,7 @@ public class History {
     private int prize;//등수
     private int PrizeMoney;//총 배팅 금액
     private int numOfPrize;//이긴 사람 수
-    private String data;//약속 날짜+시간
+    private String date;//약속 날짜+시간
 
     public History() {
     }
@@ -52,12 +52,12 @@ public class History {
         this.numOfPrize = numOfPrize;
     }
 
-    public String getData() {
-        return data;
+    public String getDate() {
+        return date;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setDate(String date) {
+        this.date = date;
     }
 
 
