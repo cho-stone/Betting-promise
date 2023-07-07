@@ -19,7 +19,6 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
     private ArrayList<User> arrayList;
     private Context context;
 
-
     public User_List_Adapter(ArrayList<User> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
@@ -30,7 +29,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
     //뷰홀더를 새로 만들 때마다  onCreateViewHolder 호출
     //onCreateViewHolder = 뷰홀더, 뷰홀더와 연결된 뷰 생성
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent, false);
         CustomViewHolder holder = new CustomViewHolder(view);
         return holder;
     }
@@ -59,7 +58,6 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
         ImageView iv_profile;
         TextView tv_id;
         TextView tv_nickName;
-
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);

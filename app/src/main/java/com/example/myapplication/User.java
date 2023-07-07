@@ -4,13 +4,14 @@ public class User {
     private String profile;//프로필 사진
     private String id;//아이디
     private String pw;//비밀번호
-    private  String nickName;//닉네임
+    private String nickName;//닉네임
     private int account;//계좌 잔액
     private String promiseKey;//약속 고유 코드 리스트
     private String friendsId;//친구 아이디 리스트
 
 
-    public User(){}
+    public User() {
+    }
 
     public String getProfile() {
         return profile;

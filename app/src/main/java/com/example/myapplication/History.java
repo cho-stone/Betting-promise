@@ -9,7 +9,9 @@ public class History {
     private int numOfPrize;//이긴 사람 수
     private String data;//약속 날짜+시간
 
-    public History(){}
+    public History() {
+    }
+
     public String getPromiseName() {
         return promiseName;
     }
@@ -57,8 +59,6 @@ public class History {
     public void setData(String data) {
         this.data = data;
     }
-
-
 
 
 }

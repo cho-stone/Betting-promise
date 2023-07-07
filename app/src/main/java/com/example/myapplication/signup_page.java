@@ -13,7 +13,7 @@ public class signup_page extends AppCompatActivity {
         setContentView(R.layout.activity_signup_page);
     }
 
-    public void onClick(View view){
+    public void onClick(View view) {
         finish();
     }
 }

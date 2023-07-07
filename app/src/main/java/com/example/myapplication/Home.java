@@ -28,7 +28,8 @@ public class Home extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    private String myId = "1213";
+    private String myId = "1213";//테스트용
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,7 @@ public class Home extends AppCompatActivity {
                     users.add(snapshot.getValue(User.class));
                 }
 
-                Optional<User> anyElement = users.stream().parallel().filter(u->u.getId().equals(myId)).findFirst();
+                Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                 //User에서 id가 myId와 동일한 객체를 필터링
                 // 람다식 : 델리게이트 -> 일반화(간소화)
                 // 델리게이트 : 함수를 변수처럼 사용하게 해주는 기능
@@ -66,8 +67,8 @@ public class Home extends AppCompatActivity {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
-                    for(String t : s){
-                        if(user.getId().equals(t))
+                    for (String t : s) {
+                        if (user.getId().equals(t))
                             arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
                     }
                 }
@@ -77,7 +78,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                Log.e("MainActivity",String.valueOf(databaseError.toException()));//에러문 출력
+                Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
 
@@ -88,13 +89,13 @@ public class Home extends AppCompatActivity {
 
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
-        Intent intent = new Intent(this,Search_Friend.class);
+        Intent intent = new Intent(this, Search_Friend.class);
         startActivity(intent);
     }
 
     //Home에서 SearchHistory로 이동하는 버튼 구현
     public void btnSearchHistoryClicked(View view) {
-        Intent intent = new Intent(this,Search_History.class);
+        Intent intent = new Intent(this, Search_History.class);
         startActivity(intent);
     }
 }

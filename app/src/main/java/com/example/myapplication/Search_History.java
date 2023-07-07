@@ -56,7 +56,7 @@ public class Search_History extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                Log.e("MainActivity",String.valueOf(databaseError.toException()));//에러문 출력
+                Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
 

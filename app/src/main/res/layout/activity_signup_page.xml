@@ -5,25 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".signup_page"
     android:paddingLeft="16dp"
+    android:paddingTop="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp">
+    tools:context=".signup_page">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="@string/createAcc"
         android:textColor="@android:color/holo_blue_dark"
-        android:textSize="24sp"
-        android:layout_marginBottom="16dp">
-    </TextView>
+        android:textSize="24sp"></TextView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -41,9 +41,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="7">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -55,14 +56,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:gravity="center"
             android:layout_marginBottom="16dp"
             android:layout_weight="3"
             android:background="@drawable/round_button"
             android:clickable="true"
-            android:textColor="@color/white"
-            android:text="@string/id_dupli">
-        </TextView>
+            android:gravity="center"
+            android:text="@string/id_dupli"
+            android:textColor="@color/white"></TextView>
 
     </LinearLayout>
 
@@ -70,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -82,6 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -99,29 +101,26 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:gravity="center"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:clickable="true"
-            android:textColor="@color/white"
-            android:text="@string/reg">
-        </TextView>
+            android:gravity="center"
+            android:text="@string/reg"
+            android:textColor="@color/white"></TextView>
 
         <TextView
             android:layout_width="100dp"
-            android:layout_height="100dp">
-        </TextView>
+            android:layout_height="100dp"></TextView>
 
         <TextView
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:gravity="center"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
+            android:gravity="center"
             android:onClick="onClick"
-            android:textColor="@color/white"
-            android:text="@string/close">
-        </TextView>
+            android:text="@string/close"
+            android:textColor="@color/white"></TextView>
     </LinearLayout>
 
 </LinearLayout>
