@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +30,8 @@ public class Search_Friend extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     User_List_Adapter adapter;
+
+    private Optional<User> anyElement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,26 +58,22 @@ public class Search_Friend extends AppCompatActivity {
                     users.add(snapshot.getValue(User.class));
                 }
                 TextView textView = (TextView) findViewById(R.id.et_search);//텍스트뷰 참조 객체 선언
-                /*
-                *
-                * if(textView.getText().toString()) {
-                * 여기에 트리이 캐치 써서
-                * DB에 없으면 아무일도 안 일어나게 해야할듯?
-                * }
-                *
-                * Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
-                * 이거 써서
-                * */
-                Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
-                //텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
-                String s = anyElement.get().getId();
-                //찾은 객체의 id가져와서 스트링에 저장
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
-                    if (user.getId().equals(s))
-                        arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+
+                if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {
+                    anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
+                    //텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
+                    String s = anyElement.get().getId();
+                    //찾은 객체의 id가져와서 스트링에 저장
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
+                        if (user.getId().equals(s))
+                            arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+                    }
+                    adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "일치하는 ID가 없습니다.", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
-                adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
             }
 
             @Override
@@ -83,6 +82,7 @@ public class Search_Friend extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
+
         adapter = new User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
