@@ -55,6 +55,16 @@ public class Search_Friend extends AppCompatActivity {
                     users.add(snapshot.getValue(User.class));
                 }
                 TextView textView = (TextView) findViewById(R.id.et_search);//텍스트뷰 참조 객체 선언
+                /*
+                *
+                * if(textView.getText().toString()) {
+                * 여기에 트리이 캐치 써서
+                * DB에 없으면 아무일도 안 일어나게 해야할듯?
+                * }
+                *
+                * Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
+                * 이거 써서
+                * */
                 Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
                 //텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
                 String s = anyElement.get().getId();
