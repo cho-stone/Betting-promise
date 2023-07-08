@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class Add_Friend extends Dialog {
-    private TextView txt_contents;
-    private Button shutdownClick;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     User_List_Adapter adapter;
@@ -33,8 +31,5 @@ public class Add_Friend extends Dialog {
 
         adapter = new User_List_Adapter(arrayList, context);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
-
     }
-
-
 }

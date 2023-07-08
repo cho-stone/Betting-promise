@@ -47,7 +47,7 @@ public class Home extends AppCompatActivity {
 
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는 곳
@@ -59,7 +59,7 @@ public class Home extends AppCompatActivity {
                     users.add(snapshot.getValue(User.class));
                 }
 
-                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 유에 있는지 확인
+                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 DB에 있는지 확인
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                     //User에서 id가 myId와 동일한 객체를 필터링
                     // 람다식 : 델리게이트 -> 일반화(간소화)
