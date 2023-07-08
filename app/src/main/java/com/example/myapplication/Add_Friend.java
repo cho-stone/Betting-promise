@@ -36,11 +36,5 @@ public class Add_Friend extends Dialog {
 
     }
 
-    public void btn_add_friend(View view) {//친구 추가 버튼
 
-    }
-
-    public void btn_add_friend_cancel (View view){//취소 버튼
-
-    }
 }

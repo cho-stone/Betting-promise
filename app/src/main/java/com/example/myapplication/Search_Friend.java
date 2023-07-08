@@ -31,7 +31,9 @@ public class Search_Friend extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    User_List_Adapter adapter;
+    private User_List_Adapter adapter;
+
+    private Dialog Add_Friend;
 
     private Optional<User> anyElement;
 
@@ -92,11 +94,19 @@ public class Search_Friend extends AppCompatActivity {
     public void btn_UserClicked(View view) {
         Log.v("tag","1번");
         //arrayList를 다이얼로그로 넘겨줌
-        Dialog Add_Friend = new Add_Friend(this, arrayList);
+        Add_Friend = new Add_Friend(this, arrayList);
         Log.v("tag","2번");
         Add_Friend.setCancelable(false);//다이얼로그 띄우는 동안 뒷배경화면 클릭 방지
         Add_Friend.show();
         Log.v("tag","3번");
+    }
+
+    public void btn_add_friend(View view) {//친구 추가 버튼
+        Add_Friend.cancel();
+    }
+
+    public void btn_add_friend_cancel (View view){//취소 버튼
+        Add_Friend.cancel();
     }
 
 }
