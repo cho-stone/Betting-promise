@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,14 +26,19 @@ import java.util.Optional;
 public class Search_Friend extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    //private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    User_List_Adapter adapter;
+    private User_List_Adapter adapter;
+
+    private Dialog Add_Friend;
 
     private Optional<User> anyElement;
+    private Optional<User> anyElement2;
+
+    private String temp;
+    private String myId = "1213";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class Search_Friend extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는 곳
                 arrayList.clear(); //기존 배열리스트를 초기화
+                temp = "";//임시 스트링 초기화
                 ArrayList<User> users = new ArrayList<>();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -59,10 +67,14 @@ public class Search_Friend extends AppCompatActivity {
                 }
                 TextView textView = (TextView) findViewById(R.id.et_search);//텍스트뷰 참조 객체 선언
 
-                if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {
+                if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 유에 있는지 확인
                     anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
-                    //텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
+                    anyElement2 = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
+                    //DB에 동일한 ID가 존재한다면 텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
                     String s = anyElement.get().getId();
+                    String s2 = anyElement2.get().getFriendsId();
+                    temp = s2 + " " + s;
+                    Log.v("a3", temp);
                     //찾은 객체의 id가져와서 스트링에 저장
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
@@ -88,6 +100,19 @@ public class Search_Friend extends AppCompatActivity {
     }
 
     public void btn_UserClicked(View view) {
-
+        //arrayList를 다이얼로그로 넘겨줌
+        Add_Friend = new Add_Friend(this, arrayList);
+        Add_Friend.setCancelable(false);//다이얼로그 띄우는 동안 뒷배경화면 클릭 방지
+        Add_Friend.show();
     }
+
+    public void btn_add_friend(View view) {//친구 추가 버튼
+        databaseReference.child(myId).child("friendsId").setValue(temp);
+        Add_Friend.cancel();
+    }
+
+    public void btn_add_friend_cancel(View view) {//취소 버튼
+        Add_Friend.cancel();
+    }
+
 }
