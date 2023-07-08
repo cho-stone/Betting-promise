@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,9 +61,9 @@ public class Search_Friend extends AppCompatActivity {
                 }
                 TextView textView = (TextView) findViewById(R.id.et_search);//텍스트뷰 참조 객체 선언
 
-                if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {
+                if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 유에 있는지 확인
                     anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
-                    //텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
+                    //DB에 동일한 ID가 존재한다면 텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
                     String s = anyElement.get().getId();
                     //찾은 객체의 id가져와서 스트링에 저장
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -88,6 +90,13 @@ public class Search_Friend extends AppCompatActivity {
     }
 
     public void btn_UserClicked(View view) {
-
+        Log.v("tag","1번");
+        //arrayList를 다이얼로그로 넘겨줌
+        Dialog Add_Friend = new Add_Friend(this, arrayList);
+        Log.v("tag","2번");
+        Add_Friend.setCancelable(false);//다이얼로그 띄우는 동안 뒷배경화면 클릭 방지
+        Add_Friend.show();
+        Log.v("tag","3번");
     }
+
 }
