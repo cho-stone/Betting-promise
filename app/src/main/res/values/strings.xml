@@ -17,5 +17,8 @@
     <!--방생성페이지-->
     <string name="create_room">방 생성하기</string>
     <string name="select_date">날짜 선택하기</string>
+    <string name="select_time">시간 선택하기</string>
     <string name="select_location">위치 선택하기</string>
+    <string name="select">선택</string>
+    <string name="join_friend">친구초대</string>
 </resources>

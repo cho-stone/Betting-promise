@@ -8,9 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.MotionEvent;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
@@ -18,7 +16,7 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class date_picker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -35,6 +33,5 @@ public class date_picker extends DialogFragment implements DatePickerDialog.OnDa
         Create_Room activity = (Create_Room) getActivity();
         activity.processDatePickerResult(year,month,day);
     }
-
 
 }
