@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Create_Room"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/create_room"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="24sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="방이름">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:background="@drawable/round_button"
+            android:onClick="btn_date_set"
+            android:gravity="center"
+            android:text="@string/select_date"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/date_Tview"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:background="@drawable/round_button"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/select_location"
+        android:textColor="@color/white"/>
+
+
+</LinearLayout>

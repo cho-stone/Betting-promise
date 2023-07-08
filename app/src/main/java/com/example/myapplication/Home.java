@@ -103,4 +103,9 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, Coin.class);
         startActivity(intent);
     }
+
+    public void btnCreateClicked(View view){
+        Intent intent = new Intent(this, Create_Room.class);
+        startActivity(intent);
+    }
 }
