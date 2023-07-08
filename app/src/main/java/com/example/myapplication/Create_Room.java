@@ -18,6 +18,7 @@ public class Create_Room extends AppCompatActivity {
         setContentView(R.layout.activity_create_room);
     }
 
+    //날짜데이터 받아오기
     public void processDatePickerResult(int year, int month, int day) {
         String month_string = Integer.toString(month+1);
         String day_string = Integer.toString(day);

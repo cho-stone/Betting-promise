@@ -17,6 +17,7 @@ public class Coin extends Activity {
         setContentView(R.layout.activity_coin);
     }
 
+    //바깥영역 터치방지
     @Override
     public boolean onTouchEvent(MotionEvent event){
         if(event.getAction()==MotionEvent.ACTION_OUTSIDE) {
@@ -25,11 +26,13 @@ public class Coin extends Activity {
         return false;
     }
 
+    //뒤로가기 비활성
     @Override
     public void onBackPressed(){
         return;
     }
 
+    //닫기버튼
     public void btn_coin_page_close(View view) {
         finish();
     }
