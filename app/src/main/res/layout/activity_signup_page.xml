@@ -22,12 +22,15 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="10">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="닉네임">
+            android:hint="닉네임"
+            android:maxLength="10">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,6 +44,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="12"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:layout_weight="7">
@@ -48,7 +53,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="아이디">
+                android:hint="아이디"
+                android:maxLength="12">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -69,12 +75,17 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        app:passwordToggleEnabled="true"
+        android:layout_marginBottom="16dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="15">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="비밀번호">
+            android:inputType="textPassword"
+            android:hint="비밀번호"
+            android:maxLength="15">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -82,12 +93,17 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        app:passwordToggleEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="15">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="비밀번호 확인">
+            android:inputType="textPassword"
+            android:hint="비밀번호 확인"
+            android:maxLength="15">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
