@@ -98,4 +98,9 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, Search_History.class);
         startActivity(intent);
     }
+
+    public void btnCoinsClicked(View view){
+        Intent intent = new Intent(this, Coin.class);
+        startActivity(intent);
+    }
 }
