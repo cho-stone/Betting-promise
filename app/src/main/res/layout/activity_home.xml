@@ -77,7 +77,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="btnSettingsClicked"
+            android:onClick="btnOptionClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/settings_icon" />
 

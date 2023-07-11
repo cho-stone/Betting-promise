@@ -122,4 +122,9 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, Create_Room.class);
         startActivity(intent);
     }
+
+    public void btnOptionClicked(View view){
+        Intent intent = new Intent(this, Option.class);
+        startActivity(intent);
+    }
 }

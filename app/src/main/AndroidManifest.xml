@@ -41,6 +41,9 @@
             android:name=".Home"
             android:exported="true" />
         <activity
+            android:name=".Option"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
