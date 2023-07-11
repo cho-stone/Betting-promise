@@ -24,9 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         app:counterEnabled="true"
-        app:counterMaxLength="10">
+        app:counterMaxLength="10"
+        android:id="@+id/lo_nickname"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_nickname"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="닉네임"
@@ -48,9 +51,11 @@
             app:counterMaxLength="12"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_weight="7">
+            android:layout_weight="7"
+            android:id="@+id/lo_id">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_id"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="아이디"
@@ -78,9 +83,11 @@
         app:passwordToggleEnabled="true"
         android:layout_marginBottom="16dp"
         app:counterEnabled="true"
-        app:counterMaxLength="15">
+        app:counterMaxLength="15"
+        android:id="@+id/lo_pw">
 
         <com.google.android.material.textfield.TextInputEditText
+           android:id="@+id/et_pw"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:inputType="textPassword"
@@ -96,9 +103,11 @@
         android:layout_marginBottom="16dp"
         app:passwordToggleEnabled="true"
         app:counterEnabled="true"
-        app:counterMaxLength="15">
+        app:counterMaxLength="15"
+        android:id="@+id/lo_pw_check">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_pw_check"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:inputType="textPassword"
@@ -119,7 +128,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
-            android:clickable="true"
+            android:onClick="btn_signup"
             android:gravity="center"
             android:text="@string/reg"
             android:textColor="@color/white"></TextView>
@@ -134,7 +143,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:gravity="center"
-            android:onClick="onClick"
+            android:onClick="btn_signup_close"
             android:text="@string/close"
             android:textColor="@color/white"></TextView>
     </LinearLayout>
