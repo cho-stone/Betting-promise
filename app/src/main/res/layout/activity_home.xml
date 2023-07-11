@@ -16,6 +16,7 @@
 
         <!--포인트 출력 텍스트뷰-->
         <TextView
+            android:id="@+id/tv_point"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:gravity="center"

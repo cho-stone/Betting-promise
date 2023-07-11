@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,7 @@ public class Home extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private String myId = "1213";//테스트용
+    private int point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +61,16 @@ public class Home extends AppCompatActivity {
                     users.add(snapshot.getValue(User.class));
                 }
 
-                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 DB에 있는지 확인
+                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//myId와 동일한 id가 DB에 있는지 확인
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                     //User에서 id가 myId와 동일한 객체를 필터링
                     // 람다식 : 델리게이트 -> 일반화(간소화)
                     // 델리게이트 : 함수를 변수처럼 사용하게 해주는 기능
                     // 1회용함수
                     String[] s = anyElement.get().getFriendsId().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-
+                    point = anyElement.get().getAccount();//내 객체에서 account값 가져옴
+                    TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
+                    text.setText(String.valueOf(point));//위에서 선언한 참조 객체에 값 넘겨줌
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
                         for (String t : s) {
