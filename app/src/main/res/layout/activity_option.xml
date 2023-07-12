@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        >
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_button"
+            android:onClick="btnLogOutClicked"
+            android:gravity="center"
+            android:text="로그아웃"
+            android:textColor="@color/white"></Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_button"
+            android:onClick="btnExitClicked"
+            android:gravity="center"
+            android:text="앱 종료"
+            android:textColor="@color/white"></Button>
+    </LinearLayout>
+
+</LinearLayout>

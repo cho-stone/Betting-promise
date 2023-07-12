@@ -16,6 +16,7 @@
 
         <!--포인트 출력 텍스트뷰-->
         <TextView
+            android:id="@+id/tv_point"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:gravity="center"
@@ -76,7 +77,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="btnSettingsClicked"
+            android:onClick="btnOptionClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/settings_icon" />
 

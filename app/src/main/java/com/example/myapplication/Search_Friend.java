@@ -74,7 +74,6 @@ public class Search_Friend extends AppCompatActivity {
                     String s = anyElement.get().getId();
                     String s2 = anyElement2.get().getFriendsId();
                     temp = s2 + " " + s;
-                    Log.v("a3", temp);
                     //찾은 객체의 id가져와서 스트링에 저장
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
