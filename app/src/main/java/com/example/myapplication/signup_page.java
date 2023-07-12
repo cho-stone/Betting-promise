@@ -47,22 +47,22 @@ public class signup_page extends AppCompatActivity {
             lo_nick.setError("");
         }
         if(id.isEmpty()){
-
+            lo_id.setError("입력");
         }
         else{
             lo_id.setError("");
         }
         if(pw.isEmpty()){
-
+            lo_pw.setError("입력");
         }
         else{
             lo_pw.setError("");
         }
         if(check.isEmpty()){
-
+            lo_check.setError("입력");
         }
         else{
-            lo_nick.setError("");
+            lo_check.setError("");
         }
     }
 }
