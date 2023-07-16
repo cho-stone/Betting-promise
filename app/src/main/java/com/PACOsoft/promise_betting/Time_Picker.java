@@ -1,19 +1,13 @@
-package com.example.myapplication;
+package com.PACOsoft.promise_betting;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 

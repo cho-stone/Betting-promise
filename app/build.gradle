@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.myapplication'
+    namespace 'com.PACOsoft.promise_betting'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.PACOsoft.promise_betting"
         minSdk 24
         targetSdk 33
         versionCode 1

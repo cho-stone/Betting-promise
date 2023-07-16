@@ -1,11 +1,8 @@
-package com.example.myapplication;
+package com.PACOsoft.promise_betting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -41,25 +38,28 @@ public class signup_page extends AppCompatActivity {
         final String pw = et_pw.getText().toString();
         final String check = et_check.getText().toString();
         if(nickname.isEmpty()){
-            lo_nick.setError("입력");
+            lo_nick.setError("닉네임을 입력해 주세요.");
         }
         else{
             lo_nick.setError("");
         }
         if(id.isEmpty()){
-            lo_id.setError("입력");
+            lo_id.setError("아이디를 입력해 주세요.");
         }
         else{
             lo_id.setError("");
         }
         if(pw.isEmpty()){
-            lo_pw.setError("입력");
+            lo_pw.setError("패스워드를 입력해 주세요.");
         }
         else{
             lo_pw.setError("");
         }
         if(check.isEmpty()){
-            lo_check.setError("입력");
+            lo_check.setError("패스워드를 한 번 더 입력해 주세요.");
+        }
+        else if(!check.equals(pw)){
+            lo_check.setError("패스워드가 일치하지 않습니다.");
         }
         else{
             lo_check.setError("");

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.PACOsoft.promise_betting;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import android.view.MotionEvent;
 import android.widget.DatePicker;
 
 import java.util.Calendar;

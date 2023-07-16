@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.PACOsoft.promise_betting;
 
 public class User {
     private String profile;//프로필 사진

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.PACOsoft.promise_betting;
 
 import androidx.appcompat.app.AppCompatActivity;
 

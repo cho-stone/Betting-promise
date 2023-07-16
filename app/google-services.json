@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "578659988448",
-    "project_id": "promise-bet",
-    "storage_bucket": "promise-bet.appspot.com"
+    "project_number": "166815568626",
+    "project_id": "promise-betting",
+    "storage_bucket": "promise-betting.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:578659988448:android:8803f43fd80bb069337185",
+        "mobilesdk_app_id": "1:166815568626:android:f0b508c82560bacc7fb66b",
         "android_client_info": {
-          "package_name": "com.example.myapplication"
+          "package_name": "com.PACOsoft.promise_betting"
         }
       },
       "oauth_client": [
         {
-          "client_id": "578659988448-pfnfaqgikqijc7d3gsurpdrcfj1ah66u.apps.googleusercontent.com",
+          "client_id": "166815568626-1m08u9tqb90tfut3u1377bge14u1h22t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBwJ5Rg5N6XCTI5s6rkwNfuSGnnkknT-VM"
+          "current_key": "AIzaSyAmw0KeNx_1alhlHJCkdmhbvIlcJtWz0HI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "578659988448-pfnfaqgikqijc7d3gsurpdrcfj1ah66u.apps.googleusercontent.com",
+              "client_id": "166815568626-1m08u9tqb90tfut3u1377bge14u1h22t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
