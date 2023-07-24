@@ -45,6 +45,9 @@
             android:name=".Option"
             android:exported="true" />
         <activity
+            android:name=".Map"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -53,6 +56,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="rjaqcdyuc1" />
     </application>
 
 </manifest>
