@@ -9,7 +9,6 @@ public class User {
     private String promiseKey;//약속 고유 코드 리스트
     private String friendsId;//친구 아이디 리스트
 
-
     public User() {
     }
 
