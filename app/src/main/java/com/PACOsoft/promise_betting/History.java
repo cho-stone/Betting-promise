@@ -3,9 +3,9 @@ package com.PACOsoft.promise_betting;
 
 public class History {
     private String promiseName;//약속 이름
-    private int numOfPlayer;//참가 인원
+    private int numOfPlayer;//약속 인원수
     private int prize;//등수
-    private int PrizeMoney;//총 배팅 금액
+    private int PrizeMoney;//내가 받는 금액
     private int numOfPrize;//이긴 사람 수
     private String date;//약속 날짜+시간
 
