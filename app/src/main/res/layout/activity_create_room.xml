@@ -131,6 +131,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:clickable="true"
+            android:onClick="btn_intent_invite_friend"
             android:gravity="center"
             android:text="@string/join_friend"
             android:textColor="@color/white"/>
