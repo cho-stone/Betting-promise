@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -40,6 +41,13 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         DialogFragment timepicker = new Time_Picker();
         timepicker.show(getSupportFragmentManager(), "time picker");
     }
+
+    public void btn_intent_invite_friend(View view){
+        Intent intent = new Intent(this, Invite_Friend.class);
+        startActivity(intent);
+    }
+
+
 
     public void create_room_close(View view){
         finish();
