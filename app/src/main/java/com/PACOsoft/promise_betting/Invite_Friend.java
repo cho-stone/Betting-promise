@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,7 +90,7 @@ public class Invite_Friend extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
-        adapter = new Invite_User_List_Adapter(arrayList, this);
+        adapter = new User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
 
@@ -130,11 +131,17 @@ public class Invite_Friend extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
     });
-                adapter = new Invite_User_List_Adapter(arrayList, this);
+                adapter = new User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
 
-    public void invite_user_clicked(View view){
-        view.setBackgroundColor(Color.BLACK);
+    public void btn_UserClicked(View v){
+        //TODO: 라이트그레이 -> 배열에추가
+        ColorDrawable color = (ColorDrawable) v.getBackground();
+        int bgcolor = color.getColor();
+        if(bgcolor == Color.LTGRAY)
+            v.setBackgroundColor(Color.WHITE);
+        else v.setBackgroundColor(Color.LTGRAY);
+        //TextView textView = v.findViewById(R.id.tv_id);
     }
 }
