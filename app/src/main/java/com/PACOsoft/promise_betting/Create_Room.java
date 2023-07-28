@@ -14,6 +14,11 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     TextView textView;
     TextView timeText;
+    private int i_year;
+    private int i_month;
+    private int i_day;
+    private int i_hour;
+    private int i_min;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
         textView = findViewById(R.id.date_Tview);
         textView.setText(dateMessage);
+        i_year = year;
+        i_month = month+1;
+        i_day = day;
     }
 
     public void btn_date_set(View view){
@@ -47,8 +55,11 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         int date = 1;
         int time = 2;
         int position =3;
-        intent.putExtra("date", date);
-        intent.putExtra("time", time);
+        intent.putExtra("year", getYear());
+        intent.putExtra("month", getMonth());
+        intent.putExtra("day", getDay());
+        intent.putExtra("hour", getHour());
+        intent.putExtra("min", getMin());
         intent.putExtra("position", position);
         startActivity(intent);
     }
@@ -72,6 +83,13 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             hourOfDay -= 12;
             timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
         }
-
+        i_hour = hourOfDay;
+        i_min = minute;
     }
+
+    public int getYear(){ return i_year; }
+    public int getMonth(){ return i_month; }
+    public int getDay(){ return i_day; }
+    public int getHour(){ return i_hour; }
+    public int getMin(){ return i_min; }
 }

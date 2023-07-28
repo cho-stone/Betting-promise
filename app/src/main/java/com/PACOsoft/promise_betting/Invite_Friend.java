@@ -38,12 +38,15 @@ public class Invite_Friend extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friend);
         Intent intent = getIntent();
-        int date = intent.getIntExtra("date", 0);
-        int time = intent.getIntExtra("time", 0);
+        int year = intent.getIntExtra("year", 0);
+        int month = intent.getIntExtra("month", 0);
+        int day = intent.getIntExtra("day", 0);
+        int hour = intent.getIntExtra("hour", 0);
+        int min = intent.getIntExtra("min", 0);
         int position = intent.getIntExtra("position", 0);
 
-        //Toast.makeText(getApplicationContext(),String.valueOf(date) , Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getApplicationContext(),String.valueOf(time) , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),String.valueOf(year) , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),String.valueOf(month) , Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(),String.valueOf(position) , Toast.LENGTH_SHORT).show();
 
 
