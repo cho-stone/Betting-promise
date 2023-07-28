@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,6 @@ public class Invite_User_List_Adapter extends RecyclerView.Adapter<Invite_User_L
                 .into(holder.iv_profile);//서버로부터 이미지 받아와서 item에 삽입
         holder.tv_id.setText(arrayList.get(position).getId());//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_nickName.setText(arrayList.get(position).getNickName());
-
     }
 
     @Override

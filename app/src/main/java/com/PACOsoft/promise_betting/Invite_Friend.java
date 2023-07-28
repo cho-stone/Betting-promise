@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,10 +91,6 @@ public class Invite_Friend extends AppCompatActivity {
         });
         adapter = new Invite_User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
-
-
-
-
     }
 
     public void btn_SearchFriend(View view) {//검색 버튼 누르면 실행
@@ -134,5 +132,9 @@ public class Invite_Friend extends AppCompatActivity {
     });
                 adapter = new Invite_User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
-}
+    }
+
+    public void invite_user_clicked(View view){
+        view.setBackgroundColor(Color.BLACK);
+    }
 }
