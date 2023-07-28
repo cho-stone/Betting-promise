@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,12 +30,22 @@ public class Invite_Friend extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+
     private String myId = "1213";//테스트용
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friend);
+        Intent intent = getIntent();
+        int date = intent.getIntExtra("date", 0);
+        int time = intent.getIntExtra("time", 0);
+        int position = intent.getIntExtra("position", 0);
+
+        //Toast.makeText(getApplicationContext(),String.valueOf(date) , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),String.valueOf(time) , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),String.valueOf(position) , Toast.LENGTH_SHORT).show();
+
 
         recyclerView = findViewById(R.id.inviteFriendsRecyclerview); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
@@ -57,8 +70,9 @@ public class Invite_Friend extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
                         for (String t : s) {
-                            if (user.getId().equals(t))
+                            if (user.getId().equals(t)) {
                                 arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+                            }
                         }
                     }
                     adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
@@ -70,8 +84,12 @@ public class Invite_Friend extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
-        adapter = new User_List_Adapter(arrayList, this);
+        adapter = new Invite_User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+
+
+
+
     }
 
     public void btn_SearchFriend(View view) {//검색 버튼 누르면 실행
@@ -111,7 +129,7 @@ public class Invite_Friend extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
     });
-                adapter = new User_List_Adapter(arrayList, this);
+                adapter = new Invite_User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 }
 }

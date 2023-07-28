@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:gravity="center"
-            android:text="1000000"
+            android:text="0"
             android:textAlignment="center"
             android:textSize="20sp" />
 

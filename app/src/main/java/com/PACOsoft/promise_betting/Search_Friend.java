@@ -29,15 +29,11 @@ public class Search_Friend extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private User_List_Adapter adapter;
-
     private Dialog Add_Friend;
-
     private Optional<User> anyElement;
     private Optional<User> anyElement2;
-
     private String temp;
     private String myId = "1213";
-
     private int isFriendAlreadyExist;
 
     @Override
@@ -70,7 +66,7 @@ public class Search_Friend extends AppCompatActivity {
 
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 DB에 있는지 확인
 
-                    if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//myId와 동일한 id가 DB에 있는지 확인
+                    if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//myId와 동일한 id가 DB에 있는지 확인 //친구 추가 중복 방지 기능
                         Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                         //User에서 id가 myId와 동일한 객체를 필터링
                         String[] s = anyElement.get().getFriendsId().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
@@ -89,7 +85,7 @@ public class Search_Friend extends AppCompatActivity {
 
                     }
 
-                    if(isFriendAlreadyExist == 0) {
+                    if(isFriendAlreadyExist == 0) {//중복된 친구가 없는 경우에만 추가 가능
                         anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
                         anyElement2 = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                         //DB에 동일한 ID가 존재한다면 텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음

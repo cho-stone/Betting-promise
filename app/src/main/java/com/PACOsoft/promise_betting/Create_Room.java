@@ -44,6 +44,12 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     public void btn_intent_invite_friend(View view){
         Intent intent = new Intent(this, Invite_Friend.class);
+        int date = 1;
+        int time = 2;
+        int position =3;
+        intent.putExtra("date", date);
+        intent.putExtra("time", time);
+        intent.putExtra("position", position);
         startActivity(intent);
     }
 
