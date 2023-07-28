@@ -47,8 +47,8 @@ public class Invite_Friend extends AppCompatActivity {
         int min = intent.getIntExtra("min", 0);
         int position = intent.getIntExtra("position", 0);
 
-        Toast.makeText(getApplicationContext(),String.valueOf(year) , Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),String.valueOf(month) , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),String.valueOf(year) , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),String.valueOf(month) , Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(),String.valueOf(position) , Toast.LENGTH_SHORT).show();
 
 
