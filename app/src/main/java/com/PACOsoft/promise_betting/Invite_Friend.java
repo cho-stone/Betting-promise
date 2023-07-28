@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Array;
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -33,8 +35,8 @@ public class Invite_Friend extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-
     private String myId = "1213";//테스트용
+    private ArrayList<String> arr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class Invite_Friend extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(),String.valueOf(year) , Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(),String.valueOf(month) , Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(),String.valueOf(position) , Toast.LENGTH_SHORT).show();
-
 
         recyclerView = findViewById(R.id.inviteFriendsRecyclerview); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
@@ -131,17 +132,20 @@ public class Invite_Friend extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
     });
-                adapter = new User_List_Adapter(arrayList, this);
+        adapter = new User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
-
     public void btn_UserClicked(View v){
-        //TODO: 라이트그레이 -> 배열에추가
         ColorDrawable color = (ColorDrawable) v.getBackground();
         int bgcolor = color.getColor();
         if(bgcolor == Color.LTGRAY)
             v.setBackgroundColor(Color.WHITE);
-        else v.setBackgroundColor(Color.LTGRAY);
-        //TextView textView = v.findViewById(R.id.tv_id);
+        else {
+            v.setBackgroundColor(Color.LTGRAY);
+            TextView textView = v.findViewById(R.id.tv_id);
+            arr.add(String.valueOf(textView.getText()));
+        }
     }
 }
+
+
