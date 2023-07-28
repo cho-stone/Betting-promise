@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.sql.Array;
 import java.sql.Struct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 public class Invite_Friend extends AppCompatActivity {
@@ -36,7 +37,7 @@ public class Invite_Friend extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String myId = "1213";//테스트용
-    private ArrayList<String> arr = new ArrayList<>();
+    private HashSet<String> hashSet = new HashSet<>();//중복 방지 위해 해쉬셋 이용
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,13 +139,24 @@ public class Invite_Friend extends AppCompatActivity {
     public void btn_UserClicked(View v){
         ColorDrawable color = (ColorDrawable) v.getBackground();
         int bgcolor = color.getColor();
-        if(bgcolor == Color.LTGRAY)
+        TextView textView = v.findViewById(R.id.tv_id);
+        if(bgcolor == Color.LTGRAY) {
             v.setBackgroundColor(Color.WHITE);
+            hashSet.remove(String.valueOf(textView.getText()));
+        }
         else {
             v.setBackgroundColor(Color.LTGRAY);
-            TextView textView = v.findViewById(R.id.tv_id);
-            arr.add(String.valueOf(textView.getText()));
+            hashSet.add(String.valueOf(textView.getText()));
         }
+    }
+
+    public void btv_Invite_Friend_Clicked(View v) {
+
+        System.out.println(hashSet);
+
+        //todo: intent받아온 값과 여기서 선택한 친구id를 전부 방을 생성하며 DB에 기록
+        //Intent intent = new Intent(this, Map.class);
+        //startActivity(intent);
     }
 }
 
