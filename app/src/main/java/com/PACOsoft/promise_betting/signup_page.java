@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -19,11 +20,12 @@ import java.sql.Array;
 import java.util.regex.Pattern;
 
 public class signup_page extends AppCompatActivity {
-    private final String nick_validation = "^[a-z가-힇]+[a-z0-9가-힇]{2,10}$";
-    private final String id_validation = "^[a-z]+[a-z0-9]{6,12}$";
+    private final String nick_validation = "^[a-z가-힇]+[a-z0-9가-힇]{1,10}$";
+    private final String id_validation = "^[a-z]+[a-z0-9]{5,12}$";
     private final String pw_validation = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$";
     private TextInputEditText et_nick, et_id, et_pw, et_check;
     private TextInputLayout lo_nick, lo_id, lo_pw, lo_check;
+    private TextView dupli_tv;
 
     private boolean[] booleans = {false, false, false, false};
 
@@ -31,6 +33,7 @@ public class signup_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_page);
+        dupli_tv = findViewById(R.id.dupli_tv);
         et_nick = findViewById(R.id.et_nickname);
         et_id = findViewById(R.id.et_id);
         et_pw = findViewById(R.id.et_pw);
@@ -88,14 +91,17 @@ public class signup_page extends AppCompatActivity {
                 if(validation){
                     lo_id.setError("");
                     booleans[1] = true;
+                    dupli_tv.setEnabled(true);
                 }
                 else if(idCheck.isEmpty()){
                     lo_id.setError("아이디를 입력해 주세요.");
                     booleans[1] = false;
+                    dupli_tv.setEnabled(false);
                 }
                 else{
                     lo_id.setError(" * 영소문자, 숫자 조합으로 6자리 이상");
                     booleans[1] = false;
+                    dupli_tv.setEnabled(false);
                 }
             }
         });
@@ -129,6 +135,12 @@ public class signup_page extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void btn_dupli_check(View view){
+        String id = et_id.getText().toString();
+        Log.v("tt", id);
+        //TODO : 중복제거 코드
     }
 
     public void btn_signup_close(View view) {
