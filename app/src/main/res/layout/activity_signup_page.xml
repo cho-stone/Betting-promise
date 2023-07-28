@@ -80,6 +80,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         app:passwordToggleEnabled="true"
         app:counterEnabled="true"
         app:counterMaxLength="15"
@@ -95,13 +96,6 @@
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" * 영어 소문자, 숫자 조합 8자 이상"
-        android:layout_marginBottom="16dp"
-        android:textColor="@android:color/holo_red_dark"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
