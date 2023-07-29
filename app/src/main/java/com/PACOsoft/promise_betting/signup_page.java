@@ -1,22 +1,24 @@
 package com.PACOsoft.promise_betting;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.collection.LLRBNode;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Array;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class signup_page extends AppCompatActivity {
@@ -26,9 +28,10 @@ public class signup_page extends AppCompatActivity {
     private TextInputEditText et_nick, et_id, et_pw, et_check;
     private TextInputLayout lo_nick, lo_id, lo_pw, lo_check;
     private TextView dupli_tv;
-
     private boolean[] booleans = {false, false, false, false};
-
+    private ArrayList<User> arrayList;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +49,10 @@ public class signup_page extends AppCompatActivity {
         et_nick.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 String nickCheck = et_nick.getText().toString();
@@ -76,14 +75,10 @@ public class signup_page extends AppCompatActivity {
         et_id.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 String idCheck = et_id.getText().toString();
@@ -109,14 +104,10 @@ public class signup_page extends AppCompatActivity {
         et_pw.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 String pwCheck = et_pw.getText().toString();
@@ -138,9 +129,36 @@ public class signup_page extends AppCompatActivity {
     }
 
     public void btn_dupli_check(View view){
-        String id = et_id.getText().toString();
-        Log.v("tt", id);
+        String myId = et_id.getText().toString();
+        Log.v("tt", myId);
         //TODO : 중복제거 코드
+        arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //파이어베이스 데이터베이스의 데이터를 받아오는 곳
+                arrayList.clear(); //기존 배열리스트를 초기화
+                ArrayList<User> users = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    users.add(snapshot.getValue(User.class));
+                }
+                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//사용자가 정한 id와 동일한 id가 DB에 있는지 확인
+                    Toast toast = Toast.makeText(getApplicationContext(), "이미 존재하는 ID입니다.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //DB를 가져오는 중에 에러 발생 시
+                Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
+            }
+        });
     }
 
     public void btn_signup_close(View view) {

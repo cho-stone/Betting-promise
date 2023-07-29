@@ -3,9 +3,7 @@ package com.PACOsoft.promise_betting;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;

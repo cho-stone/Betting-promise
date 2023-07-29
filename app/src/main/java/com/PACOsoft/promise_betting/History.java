@@ -1,6 +1,5 @@
 package com.PACOsoft.promise_betting;
 
-
 public class History {
     private String promiseName;//약속 이름
     private int numOfPlayer;//약속 인원수
