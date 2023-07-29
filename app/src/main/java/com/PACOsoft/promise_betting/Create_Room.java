@@ -64,8 +64,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         startActivity(intent);
     }
 
-
-
     public void create_room_close(View view){
         finish();
     }
