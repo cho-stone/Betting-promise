@@ -28,6 +28,7 @@ public class signup_page extends AppCompatActivity {
     private TextInputEditText et_nick, et_id, et_pw, et_check;
     private TextInputLayout lo_nick, lo_id, lo_pw, lo_check;
     private TextView dupli_tv;
+    private TextView signup_tv;
     private boolean[] booleans = {false, false, false, false, false}; // 0 : 닉네임, 1 : 아이디, 2 : 비밀번호, 3 : 비밀번호 확인, 4 : 중복확인
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
@@ -37,6 +38,7 @@ public class signup_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_page);
         dupli_tv = findViewById(R.id.dupli_tv);
+        signup_tv = findViewById(R.id.tv_signup);
         et_nick = findViewById(R.id.et_nickname);
         et_id = findViewById(R.id.et_id);
         et_pw = findViewById(R.id.et_pw);
@@ -69,6 +71,7 @@ public class signup_page extends AppCompatActivity {
                     lo_nick.setError("닉네임 형식이 올바르지 않습니다.");
                     booleans[0] = false;
                 }
+                signup_enable();
             }
         });
 
@@ -83,6 +86,7 @@ public class signup_page extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String idCheck = et_id.getText().toString();
                 boolean validation = Pattern.matches(id_validation, idCheck);
+                booleans[4] = false;
                 if(validation){
                     lo_id.setError("");
                     booleans[1] = true;
@@ -98,6 +102,7 @@ public class signup_page extends AppCompatActivity {
                     booleans[1] = false;
                     dupli_tv.setEnabled(false);
                 }
+                signup_enable();
             }
         });
 
@@ -110,13 +115,14 @@ public class signup_page extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable editable) {
-                String pwCheck = et_pw.getText().toString();
-                boolean validation = Pattern.matches(pw_validation, pwCheck);
+                String pw = et_pw.getText().toString();
+                String pwCheck = et_check.getText().toString();
+                boolean validation = Pattern.matches(pw_validation, pw);
                 if(validation){
                     lo_pw.setError("");
                     booleans[2] = true;
                 }
-                else if(pwCheck.isEmpty()){
+                else if(pw.isEmpty()){
                     lo_pw.setError("비밀번호를 입력해 주세요.");
                     booleans[2] = false;
                 }
@@ -124,6 +130,39 @@ public class signup_page extends AppCompatActivity {
                     lo_pw.setError(" * 영문자, 숫자, 특수문자(모두) 조합으로 8자리 이상");
                     booleans[2] = false;
                 }
+                if(!pwCheck.equals(pw)){
+                    lo_check.setError(" * 비밀번호를 다시 입력해 주세요");
+                    booleans[3] = false;
+                }
+                signup_enable();
+            }
+        });
+
+        et_check.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String pw = et_pw.getText().toString();
+                String pw_Check = et_check.getText().toString();
+                if(pw_Check.equals(pw)){
+                    lo_check.setError("");
+                    booleans[3] = true;
+                }
+                else if(pw_Check.isEmpty()){
+                    lo_check.setError("비밀번호를 다시 입력해 주세요.");
+                    booleans[3] = false;
+                }
+                else{
+                    lo_check.setError(" * 비밀번호가 일치하지 않습니다.");
+                    booleans[3] = false;
+                }
+                signup_enable();
             }
         });
     }
@@ -147,11 +186,13 @@ public class signup_page extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "이미 존재하는 ID입니다.", Toast.LENGTH_SHORT);
                     toast.show();
                     booleans[4] = false;
+                    signup_enable();
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT);
                     toast.show();
                     booleans[4] = true;
+                    signup_enable();
                 }
             }
             @Override
@@ -162,30 +203,22 @@ public class signup_page extends AppCompatActivity {
         });
     }
 
+    public void signup_enable(){
+        if(booleans[0] && booleans[1] && booleans[2] && booleans[3] && booleans[4]){
+            signup_tv.setEnabled(true);
+        }
+        else{
+            signup_tv.setEnabled(false);
+        }
+    }
+
     public void btn_signup_close(View view) {
         finish();
     }
 
     public void btn_signup(View view){
-        final String nickname = et_nick.getText().toString();
-        final String id = et_id.getText().toString();
         final String pw = et_pw.getText().toString();
         final String check = et_check.getText().toString();
-
-        if(nickname.isEmpty()){
-            lo_nick.setError("닉네임을 입력해 주세요.");
-            booleans[0] = false;
-        }
-
-        if(id.isEmpty()){
-            lo_id.setError("아이디를 입력해 주세요.");
-            booleans[1] = false;
-        }
-
-        if(pw.isEmpty()){
-            lo_pw.setError("비밀번호를 입력해 주세요.");
-            booleans[2] = false;
-        }
 
         if(check.isEmpty()){
             lo_check.setError("비밀번호를 한 번 더 입력해 주세요.");
