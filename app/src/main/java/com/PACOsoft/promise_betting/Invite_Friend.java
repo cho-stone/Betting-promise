@@ -11,11 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Array;
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
@@ -155,8 +149,8 @@ public class Invite_Friend extends AppCompatActivity {
         System.out.println(hashSet);
 
         //todo: intent받아온 값과 여기서 선택한 친구id를 전부 방을 생성하며 DB에 기록
-        //Intent intent = new Intent(this, Map.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, Map.class);
+        startActivity(intent);
     }
 }
 
