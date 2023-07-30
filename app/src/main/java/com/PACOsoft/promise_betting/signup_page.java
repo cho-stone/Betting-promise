@@ -131,7 +131,6 @@ public class signup_page extends AppCompatActivity {
     public void btn_dupli_check(View view){
         String myId = et_id.getText().toString();
         Log.v("tt", myId);
-        //TODO : 중복제거 코드
         arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
@@ -147,12 +146,14 @@ public class signup_page extends AppCompatActivity {
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//사용자가 정한 id와 동일한 id가 DB에 있는지 확인
                     Toast toast = Toast.makeText(getApplicationContext(), "이미 존재하는 ID입니다.", Toast.LENGTH_SHORT);
                     toast.show();
+                    booleans[4] = false;
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT);
                     toast.show();
+                    booleans[4] = true;
                 }
-                }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시
