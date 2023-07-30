@@ -27,7 +27,7 @@ public class signup_page extends AppCompatActivity {
     private TextInputLayout lo_nick, lo_id, lo_pw, lo_check;
     private TextView dupli_tv;
 
-    private boolean[] booleans = {false, false, false, false};
+    private boolean[] booleans = {false, false, false, false, false}; // 0 : 닉네임, 1 : 아이디, 2 : 비밀번호, 3 : 비밀번호 확인, 4 : 중복확인
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

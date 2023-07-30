@@ -126,14 +126,16 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_signup"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:onClick="btn_signup"
             android:gravity="center"
+            android:enabled="false"
             android:text="@string/reg"
-            android:textColor="@color/white"></TextView>
+            android:textColor="@color/white"/>
 
         <TextView
             android:layout_width="100dp"
