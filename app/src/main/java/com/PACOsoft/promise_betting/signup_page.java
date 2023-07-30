@@ -134,6 +134,10 @@ public class signup_page extends AppCompatActivity {
                     lo_check.setError(" * 비밀번호를 다시 입력해 주세요");
                     booleans[3] = false;
                 }
+                else{
+                    lo_check.setError("");
+                    booleans[3] = true;
+                }
                 signup_enable();
             }
         });
