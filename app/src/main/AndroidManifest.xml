@@ -65,4 +65,6 @@
             android:value="rjaqcdyuc1" />
     </application>
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!--현재 내 위치 가져 오기 위함-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>
