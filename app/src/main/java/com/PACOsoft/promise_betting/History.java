@@ -2,6 +2,7 @@ package com.PACOsoft.promise_betting;
 
 public class History {
     private String promiseName;//약속 이름
+    private String promiseKey;//약속 고유 번호
     private int numOfPlayer;//약속 인원수
     private int prize;//등수
     private int PrizeMoney;//내가 받는 금액
@@ -11,6 +12,13 @@ public class History {
     public History() {
     }
 
+    public String getPromiseKey() {
+        return promiseKey;
+    }
+
+    public void setPromiseKey(String promiseKey) {
+        this.promiseKey = promiseKey;
+    }
     public String getPromiseName() {
         return promiseName;
     }
