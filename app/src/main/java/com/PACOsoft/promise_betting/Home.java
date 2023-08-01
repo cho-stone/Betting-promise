@@ -41,9 +41,6 @@ public class Home extends AppCompatActivity {
         myId = intent.getStringExtra("myId"); //mainActivity에서 intent해준 id를 받아옴
         myPassword = intent.getStringExtra("myPassword");
 
-
-
-
         recyclerView = findViewById(R.id.userRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -104,6 +101,7 @@ public class Home extends AppCompatActivity {
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
         Intent intent = new Intent(this, Search_Friend.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
@@ -111,7 +109,6 @@ public class Home extends AppCompatActivity {
     public void btnSearchHistoryClicked(View view) {
         Intent intent = new Intent(this, Search_History.class);
         intent.putExtra("myId", myId);//ID 정보 intent
-        intent.putExtra("myPassword", myPassword);//Password 정보 intent
         startActivity(intent);
     }
 
@@ -121,16 +118,19 @@ public class Home extends AppCompatActivity {
 
     public void btnCoinsClicked(View view){
         Intent intent = new Intent(this, Coin.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
     public void btnCreateClicked(View view){
         Intent intent = new Intent(this, Create_Room.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
     public void btnOptionClicked(View view){
         Intent intent = new Intent(this, Option.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 }

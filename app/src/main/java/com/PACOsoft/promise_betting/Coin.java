@@ -3,6 +3,7 @@ package com.PACOsoft.promise_betting;
 import androidx.annotation.NonNull;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,14 +22,15 @@ import java.util.Optional;
 
 public class Coin extends Activity {
     private int tempcoin;
-    private String myId = "1213";
+    private String myId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_coin);
+        Intent intent = getIntent();
+        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
     }
-
     //바깥영역 터치방지
     @Override
     public boolean onTouchEvent(MotionEvent event){
@@ -37,34 +39,28 @@ public class Coin extends Activity {
         }
         return false;
     }
-
     //뒤로가기 비활성
     @Override
     public void onBackPressed(){
         return;
     }
-
     //닫기버튼
     public void btn_coin_page_close(View view) {
         finish();
     }
-
     public void btn_coin_charge(View view){
         //코인 값 전달 코드
         TextInputEditText et_coin = findViewById(R.id.et_coin);
         tempcoin = Integer.valueOf(String.valueOf(et_coin.getText()));
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         DatabaseReference databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot DataSnapshot) {
                 ArrayList<User> users = new ArrayList<>();
-
                 for (DataSnapshot snapshot : DataSnapshot.getChildren()) {//데이터 베이스 내의 User객체들은 전부 User타입의 배열리스트 users에 추가
                     users.add(snapshot.getValue(User.class));
                 }
-
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//그 중 myId와 같은 id 있는지 탐색
                     //myId와 같은 id가 있다면 그게 내 객체이므로 그 객체를 anyElement에 저장
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
@@ -80,7 +76,6 @@ public class Coin extends Activity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
         finish();
     }
 }

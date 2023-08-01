@@ -29,7 +29,7 @@ public class Search_History extends AppCompatActivity {
     private DatabaseReference databaseReference2;
 
     private String myId;
-    private String myPassword;
+
     private String[] s;
 
     @Override
@@ -39,7 +39,7 @@ public class Search_History extends AppCompatActivity {
 
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
-        myPassword = intent.getStringExtra("myPassword");//Home에서 intent해준 id를 받아옴
+
 
         recyclerView = findViewById(R.id.historyRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
