@@ -28,14 +28,21 @@ public class Home extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-
-    private String myId = "1213";//테스트용
+    private String myId ;
+    private String myPassword ;
     private int point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        myId = intent.getStringExtra("myId"); //mainActivity에서 intent해준 id를 받아옴
+        myPassword = intent.getStringExtra("myPassword");
+
+
+
 
         recyclerView = findViewById(R.id.userRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화

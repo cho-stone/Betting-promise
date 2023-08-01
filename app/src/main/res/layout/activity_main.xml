@@ -25,6 +25,7 @@
         android:layout_marginBottom="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputLoginId"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="아이디">
@@ -39,6 +40,7 @@
         android:layout_marginBottom="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputLoginPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="비밀번호"
@@ -55,6 +57,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/loginBT"
+        android:onClick="login"
         android:textColor="@color/white"></TextView>
 
     <LinearLayout

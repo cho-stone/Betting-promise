@@ -33,6 +33,8 @@ public class signup_page extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+
+    private int numcheck=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,7 +175,6 @@ public class signup_page extends AppCompatActivity {
 
     public void btn_dupli_check(View view){
         String myId = et_id.getText().toString();
-        Log.v("tt", myId);
         arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
@@ -188,13 +189,13 @@ public class signup_page extends AppCompatActivity {
                 }
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//사용자가 정한 id와 동일한 id가 DB에 있는지 확인
                     Toast toast = Toast.makeText(getApplicationContext(), "이미 존재하는 ID입니다.", Toast.LENGTH_SHORT);
-                    toast.show();
+                    if(numcheck ==0)toast.show(); //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
                     booleans[4] = false;
                     signup_enable();
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT);
-                    toast.show();
+                    if(numcheck == 0) toast.show();  //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
                     booleans[4] = true;
                     signup_enable();
                 }
@@ -227,7 +228,7 @@ public class signup_page extends AppCompatActivity {
         String pw = et_pw.getText().toString();
 
         User user = new User();
-        user.setProfile("");
+        user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
         user.setAccount(0);
         user.setId(id);
         user.setNickName(nick);
@@ -236,5 +237,7 @@ public class signup_page extends AppCompatActivity {
         user.setFriendsId("");
 
         databaseReference.child("User").child(id).setValue(user);
+        numcheck = 1;  //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
+        finish();
     }
 }
