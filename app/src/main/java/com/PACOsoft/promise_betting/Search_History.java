@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -27,14 +28,18 @@ public class Search_History extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReference2;
 
-    private String myId = "1213";
-
+    private String myId;
+    private String myPassword;
     private String[] s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_history);
+
+        Intent intent = getIntent();
+        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
+        myPassword = intent.getStringExtra("myPassword");//Home에서 intent해준 id를 받아옴
 
         recyclerView = findViewById(R.id.historyRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
@@ -58,7 +63,11 @@ public class Search_History extends AppCompatActivity {
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//myId와 동일한 id가 DB에 있는지 확인
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                     //User에서 id가 myId와 동일한 객체를 필터링
+                    Log.e("myid", myId);
                     s = anyElement.get().getPromiseKey().split(" ");//위에서 필터링한 객체의 PromiseKey를 공백을 기준으로 스플릿 해서 배열에 저장
+                    for(String temp : s){
+                        Log.e("temp", temp);
+                    }
 
                 }
             }
@@ -80,7 +89,7 @@ public class Search_History extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     History history = snapshot.getValue(History.class); // 만들어뒀던 User 객체에 데이터를 담는다
                     for(String temp : s) {
-                        Log.e("temp", temp);
+
                         if(history.getPromiseKey().equals(temp)) {
                             arrayList.add(history);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
                         }

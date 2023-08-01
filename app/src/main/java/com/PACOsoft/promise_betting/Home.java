@@ -110,6 +110,8 @@ public class Home extends AppCompatActivity {
     //Home에서 SearchHistory로 이동하는 버튼 구현
     public void btnSearchHistoryClicked(View view) {
         Intent intent = new Intent(this, Search_History.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
+        intent.putExtra("myPassword", myPassword);//Password 정보 intent
         startActivity(intent);
     }
 
