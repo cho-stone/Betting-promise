@@ -221,20 +221,20 @@ public class signup_page extends AppCompatActivity {
     }
 
     public void btn_signup(View view){
-        final String pw = et_pw.getText().toString();
-        final String check = et_check.getText().toString();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        String nick = et_nick.getText().toString();
+        String id = et_id.getText().toString();
+        String pw = et_pw.getText().toString();
 
-        if(check.isEmpty()){
-            lo_check.setError("비밀번호를 한 번 더 입력해 주세요.");
-            booleans[3] = false;
-        }
-        else if(!check.equals(pw)){
-            lo_check.setError("비밀번호가 일치하지 않습니다.");
-            booleans[3] = false;
-        }
-        else{
-            lo_check.setError("");
-            booleans[3] = true;
-        }
+        User user = new User();
+        user.setProfile("");
+        user.setAccount(0);
+        user.setId(id);
+        user.setNickName(nick);
+        user.setPw(pw);
+        user.setPromiseKey("");
+        user.setFriendsId("");
+
+        databaseReference.child("User").child(id).setValue(user);
     }
 }
