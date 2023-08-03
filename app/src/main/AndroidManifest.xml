@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.PACOsoft.promise_betting">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!--현재 내 위치 가져 오기 위함-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -64,7 +68,4 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="rjaqcdyuc1" />
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!--현재 내 위치 가져 오기 위함-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>
