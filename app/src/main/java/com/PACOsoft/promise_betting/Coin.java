@@ -23,6 +23,7 @@ import java.util.Optional;
 public class Coin extends Activity {
     private int tempcoin;
     private String myId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,24 +32,28 @@ public class Coin extends Activity {
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
     }
+
     //바깥영역 터치방지
     @Override
-    public boolean onTouchEvent(MotionEvent event){
-        if(event.getAction()==MotionEvent.ACTION_OUTSIDE) {
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
             return false;
         }
         return false;
     }
+
     //뒤로가기 비활성
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         return;
     }
+
     //닫기버튼
     public void btn_coin_page_close(View view) {
         finish();
     }
-    public void btn_coin_charge(View view){
+
+    public void btn_coin_charge(View view) {
         //코인 값 전달 코드
         TextInputEditText et_coin = findViewById(R.id.et_coin);
         tempcoin = Integer.valueOf(String.valueOf(et_coin.getText()));
@@ -68,10 +73,11 @@ public class Coin extends Activity {
                     int tempcoin2 = anyElement.get().getAccount();
                     tempcoin = tempcoin + tempcoin2;
                 }
-                    databaseReference.child(myId).child("account").setValue(tempcoin);//더해준 최종 값 DB에 추가
-                     TextView text = (TextView) findViewById(R.id.tv_afterCoin);//코인 충전 후 TextView 참조 객체 선언
-                    text.setText(String.valueOf(tempcoin));//위에서 선언한 참조 객체에 값 넘겨줌
+                databaseReference.child(myId).child("account").setValue(tempcoin);//더해준 최종 값 DB에 추가
+                TextView text = (TextView) findViewById(R.id.tv_afterCoin);//코인 충전 후 TextView 참조 객체 선언
+                text.setText(String.valueOf(tempcoin));//위에서 선언한 참조 객체에 값 넘겨줌
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }

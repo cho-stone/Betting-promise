@@ -35,11 +35,12 @@
         android:layout_marginLeft="4dip"
         android:layout_marginRight="4dip"
         android:background="?android:attr/dividerVertical" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inviteFriendsRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:id="@+id/layoutBottomButtons"
@@ -65,9 +66,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
+                android:onClick="btv_Invite_Friend_Clicked"
                 android:text="초대"
-                android:textColor="@color/black"
-                android:onClick="btv_Invite_Friend_Clicked"/>
+                android:textColor="@color/black" />
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

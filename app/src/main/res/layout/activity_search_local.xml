@@ -35,11 +35,12 @@
         android:layout_marginLeft="4dip"
         android:layout_marginRight="4dip"
         android:background="?android:attr/dividerVertical" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/inviteFriendsRecyclerview"
+        android:id="@+id/SearchLocationRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:id="@+id/layoutBottomButtons"

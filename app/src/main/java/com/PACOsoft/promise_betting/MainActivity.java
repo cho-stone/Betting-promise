@@ -27,11 +27,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        Toast toast = Toast.makeText(getApplicationContext(), "로그인 누름", Toast.LENGTH_SHORT);
-        toast.show();
-
-
-
         TextInputEditText ID = findViewById(R.id.inputLoginId);
         TextInputEditText Password = findViewById(R.id.inputLoginPassword);
 
@@ -50,24 +45,23 @@ public class MainActivity extends AppCompatActivity {
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(ID.getText().toString()))) {//사용자가 정한 id와 동일한 id가 DB에 있는지 확인
                     {
                         Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(ID.getText().toString())).findFirst();//ID가 동일한 객체를 anyElement에 담음
-                        if(anyElement.get().getPw().equals(Password.getText().toString())) {//비밀번호까지 DB와 일치하면 로그인 성공
+                        if (anyElement.get().getPw().equals(Password.getText().toString())) {//비밀번호까지 DB와 일치하면 로그인 성공
                             Intent intent = new Intent(getApplicationContext(), Home.class);//Home으로 intent
                             intent.putExtra("myId", ID.getText().toString());//ID 정보 intent
                             intent.putExtra("myPassword", Password.getText().toString());//Password 정보 intent
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
                             startActivity(intent);
-                        }
-                        else {
+                        } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     }
-                }
-                else {
+                } else {
                     Toast toast = Toast.makeText(getApplicationContext(), "ID가 일치하지 않습니다.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시

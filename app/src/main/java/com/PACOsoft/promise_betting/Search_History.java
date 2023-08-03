@@ -65,19 +65,19 @@ public class Search_History extends AppCompatActivity {
                     //User에서 id가 myId와 동일한 객체를 필터링
                     Log.e("myid", myId);
                     s = anyElement.get().getPromiseKey().split(" ");//위에서 필터링한 객체의 PromiseKey를 공백을 기준으로 스플릿 해서 배열에 저장
-                    for(String temp : s){
+                    for (String temp : s) {
                         Log.e("temp", temp);
                     }
 
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
-
 
 
         databaseReference2 = database.getReference("History");//DB테이블 연결, 파이어베이스 콘솔에서 History에 접근
@@ -88,9 +88,9 @@ public class Search_History extends AppCompatActivity {
                 arrayList.clear(); //기존 배열리스트를 초기화
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     History history = snapshot.getValue(History.class); // 만들어뒀던 User 객체에 데이터를 담는다
-                    for(String temp : s) {
+                    for (String temp : s) {
 
-                        if(history.getPromiseKey().equals(temp)) {
+                        if (history.getPromiseKey().equals(temp)) {
                             arrayList.add(history);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
                         }
                     }

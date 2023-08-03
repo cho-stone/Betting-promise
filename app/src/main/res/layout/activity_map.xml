@@ -5,73 +5,74 @@
     android:orientation="vertical"
     android:weightSum="14">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_gravity="top"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/tv_room_people_count"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="2"
+            android:ellipsize="end"
             android:gravity="center"
-            android:weightSum="10"
-            android:layout_weight="1">
+            android:singleLine="true"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_room_people_count"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:layout_weight="2"/>
+        <TextView
+            android:id="@+id/tv_room_promise"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="6"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="방이름"
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_room_promise"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:text="방이름"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:layout_weight="6"/>
+        <ImageButton
+            android:id="@+id/tv_room_menu"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="2"
+            android:adjustViewBounds="true"
+            android:background="@color/white"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/menu_icon" />
 
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:background="@color/white"
-                    android:id="@+id/tv_room_menu"
-                    android:padding="0dp"
-                    android:src="@drawable/menu_icon"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:layout_weight="2"/>
+    </LinearLayout>
 
-        </LinearLayout>
+    <!-- 네이버 지도 -->
+    <com.naver.maps.map.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12" />
 
-        <!-- 네이버 지도 -->
-        <com.naver.maps.map.MapView
-            android:id="@+id/map_view"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="12"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:gravity="center">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/round_button"
-                    android:gravity="center"
-                    android:text="도착"
-                    android:textColor="@color/white"
-                    android:onClick="btn_reach_place"/>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="@drawable/round_button"
+            android:gravity="center"
+            android:onClick="btn_reach_place"
+            android:text="도착"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </LinearLayout>

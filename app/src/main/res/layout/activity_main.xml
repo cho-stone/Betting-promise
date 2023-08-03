@@ -36,8 +36,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputLoginPassword"
@@ -56,8 +56,8 @@
         android:background="@drawable/round_button"
         android:clickable="true"
         android:gravity="center"
-        android:text="@string/loginBT"
         android:onClick="login"
+        android:text="@string/loginBT"
         android:textColor="@color/white"></TextView>
 
     <LinearLayout

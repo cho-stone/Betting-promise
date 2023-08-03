@@ -80,7 +80,7 @@ public class Search_Friend extends AppCompatActivity {
                                 if (user.getId().equals(t) && user.getId().equals(textView.getText().toString())) {
                                     Toast toast = Toast.makeText(getApplicationContext(), "이미 친구 목록에 존재하는 친구입니다.", Toast.LENGTH_SHORT);
                                     toast.show();
-                                    isFriendAlreadyExist =1;
+                                    isFriendAlreadyExist = 1;
                                 }
 
                             }
@@ -89,7 +89,7 @@ public class Search_Friend extends AppCompatActivity {
 
                     }
 
-                    if(isFriendAlreadyExist == 0) {//중복된 친구가 없는 경우에만 추가 가능
+                    if (isFriendAlreadyExist == 0) {//중복된 친구가 없는 경우에만 추가 가능
                         anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
                         anyElement2 = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
                         //DB에 동일한 ID가 존재한다면 텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
@@ -104,8 +104,7 @@ public class Search_Friend extends AppCompatActivity {
                         }
                         adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
                     }
-                  }
-                    else {
+                } else {
                     Toast toast = Toast.makeText(getApplicationContext(), "일치하는 ID가 없습니다.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
