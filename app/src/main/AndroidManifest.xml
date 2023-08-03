@@ -52,6 +52,9 @@
             android:name=".Option"
             android:exported="true" />
         <activity
+            android:name=".Search_Local"
+            android:exported="true" />
+        <activity
             android:name=".Map"
             android:exported="true" />
         <activity

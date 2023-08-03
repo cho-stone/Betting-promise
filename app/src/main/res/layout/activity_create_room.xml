@@ -101,6 +101,7 @@
             android:layout_height="50dp"
             android:background="@drawable/round_button"
             android:clickable="true"
+            android:onClick="intent_btn_search_local"
             android:gravity="center"
             android:text="@string/select_location"
             android:textColor="@color/white"/>
