@@ -19,6 +19,7 @@ public class History {
     public void setPromiseKey(String promiseKey) {
         this.promiseKey = promiseKey;
     }
+
     public String getPromiseName() {
         return promiseName;
     }

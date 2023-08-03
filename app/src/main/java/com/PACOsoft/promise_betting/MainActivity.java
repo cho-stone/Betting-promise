@@ -59,10 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    Toast toast;
-                    toast = Toast.makeText(getApplicationContext(), "ID가 일치하지 않습니다.", Toast.LENGTH_SHORT);
-                    toast.show();
-                    toast = Toast.makeText(getApplicationContext(), ID.getText().toString(), Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "ID가 일치하지 않습니다.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
@@ -72,14 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
-
-
     }
 
     public void onClick(View view) {
         Intent intent = new Intent(this, signup_page.class);
         startActivity(intent);
     }
-
 
 }

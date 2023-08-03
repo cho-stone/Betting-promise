@@ -40,18 +40,12 @@ public class Home extends AppCompatActivity {
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //mainActivity에서 intent해준 id를 받아옴
         myPassword = intent.getStringExtra("myPassword");
-
-
-
-
         recyclerView = findViewById(R.id.userRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
         recyclerView.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
-
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -104,12 +98,14 @@ public class Home extends AppCompatActivity {
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
         Intent intent = new Intent(this, Search_Friend.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
     //Home에서 SearchHistory로 이동하는 버튼 구현
     public void btnSearchHistoryClicked(View view) {
         Intent intent = new Intent(this, Search_History.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
@@ -117,18 +113,24 @@ public class Home extends AppCompatActivity {
     public void btn_UserClicked(View view) {
     }
 
+    //Home에서 Coin으로 이동하는 버튼 구현
     public void btnCoinsClicked(View view){
         Intent intent = new Intent(this, Coin.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
-    public void btnCreateClicked(View view){
+    //Home에서 Create_Room으로 이동하는 버튼 구현
+    public void btnCreateRoomClicked(View view){
         Intent intent = new Intent(this, Create_Room.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
+    //Home에서 Option으로 이동하는 버튼 구현
     public void btnOptionClicked(View view){
         Intent intent = new Intent(this, Option.class);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 }

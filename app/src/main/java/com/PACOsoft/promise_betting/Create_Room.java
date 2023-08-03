@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-
     TextView textView;
     TextView timeText;
     private int i_year;
@@ -19,11 +18,13 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private int i_day;
     private int i_hour;
     private int i_min;
-
+    private String myId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
+        Intent intent = getIntent();
+        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
     }
 
     //날짜데이터 받아오기
@@ -61,6 +62,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         intent.putExtra("hour", getHour());
         intent.putExtra("min", getMin());
         intent.putExtra("position", position);
+        intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 

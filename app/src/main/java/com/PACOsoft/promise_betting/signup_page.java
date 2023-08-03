@@ -34,7 +34,6 @@ public class signup_page extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    private int numcheck=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +177,7 @@ public class signup_page extends AppCompatActivity {
         arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는 곳
@@ -189,13 +188,13 @@ public class signup_page extends AppCompatActivity {
                 }
                 if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//사용자가 정한 id와 동일한 id가 DB에 있는지 확인
                     Toast toast = Toast.makeText(getApplicationContext(), "이미 존재하는 ID입니다.", Toast.LENGTH_SHORT);
-                    if(numcheck ==0)toast.show(); //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
+                    toast.show(); //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
                     booleans[4] = false;
                     signup_enable();
                 }
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT);
-                    if(numcheck == 0) toast.show();  //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
+                    toast.show();  //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
                     booleans[4] = true;
                     signup_enable();
                 }
@@ -237,7 +236,6 @@ public class signup_page extends AppCompatActivity {
         user.setFriendsId("");
 
         databaseReference.child("User").child(id).setValue(user);
-        numcheck = 1;  //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
         finish();
     }
 }

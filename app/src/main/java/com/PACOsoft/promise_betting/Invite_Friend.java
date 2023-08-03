@@ -30,7 +30,7 @@ public class Invite_Friend extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    private String myId = "1213";//테스트용
+    private String myId;
     private HashSet<String> hashSet = new HashSet<>();//중복 방지 위해 해쉬셋 이용
 
     @Override
@@ -44,10 +44,7 @@ public class Invite_Friend extends AppCompatActivity {
         int hour = intent.getIntExtra("hour", 0);
         int min = intent.getIntExtra("min", 0);
         int position = intent.getIntExtra("position", 0);
-
-        //Toast.makeText(getApplicationContext(),String.valueOf(year) , Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getApplicationContext(),String.valueOf(month) , Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getApplicationContext(),String.valueOf(position) , Toast.LENGTH_SHORT).show();
+        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
 
         recyclerView = findViewById(R.id.inviteFriendsRecyclerview); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화

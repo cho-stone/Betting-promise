@@ -15,10 +15,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class History_List_Adapter extends RecyclerView.Adapter<History_List_Adapter.CustomViewHolder> {
-
     private ArrayList<History> arrayList;
     private Context context;
-
 
     public History_List_Adapter(ArrayList<History> arrayList, Context context) {
         this.arrayList = arrayList;

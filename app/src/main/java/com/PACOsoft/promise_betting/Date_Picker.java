@@ -26,7 +26,6 @@ public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDa
 
         return new DatePickerDialog(getActivity(),this,year,month,day);
     }
-
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Create_Room activity = (Create_Room) getActivity();

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".Home">
 
     <!--상단 리니어레이아웃-->
     <LinearLayout
@@ -42,7 +42,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:onClick="btnCreateClicked"
+            android:onClick="btnCreateRoomClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/plus_icon" />
 

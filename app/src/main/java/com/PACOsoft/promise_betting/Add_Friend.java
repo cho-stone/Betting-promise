@@ -21,7 +21,6 @@ public class Add_Friend extends Dialog {
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(context);//콘텍스트 자동입력
         recyclerView.setLayoutManager(layoutManager);
-
         adapter = new User_List_Adapter(arrayList, context);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }

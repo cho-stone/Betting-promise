@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,13 +34,16 @@ public class Search_Friend extends AppCompatActivity {
     private Optional<User> anyElement;
     private Optional<User> anyElement2;
     private String temp;
-    private String myId = "1213";
+    private String myId;
     private int isFriendAlreadyExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friend);
+
+        Intent intent = getIntent();
+        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
     }
 
     public void btn_SearchFriend(View view) {//검색 버튼 누르면 실행
