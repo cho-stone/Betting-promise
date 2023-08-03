@@ -3,6 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="top"
+            android:gravity="center"
+            android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_room_people_count"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:layout_weight="2"/>
+
+                <TextView
+                    android:id="@+id/tv_room_promise"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:text="방이름"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:layout_weight="6"/>
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:id="@+id/tv_room_menu"
+                    android:padding="0dp"
+                    android:src="@drawable/menu_icon"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:layout_weight="2"/>
+
+        </LinearLayout>
+
         <!-- 네이버 지도 -->
         <com.naver.maps.map.MapView
             android:id="@+id/map_view"
