@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
@@ -54,6 +55,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+                Log.v("tt", "실행");
             }
         }
     }
