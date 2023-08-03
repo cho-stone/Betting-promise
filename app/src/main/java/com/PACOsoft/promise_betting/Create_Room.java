@@ -41,16 +41,25 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         i_day = day;
     }
 
+    //날짜 선택 버튼
     public void btn_date_set(View view){
         DialogFragment newFragment = new Date_Picker();
         newFragment.show(getSupportFragmentManager(),"datePicker");
     }
 
+    //시간 선택 버튼
     public void btn_time_set(View view){
         DialogFragment timepicker = new Time_Picker();
         timepicker.show(getSupportFragmentManager(), "time picker");
     }
 
+    //위치 선택 버튼
+    public void intent_btn_search_local(View view){
+        Intent intent = new Intent(this, Search_Local.class);
+        startActivity(intent);
+    }
+
+    //친구 초대 버튼
     public void btn_intent_invite_friend(View view){
         Intent intent = new Intent(this, Invite_Friend.class);
         int date = 1;
@@ -66,6 +75,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         startActivity(intent);
     }
 
+    //닫기 버튼
     public void create_room_close(View view){
         finish();
     }

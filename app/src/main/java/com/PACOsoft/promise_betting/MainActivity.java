@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        Toast toast = Toast.makeText(getApplicationContext(), "로그인 누름", Toast.LENGTH_SHORT);
+        toast.show();
+
+
+
         TextInputEditText ID = findViewById(R.id.inputLoginId);
         TextInputEditText Password = findViewById(R.id.inputLoginPassword);
 
