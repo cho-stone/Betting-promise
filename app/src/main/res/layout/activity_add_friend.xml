@@ -18,13 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:inputType="text"
             android:gravity="center"
-            android:textAlignment="center"
-            android:textSize="25sp"
+            android:inputType="text"
             android:text="친구 추가"
-            />
-
+            android:textAlignment="center"
+            android:textSize="25sp" />
 
 
     </LinearLayout>
@@ -35,6 +33,7 @@
         android:layout_marginLeft="4dip"
         android:layout_marginRight="4dip"
         android:background="?android:attr/dividerVertical" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/addFriendsRecyclerview"
         android:layout_width="match_parent"
@@ -55,16 +54,17 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:onClick="btn_add_friend"
-            android:layout_margin="10dp"
             android:text="추가" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="1"
             android:onClick="btn_add_friend_cancel"
-            android:layout_margin="10dp"
             android:text="취소" />
     </LinearLayout>
 

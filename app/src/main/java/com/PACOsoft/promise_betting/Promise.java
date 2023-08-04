@@ -12,6 +12,7 @@ public class Promise {
     private String date;//약속 날짜 + 시간
     private String promisePlace;//약속 장소
     private int vote;//투표 찬성 수
+
     public Promise() {
     }
 

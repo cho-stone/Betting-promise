@@ -77,6 +77,7 @@ public class Invite_Friend extends AppCompatActivity {
                     adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
@@ -106,11 +107,10 @@ public class Invite_Friend extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
                         for (String t : s) {
-                            if(textView.getText().toString().equals("")) {
-                                if(user.getId().equals(t))
+                            if (textView.getText().toString().equals("")) {
+                                if (user.getId().equals(t))
                                     arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
-                            }
-                           else if (user.getId().equals(t) && user.getId().equals(textView.getText().toString()))
+                            } else if (user.getId().equals(t) && user.getId().equals(textView.getText().toString()))
                                 arrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
                         }
                     }
@@ -123,19 +123,19 @@ public class Invite_Friend extends AppCompatActivity {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
                 Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
             }
-    });
+        });
         adapter = new User_List_Adapter(arrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
-    public void btn_UserClicked(View v){
+
+    public void btn_UserClicked(View v) {
         ColorDrawable color = (ColorDrawable) v.getBackground();
         int bgcolor = color.getColor();
         TextView textView = v.findViewById(R.id.tv_id);
-        if(bgcolor == Color.LTGRAY) {
+        if (bgcolor == Color.LTGRAY) {
             v.setBackgroundColor(Color.WHITE);
             hashSet.remove(String.valueOf(textView.getText()));
-        }
-        else {
+        } else {
             v.setBackgroundColor(Color.LTGRAY);
             hashSet.add(String.valueOf(textView.getText()));
         }

@@ -28,8 +28,8 @@ public class Home extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    private String myId ;
-    private String myPassword ;
+    private String myId;
+
     private int point;
 
     @Override
@@ -39,7 +39,6 @@ public class Home extends AppCompatActivity {
 
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //mainActivity에서 intent해준 id를 받아옴
-        myPassword = intent.getStringExtra("myPassword");
         recyclerView = findViewById(R.id.userRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -114,21 +113,21 @@ public class Home extends AppCompatActivity {
     }
 
     //Home에서 Coin으로 이동하는 버튼 구현
-    public void btnCoinsClicked(View view){
+    public void btnCoinsClicked(View view) {
         Intent intent = new Intent(this, Coin.class);
         intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
     //Home에서 Create_Room으로 이동하는 버튼 구현
-    public void btnCreateRoomClicked(View view){
+    public void btnCreateRoomClicked(View view) {
         Intent intent = new Intent(this, Create_Room.class);
         intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);
     }
 
     //Home에서 Option으로 이동하는 버튼 구현
-    public void btnOptionClicked(View view){
+    public void btnOptionClicked(View view) {
         Intent intent = new Intent(this, Option.class);
         intent.putExtra("myId", myId);//ID 정보 intent
         startActivity(intent);

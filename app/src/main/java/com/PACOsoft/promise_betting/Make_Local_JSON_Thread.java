@@ -3,6 +3,9 @@ package com.PACOsoft.promise_betting;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,50 +23,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
-public class Make_Local_JSON_Thread extends Thread{
+public class Make_Local_JSON_Thread extends Thread {
 
     static public String clientId = "FuKF0Wwy5ToDyuXhRuDW"; //애플리케이션 클라이언트 아이디값"
     static public String clientSecret = "E1aG6QAOhi"; //애플리케이션 클라이언트 시크릿값"
-
-
     static private String title;
     static private String address;
     static private String roadaddress;
 
-    public void run(){
+
+    public void run() {
         main();
-
-
     }
 
     public static void main() {
+
 
         String text = null;
         try {
             text = URLEncoder.encode("다이소", "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("검색어 인코딩 실패",e);
+            throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        String apiURL = "https://openapi.naver.com/v1/search/local?query=" + text + "&display=3&sort=sim" ;    // json 결과
+        String apiURL = "https://openapi.naver.com/v1/search/local?query=" + text + "&display=3&sort=sim";    // json 결과
         //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // xml 결과
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        String responseBody = get(apiURL,requestHeaders);
+        String responseBody = get(apiURL, requestHeaders);
 
         parseData(responseBody);
 
-        Log.e("Search", responseBody);
     }
 
-    private static String get(String apiUrl, Map<String, String> requestHeaders){
+    private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
             con.setRequestMethod("GET");
-            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 con.setRequestProperty(header.getKey(), header.getValue());
             }
 
@@ -81,10 +80,10 @@ public class Make_Local_JSON_Thread extends Thread{
         }
     }
 
-    private static HttpURLConnection connect(String apiUrl){
+    private static HttpURLConnection connect(String apiUrl) {
         try {
             URL url = new URL(apiUrl);
-            return (HttpURLConnection)url.openConnection();
+            return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
             throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
         } catch (IOException e) {
@@ -92,7 +91,7 @@ public class Make_Local_JSON_Thread extends Thread{
         }
     }
 
-    private static String readBody(InputStream body){
+    private static String readBody(InputStream body) {
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
@@ -119,11 +118,11 @@ public class Make_Local_JSON_Thread extends Thread{
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
                 title = item.getString("title");
-                System.out.println("TITLE : " + title);
+                //System.out.println("TITLE : " + title);
                 address = item.getString("address");
-                System.out.println("ADDRESS : " + address);
+                //System.out.println("ADDRESS : " + address);
                 roadaddress = item.getString("address");
-                System.out.println("ROADADDRESS : " + roadaddress);
+                //System.out.println("ROADADDRESS : " + roadaddress);
             }
         } catch (JSONException e) {
             e.printStackTrace();

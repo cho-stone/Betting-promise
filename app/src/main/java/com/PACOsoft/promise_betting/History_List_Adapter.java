@@ -46,7 +46,7 @@ public class History_List_Adapter extends RecyclerView.Adapter<History_List_Adap
             Glide.with(holder.itemView).load(R.drawable.third_prize_icon).into(holder.iv_prizeIcon);//서버로부터 prize가져와서 3등이면 third_prize_icon을 iv_prizeIcon으로 넘겨준다
         }
         holder.tv_promiseName.setText(arrayList.get(position).getPromiseName());//서버로부터 텍스트 받아와서 item에 삽입
-        if (arrayList.get(position).getPrizeMoney() >= 0 ) {//약속 상금
+        if (arrayList.get(position).getPrizeMoney() >= 0) {//약속 상금
             holder.tv_prizeMoney.setText("+" + String.valueOf(arrayList.get(position).getPrizeMoney()));
         }
         holder.tv_data.setText(arrayList.get(position).getDate());

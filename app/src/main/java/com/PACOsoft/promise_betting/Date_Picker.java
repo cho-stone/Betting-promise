@@ -24,12 +24,13 @@ public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDa
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(),this,year,month,day);
+        return new DatePickerDialog(getActivity(), this, year, month, day);
     }
+
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Create_Room activity = (Create_Room) getActivity();
-        activity.processDatePickerResult(year,month,day);
+        activity.processDatePickerResult(year, month, day);
     }
 
 }
