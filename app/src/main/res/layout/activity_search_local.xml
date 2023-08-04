@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Invite_Friend">
+    tools:context=".Search_Local">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -42,20 +42,5 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-    <LinearLayout
-        android:id="@+id/layoutBottomButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-        <!--스크롤 뷰와 하단 리니어 레이아웃 경계선-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"
-            android:background="?android:attr/dividerVertical" />
 
-
-    </LinearLayout>
 </LinearLayout>

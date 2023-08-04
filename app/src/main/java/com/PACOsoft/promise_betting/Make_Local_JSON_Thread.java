@@ -1,6 +1,9 @@
 package com.PACOsoft.promise_betting;
 
-import android.os.Handler;
+
+
+import android.content.Intent;
+
 import android.util.Log;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +32,17 @@ public class Make_Local_JSON_Thread extends Thread {
     static public String clientId = "FuKF0Wwy5ToDyuXhRuDW"; //애플리케이션 클라이언트 아이디값"
     static public String clientSecret = "E1aG6QAOhi"; //애플리케이션 클라이언트 시크릿값"
     static private String title;
+    static private String  category;
     static private String address;
-    static private String roadaddress;
+    static private String roadAddress;
+    static private int mapx;
+    static private int mapy;
 
+    static private String search_word;
+
+    static private Intent intent;
+
+    static private ArrayList<Location> arrayList;
 
     public void run() {
         main();
@@ -38,10 +50,11 @@ public class Make_Local_JSON_Thread extends Thread {
 
     public static void main() {
 
+        //search_word = intent.getStringExtra("search_word"); //mainActivity에서 intent해준 id를 받아옴
 
         String text = null;
         try {
-            text = URLEncoder.encode("다이소", "UTF-8");
+            text = URLEncoder.encode("우남퍼스트빌", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
@@ -56,6 +69,8 @@ public class Make_Local_JSON_Thread extends Thread {
 
         parseData(responseBody);
 
+        Log.e("tag",responseBody);
+        //Log.e("tag",search_word);
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
@@ -115,14 +130,32 @@ public class Make_Local_JSON_Thread extends Thread {
             jsonObject = new JSONObject(responseBody.toString());
             JSONArray jsonArray = jsonObject.getJSONArray("items");
 
+            arrayList = new ArrayList<>();// Location 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
+            arrayList.clear(); //기존 배열리스트를 초기화
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
+
                 title = item.getString("title");
                 //System.out.println("TITLE : " + title);
+                category = item.getString("category");
+                //System.out.println("category : " + category);
                 address = item.getString("address");
                 //System.out.println("ADDRESS : " + address);
-                roadaddress = item.getString("address");
-                //System.out.println("ROADADDRESS : " + roadaddress);
+                roadAddress = item.getString("address");
+                //System.out.println("ROADADDRESS : " + roadAddress);
+                mapx = item.getInt("mapx");
+                //System.out.println("mapx : " + mapx);
+                mapy = item.getInt("mapy");
+                //System.out.println("mapy : " + mapy);
+
+                Location location = new Location(title,category,address,roadAddress,mapx,mapy);//location 객체 생성 후 정보 담음
+                System.out.println("location : " + location.getTitle());
+                System.out.println("location : " + location.getCategory());
+                System.out.println("location : " + location.getAddress());
+                System.out.println("location : " + location.getRoadaddress());
+                System.out.println("location : " + location.getMapx());
+                System.out.println("location : " + location.getMapy());
+//                arrayList.add(location);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -8,7 +8,13 @@ public class Location {
     private int mapx;
     private int mapy;
 
-    public Location() {
+    public Location(String title, String category, String address, String roadaddress, int mapx, int mapy) {
+        this.title = title;
+        this.category = category;
+        this.address = address;
+        this.roadaddress = roadaddress;
+        this.mapx = mapx;
+        this.mapy = mapy;
     }
 
     public String getTitle() {
