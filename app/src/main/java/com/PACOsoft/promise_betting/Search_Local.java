@@ -1,11 +1,14 @@
 package com.PACOsoft.promise_betting;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,22 +33,21 @@ import java.util.Map;
 public class Search_Local extends AppCompatActivity {
     private static EditText search_word;
     private static RecyclerView recyclerView;
-    private static RecyclerView.Adapter adapter;
+    private static Location_List_Adapter adapter;
     private static RecyclerView.LayoutManager layoutManager;
     private static ArrayList<Location> arrayList;
+    private static ValueHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_local);
-
-
+        handler = new ValueHandler();
         recyclerView = findViewById(R.id.SearchLocationRecyclerview); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(recyclerView.getContext());//콘텍스트 자동입력
         recyclerView.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<Location>();// Location 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
-
+        arrayList = new ArrayList<>();// Location 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         search_word = findViewById(R.id.et_search_local);
         search_word.addTextChangedListener(new TextWatcher() {
             @Override
@@ -54,29 +56,27 @@ public class Search_Local extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 arrayList.clear(); //기존 배열리스트를 초기화
-                //adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
-                Search_Location(search_word.getText().toString());
-
-
-                //adapter = new Location_List_Adapter(arrayList, getApplicationContext());
-                //recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+                Search_Location(search_word.getText().toString());//search_word로 검색 스레드 호출 후 리사이클러뷰에 그려주는 함수 호출
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
-
     }
 
     //지우기
-    public void btn_search_local_cancel(View v) {
+    public void btn_search_local_cancel(View v) {//전체 삭제
         search_word.setText("");
+        arrayList.clear(); //기존 배열리스트를 초기화
+        adapter = new Location_List_Adapter(arrayList, getApplicationContext());
+        adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+        recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
 
     private void Search_Location(String search_word) {
+        //Handler handler = new Handler();
         new Thread() {
             public void run() {
                 runOnUiThread(new Runnable() {
@@ -84,7 +84,6 @@ public class Search_Local extends AppCompatActivity {
                     public void run() {
                         String clientId = "FuKF0Wwy5ToDyuXhRuDW"; //애플리케이션 클라이언트 아이디값"
                         String clientSecret = "E1aG6QAOhi"; //애플리케이션 클라이언트 시크릿값"
-
                         String text = null;
                         try {
                             text = URLEncoder.encode(search_word, "UTF-8");
@@ -101,13 +100,8 @@ public class Search_Local extends AppCompatActivity {
                             String responseBody = get(apiURL, requestHeaders);//네트워크에 접근해서 데이터를 받아오는 부분이므로 별도의 스레드에서 돌려야하므로 새 스레드 만들어서 돌렸다.
                             parseData(responseBody);//받아온 데이터 쪼개기
                         }).start();
-
-                        //System.out.println(arrayList.get(0).getTitle());
-                        //System.out.println(arrayList.get(1).getTitle());
-                        //adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
                     }
                 });
-
             }
         }.start();
 
@@ -187,15 +181,52 @@ public class Search_Local extends AppCompatActivity {
                 mapx = item.getInt("mapx");
                 mapy = item.getInt("mapy");
 
-                Location location = new Location(title, category, address, roadAddress, mapx, mapy);//location 객체 생성 후 정보 담음
-                arrayList.add(location);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+                //메시지, 번들, 핸들러 사용해서 각 값을 메인 스레드로 날려줌
+                Message message = handler.obtainMessage();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", title);
+                bundle.putString("category", category);
+                bundle.putString("address", address);
+                bundle.putString("roadAddress", roadAddress);
+                bundle.putInt("mapx", mapx);
+                bundle.putInt("mapy", mapy);
+                message.setData(bundle);
+                handler.sendMessage(message);
+
             }
 
-            //System.out.println(arrayList.get(0).getTitle());
-            //System.out.println(arrayList.get(1).getTitle());
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    public class ValueHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            //메인 스레드에서 핸들러 이용해서 값 다 받은다음 location 객체로 만들어서
+            //arraylist에 담고 그걸로 adapter 만들어서 recyclerView 그려줌
+            super.handleMessage(msg);
+            String title;
+            String category;
+            String address;
+            String roadAddress;
+            int mapx;
+            int mapy;
+            Bundle bundle = msg.getData();
+            title = bundle.getString("title");
+            category = bundle.getString("category");
+            address = bundle.getString("address");
+            roadAddress = bundle.getString("roadAddress");
+            mapx = bundle.getInt("mapx");
+            mapy = bundle.getInt("mapy");
+            Location location = new Location(title, category, address, roadAddress, mapx, mapy);//location 객체 생성 후 정보 담음
+            System.out.println("address : " + address);
+            System.out.println("roadaddress : " + roadAddress);
+            arrayList.add((Location) location);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+            adapter = new Location_List_Adapter(arrayList, getApplicationContext());
+            adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+            recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
         }
     }
 }

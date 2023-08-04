@@ -4,15 +4,15 @@ public class Location {
     private String title;
     private String category;
     private String address;
-    private String roadaddress;
+    private String roadAddress;
     private int mapx;
     private int mapy;
 
-    public Location(String title, String category, String address, String roadaddress, int mapx, int mapy) {
+    public Location(String title, String category, String address, String roadAddress, int mapx, int mapy) {
         this.title = title;
         this.category = category;
         this.address = address;
-        this.roadaddress = roadaddress;
+        this.roadAddress = roadAddress;
         this.mapx = mapx;
         this.mapy = mapy;
     }
@@ -41,12 +41,12 @@ public class Location {
         this.address = address;
     }
 
-    public String getRoadaddress() {
-        return roadaddress;
+    public String getRoadAddress() {
+        return roadAddress;
     }
 
-    public void setRoadaddress(String roadaddress) {
-        this.roadaddress = roadaddress;
+    public void setRoadAddress(String roadAddress) {
+        this.roadAddress = roadAddress;
     }
 
     public int getMapx() {

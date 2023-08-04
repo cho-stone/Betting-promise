@@ -41,7 +41,7 @@ public class Location_List_Adapter extends RecyclerView.Adapter<Location_List_Ad
 
         holder.tv_Search_location_Title.setText(arrayList.get(position).getTitle());
         holder.tv_Search_location_Category.setText(arrayList.get(position).getCategory());
-        holder.tv_Search_RoadAddress.setText(arrayList.get(position).getRoadaddress());
+        holder.tv_Search_location_RoadAddress.setText(arrayList.get(position).getRoadAddress());
 
     }
 
@@ -56,14 +56,14 @@ public class Location_List_Adapter extends RecyclerView.Adapter<Location_List_Ad
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView tv_Search_location_Title;
         TextView tv_Search_location_Category;
-        TextView tv_Search_RoadAddress;
+        TextView tv_Search_location_RoadAddress;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
 
             this.tv_Search_location_Title = itemView.findViewById(R.id.tv_Search_location_Title);
             this.tv_Search_location_Category = itemView.findViewById(R.id.tv_Search_location_Category);
-            this.tv_Search_RoadAddress = itemView.findViewById(R.id.tv_Search_RoadAddress);
+            this.tv_Search_location_RoadAddress = itemView.findViewById(R.id.tv_Search_location_RoadAddress);
         }
     }
 }
