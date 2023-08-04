@@ -60,6 +60,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 
+    public void target_select(View view){
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+    }
+
     public void btn_reach_place(View view) {
     }
 }

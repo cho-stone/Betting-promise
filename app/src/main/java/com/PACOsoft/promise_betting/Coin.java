@@ -3,13 +3,20 @@ package com.PACOsoft.promise_betting;
 import androidx.annotation.NonNull;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,7 +29,12 @@ import java.util.Optional;
 
 public class Coin extends Activity {
     private int tempcoin;
+    private int my_coin;
     private String myId;
+    private TextInputEditText coin_tv;
+    private TextView after_coin_tv;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +43,44 @@ public class Coin extends Activity {
         setContentView(R.layout.activity_coin);
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
+        coin_tv = findViewById(R.id.et_coin);
+        after_coin_tv = findViewById(R.id.tv_afterCoin);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = databaseReference.child("User").child(myId).child("account");
+        //TODO
+        ValueEventListener dataListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                my_coin = dataSnapshot.getValue(Integer.class);
+                after_coin_tv.setText(String.valueOf(my_coin));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //데이터 가져오기 실패
+                Log.w("error", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        databaseReference.addValueEventListener(dataListener);
+
+        String s = after_coin_tv.getText().toString();
+        Toast toast = Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT);
+        toast.show();
+
+        coin_tv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     //바깥영역 터치방지
@@ -57,8 +107,8 @@ public class Coin extends Activity {
         //코인 값 전달 코드
         TextInputEditText et_coin = findViewById(R.id.et_coin);
         tempcoin = Integer.valueOf(String.valueOf(et_coin.getText()));
-        FirebaseDatabase database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        DatabaseReference databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot DataSnapshot) {
