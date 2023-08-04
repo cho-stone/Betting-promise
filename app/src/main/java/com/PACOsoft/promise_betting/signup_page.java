@@ -100,7 +100,7 @@ public class signup_page extends AppCompatActivity {
                     booleans[1] = false;
                     dupli_tv.setEnabled(false);
                 } else {
-                    lo_id.setError(" * 영소문자, 숫자 조합으로 6자리 이상");
+                    lo_id.setError("* 영소문자, 숫자 조합으로 6자리 이상");
                     booleans[1] = false;
                     dupli_tv.setEnabled(false);
                 }
@@ -129,11 +129,11 @@ public class signup_page extends AppCompatActivity {
                     lo_pw.setError("비밀번호를 입력해 주세요.");
                     booleans[2] = false;
                 } else {
-                    lo_pw.setError(" * 영문자, 숫자, 특수문자(모두) 조합으로 8자리 이상");
+                    lo_pw.setError("* 영문자, 숫자, 특수문자(모두) 조합으로 8자리 이상");
                     booleans[2] = false;
                 }
                 if (!pwCheck.equals(pw)) {
-                    lo_check.setError(" * 비밀번호를 다시 입력해 주세요");
+                    lo_check.setError("* 비밀번호를 다시 입력해 주세요");
                     booleans[3] = false;
                 } else {
                     lo_check.setError("");
@@ -164,7 +164,7 @@ public class signup_page extends AppCompatActivity {
                     lo_check.setError("비밀번호를 다시 입력해 주세요.");
                     booleans[3] = false;
                 } else {
-                    lo_check.setError(" * 비밀번호가 일치하지 않습니다.");
+                    lo_check.setError("* 비밀번호가 일치하지 않습니다.");
                     booleans[3] = false;
                 }
                 signup_enable();

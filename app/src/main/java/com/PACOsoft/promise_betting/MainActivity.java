@@ -3,7 +3,9 @@ package com.PACOsoft.promise_betting;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,15 +22,29 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class MainActivity extends AppCompatActivity {
+    private TextInputEditText ID;
+    private TextInputEditText Password;
+    private String loginId, loginPw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE); //자동로그인 키값 생성
+        loginId = auto.getString("inputId", null); //처음에는 null값 삽입
+        loginPw = auto.getString("inputPw", null);
+
+        if(loginPw != null && loginId != null){
+            Intent intent = new Intent(getApplicationContext(), Home.class);//Home으로 intent
+            intent.putExtra("myId", loginId);//ID 정보 intent
+            intent.putExtra("myPassword", loginPw);//Password 정보 intent
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
+            startActivity(intent);
+        }
     }
 
     public void login(View view) {
-        TextInputEditText ID = findViewById(R.id.inputLoginId);
-        TextInputEditText Password = findViewById(R.id.inputLoginPassword);
+        ID = findViewById(R.id.inputLoginId);
+        Password = findViewById(R.id.inputLoginPassword);
 
         ArrayList arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         FirebaseDatabase database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
@@ -46,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
                     {
                         Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(ID.getText().toString())).findFirst();//ID가 동일한 객체를 anyElement에 담음
                         if (anyElement.get().getPw().equals(Password.getText().toString())) {//비밀번호까지 DB와 일치하면 로그인 성공
+                            SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE); //자동로그인 키값 생성
+                            SharedPreferences.Editor autoLogin = auto.edit();
+                            autoLogin.putString("inputId", ID.getText().toString());//아이디와 비밀번호 값 삽입
+                            autoLogin.putString("inputPw", Password.getText().toString());
+                            autoLogin.commit(); //데이터 저장
                             Intent intent = new Intent(getApplicationContext(), Home.class);//Home으로 intent
                             intent.putExtra("myId", ID.getText().toString());//ID 정보 intent
                             intent.putExtra("myPassword", Password.getText().toString());//Password 정보 intent
