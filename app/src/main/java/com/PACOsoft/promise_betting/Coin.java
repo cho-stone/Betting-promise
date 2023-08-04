@@ -35,6 +35,7 @@ public class Coin extends Activity {
     private TextView after_coin_tv;
     private DatabaseReference databaseReference;
     private FirebaseDatabase database;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +46,31 @@ public class Coin extends Activity {
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
         coin_tv = findViewById(R.id.et_coin);
         after_coin_tv = findViewById(R.id.tv_afterCoin);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference = databaseReference.child("User").child(myId).child("account");
-        //TODO
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference();//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        user = new User();
         ValueEventListener dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                my_coin = dataSnapshot.getValue(Integer.class);
-                after_coin_tv.setText(String.valueOf(my_coin));
+                my_coin = (int)dataSnapshot.child("User").child(myId).child("account").getValue(Integer.class);
+                user.setAccount(my_coin);
+                after_coin_tv.setText(String.valueOf(user.getAccount()));
+                coin_tv.addTextChangedListener(new TextWatcher() {
+                    int charge_coin;
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        charge_coin = Integer.valueOf(coin_tv.getText().toString());
+                        charge_coin += user.getAccount();
+                        after_coin_tv.setText(String.valueOf(charge_coin));
+                    }
+                });
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //데이터 가져오기 실패
@@ -62,25 +78,6 @@ public class Coin extends Activity {
             }
         };
         databaseReference.addValueEventListener(dataListener);
-
-        String s = after_coin_tv.getText().toString();
-        Toast toast = Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT);
-        toast.show();
-
-        coin_tv.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
     }
 
     //바깥영역 터치방지
