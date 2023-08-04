@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
@@ -58,6 +59,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 Log.v("tt", "실행");
             }
         }
+    }
+
+    public void target_select(View view){
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
     }
 
 }
