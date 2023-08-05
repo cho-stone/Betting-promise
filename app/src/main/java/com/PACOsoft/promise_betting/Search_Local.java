@@ -64,7 +64,6 @@ public class Search_Local extends AppCompatActivity {
                 } else
                     Search_Location(search_word.getText().toString());//search_word로 검색 스레드 호출 후 리사이클러뷰에 그려주는 함수 호출
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
             }
