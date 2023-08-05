@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.obj;
 
 public class Promise {
     private String promiseCode; //약속 고유 코드

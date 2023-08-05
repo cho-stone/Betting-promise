@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.util;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

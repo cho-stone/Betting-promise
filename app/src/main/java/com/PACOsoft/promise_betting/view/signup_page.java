@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;

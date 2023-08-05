@@ -8,7 +8,7 @@
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:paddingRight="16dp"
-    tools:context=".Create_Room">
+    tools:context=".view.Create_Room">
 
     <TextView
         android:layout_width="match_parent"

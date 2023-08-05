@@ -13,7 +13,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingRight="16dp"
-        tools:context=".signup_page">
+        tools:context=".view.signup_page">
 
         <TextView
             android:layout_width="match_parent"

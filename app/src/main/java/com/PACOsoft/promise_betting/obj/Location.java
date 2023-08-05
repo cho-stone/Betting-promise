@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.obj;
 
 public class Location {
     private String title;

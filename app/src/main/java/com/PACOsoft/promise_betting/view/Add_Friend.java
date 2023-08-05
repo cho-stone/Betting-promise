@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.view;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,6 +6,10 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.PACOsoft.promise_betting.Adapter.User_List_Adapter;
+import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.User;
 
 import java.util.ArrayList;
 

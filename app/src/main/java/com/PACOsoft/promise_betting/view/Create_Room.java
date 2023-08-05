@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.PACOsoft.promise_betting.util.Date_Picker;
+import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.util.Time_Picker;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     TextView textView;

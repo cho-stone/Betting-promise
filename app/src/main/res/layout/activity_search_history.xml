@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Search_History">
+    tools:context=".view.Search_History">
 
     <!-- 전적 검색 리사이클러뷰-->
     <androidx.recyclerview.widget.RecyclerView
