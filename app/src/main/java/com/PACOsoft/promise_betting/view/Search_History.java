@@ -55,7 +55,7 @@ public class Search_History extends AppCompatActivity {
 
 
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는 곳
