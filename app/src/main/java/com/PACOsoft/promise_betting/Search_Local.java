@@ -194,7 +194,8 @@ public class Search_Local extends AppCompatActivity {
                 Message message = handler.obtainMessage();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", title);
-                bundle.putString("category", categoryArr[1]);
+                if(categoryArr.length <= 1) bundle.putString("category", categoryArr[0]);
+                else bundle.putString("category", categoryArr[1]);
                 bundle.putString("address", address);
                 bundle.putString("roadAddress", roadAddress);
                 bundle.putInt("mapx", mapx);
