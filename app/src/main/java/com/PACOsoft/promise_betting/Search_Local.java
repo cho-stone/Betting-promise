@@ -57,7 +57,12 @@ public class Search_Local extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 arrayList.clear(); //기존 배열리스트를 초기화
-                Search_Location(search_word.getText().toString());//search_word로 검색 스레드 호출 후 리사이클러뷰에 그려주는 함수 호출
+                if (search_word.getText().toString().equals("")) {//빈칸이라면 리사이클러뷰 초기화
+                    adapter = new Location_List_Adapter(arrayList, getApplicationContext());
+                    adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+                    recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+                } else
+                    Search_Location(search_word.getText().toString());//search_word로 검색 스레드 호출 후 리사이클러뷰에 그려주는 함수 호출
             }
 
             @Override
