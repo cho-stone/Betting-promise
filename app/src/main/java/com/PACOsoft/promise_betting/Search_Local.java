@@ -175,12 +175,17 @@ public class Search_Local extends AppCompatActivity {
                 JSONObject item = jsonArray.getJSONObject(i);
                 String title;
                 String category;
+                String[] categoryArr;
                 String address;
                 String roadAddress;
+
                 int mapx;
                 int mapy;
                 title = item.getString("title");
+                title = title.replace("<b>","");//<b>태그 삭제
+                title = title.replace("</b>","");//</b>태그 삭제
                 category = item.getString("category");
+                categoryArr = category.split(">");// >을 기준으로 파싱 후 > 이후의 문자열만 보냄
                 address = item.getString("address");
                 roadAddress = item.getString("address");
                 mapx = item.getInt("mapx");
@@ -190,7 +195,7 @@ public class Search_Local extends AppCompatActivity {
                 Message message = handler.obtainMessage();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", title);
-                bundle.putString("category", category);
+                bundle.putString("category", categoryArr[1]);
                 bundle.putString("address", address);
                 bundle.putString("roadAddress", roadAddress);
                 bundle.putInt("mapx", mapx);
