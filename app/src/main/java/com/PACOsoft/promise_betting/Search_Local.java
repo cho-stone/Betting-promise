@@ -221,8 +221,6 @@ public class Search_Local extends AppCompatActivity {
             mapx = bundle.getInt("mapx");
             mapy = bundle.getInt("mapy");
             Location location = new Location(title, category, address, roadAddress, mapx, mapy);//location 객체 생성 후 정보 담음
-            System.out.println("address : " + address);
-            System.out.println("roadaddress : " + roadAddress);
             arrayList.add((Location) location);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
             adapter = new Location_List_Adapter(arrayList, getApplicationContext());
             adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
