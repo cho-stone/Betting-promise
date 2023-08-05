@@ -1,9 +1,8 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.view;
 
 import androidx.annotation.NonNull;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,10 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

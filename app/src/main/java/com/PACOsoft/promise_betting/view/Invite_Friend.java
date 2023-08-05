@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.PACOsoft.promise_betting.Adapter.User_List_Adapter;
+import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.User;
+import com.PACOsoft.promise_betting.view.Map;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

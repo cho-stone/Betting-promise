@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.obj;
 
 public class History {
     private String promiseName;//약속 이름

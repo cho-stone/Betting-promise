@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.PACOsoft.promise_betting.obj.History;
+import com.PACOsoft.promise_betting.R;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

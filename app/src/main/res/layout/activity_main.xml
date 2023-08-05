@@ -12,7 +12,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingRight="16dp"
-        tools:context=".MainActivity">
+        tools:context=".view.MainActivity">
 
         <TextView
             android:layout_width="match_parent"

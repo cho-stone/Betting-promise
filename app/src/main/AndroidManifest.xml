@@ -18,13 +18,13 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Create_Room"
+            android:name=".view.Create_Room"
             android:exported="false" />
         <activity
-            android:name=".Coin"
+            android:name=".view.Coin"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
-            android:name=".Search_History"
+            android:name=".view.Search_History"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Search_Friend"
+            android:name=".view.Search_Friend"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,24 +41,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".signup_page" />
+        <activity android:name=".view.signup_page" />
         <activity
-            android:name=".Invite_Friend"
+            android:name=".view.Invite_Friend"
             android:exported="true" />
         <activity
-            android:name=".Home"
+            android:name=".view.Home"
             android:exported="true" />
         <activity
-            android:name=".Option"
+            android:name=".view.Option"
             android:exported="true" />
         <activity
-            android:name=".Search_Local"
+            android:name=".view.Search_Local"
             android:exported="true" />
         <activity
-            android:name=".Map"
+            android:name=".view.Map"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

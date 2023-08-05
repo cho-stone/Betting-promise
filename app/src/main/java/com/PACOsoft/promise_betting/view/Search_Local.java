@@ -1,4 +1,4 @@
-package com.PACOsoft.promise_betting;
+package com.PACOsoft.promise_betting.view;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.PACOsoft.promise_betting.Adapter.Location_List_Adapter;
+import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.Location;
 
 import org.json.JSONArray;
 import org.json.JSONException;
