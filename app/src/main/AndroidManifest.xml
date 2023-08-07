@@ -59,6 +59,9 @@
             android:exported="true" />
         <activity
             android:name=".view.MainActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".view.Search_Location"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
