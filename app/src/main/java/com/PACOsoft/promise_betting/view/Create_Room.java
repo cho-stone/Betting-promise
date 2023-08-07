@@ -1,11 +1,14 @@
 package com.PACOsoft.promise_betting.view;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -15,8 +18,7 @@ import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    TextView textView;
-    TextView timeText;
+    TextView timeText, textView, locationText, friendsText;
     private int i_year;
     private int i_month;
     private int i_day;
@@ -61,23 +63,23 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     //위치 선택 버튼
     public void intent_btn_search_local(View view) {
         Intent intent = new Intent(this, Search_Local.class);
-        startActivity(intent);
+        search_local_start.launch(intent);
     }
+
+    ActivityResultLauncher<Intent> search_local_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getResultCode() == RESULT_OK){
+            //TODO 값 받아오기
+        }
+        if(result.getResultCode() == RESULT_CANCELED){
+            Log.e("result error", "받아오기 실패");
+        }
+    });
 
     //친구 초대 버튼
     public void btn_intent_invite_friend(View view) {
         Intent intent = new Intent(this, Invite_Friend.class);
-        int date = 1;
-        int time = 2;
-        int position = 3;
-        intent.putExtra("year", getYear());
-        intent.putExtra("month", getMonth());
-        intent.putExtra("day", getDay());
-        intent.putExtra("hour", getHour());
-        intent.putExtra("min", getMin());
-        intent.putExtra("position", position);
         intent.putExtra("myId", myId);//ID 정보 intent
-        startActivity(intent);
+        //TODO 액티비티 시작
     }
 
     //닫기 버튼

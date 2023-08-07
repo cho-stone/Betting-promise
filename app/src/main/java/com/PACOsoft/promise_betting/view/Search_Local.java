@@ -1,12 +1,15 @@
 package com.PACOsoft.promise_betting.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -99,7 +102,7 @@ public class Search_Local extends AppCompatActivity {
                             throw new RuntimeException("검색어 인코딩 실패", e);
                         }
 
-                        String apiURL = "https://openapi.naver.com/v1/search/local?query=" + text + "&display=3&sort=sim";    // json 결과
+                        String apiURL = "https://openapi.naver.com/v1/search/local?query=" + text + "&display=5&sort=sim";    // json 결과
                         //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // xml 결과
                         java.util.Map<String, String> requestHeaders = new HashMap<>();
                         requestHeaders.put("X-Naver-Client-Id", clientId);
@@ -240,5 +243,17 @@ public class Search_Local extends AppCompatActivity {
             adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
             recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
         }
+    }
+    public void btn_Search_Location_Result(View view){
+        TextView title_tv = view.findViewById(R.id.tv_Search_location_Title);
+        TextView address_tv = view.findViewById(R.id.tv_Search_location_RoadAddress);
+        String title = title_tv.getText().toString();
+        String address = address_tv.getText().toString();
+        //TODO 좌표값 넘기기
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("title", title);
+        resultIntent.putExtra("address", address);
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }
