@@ -146,12 +146,11 @@ public class Invite_Friend extends AppCompatActivity {
     }
 
     public void btv_Invite_Friend_Clicked(View v) {
-
-        System.out.println(hashSet);
-
-        //todo: intent받아온 값과 여기서 선택한 친구id를 전부 방을 생성하며 DB에 기록
-        Intent intent = new Intent(this, Map.class);
-        startActivity(intent);
+        String[] friend_arr = hashSet.toArray(new String[0]);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("friends", friend_arr);
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }
 

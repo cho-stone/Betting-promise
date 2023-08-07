@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.TimePicker;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
+
+import java.util.HashSet;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     TextView timeText, textView, locationText, friendsText;
@@ -32,6 +35,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         setContentView(R.layout.activity_create_room);
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
+        locationText = findViewById(R.id.location_Tview);
+        friendsText = findViewById(R.id.friends_Tview);
     }
 
     //날짜데이터 받아오기
@@ -79,7 +84,25 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     public void btn_intent_invite_friend(View view) {
         Intent intent = new Intent(this, Invite_Friend.class);
         intent.putExtra("myId", myId);//ID 정보 intent
-        //TODO 액티비티 시작
+        invite_friend_start.launch(intent);
+    }
+
+    ActivityResultLauncher<Intent> invite_friend_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getResultCode() == RESULT_OK){
+            Intent intent = result.getData();
+            String[] friends = intent.getStringArrayExtra("friends");
+            String friends_list = String.join(" ", friends);
+            friendsText.setText(friends_list);
+        }
+        if(result.getResultCode() == RESULT_CANCELED){
+            Log.e("result error", "받아오기 실패");
+        }
+    });
+
+    //생성 버튼
+    public void btn_create_room(View view){
+        Intent intent = new Intent(this, Map.class);
+        startActivity(intent);
     }
 
     //닫기 버튼

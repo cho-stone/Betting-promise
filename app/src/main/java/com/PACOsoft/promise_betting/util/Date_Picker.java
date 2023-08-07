@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import com.PACOsoft.promise_betting.view.Create_Room;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +27,7 @@ public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDa
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(requireActivity(), this, year, month, day);
     }
 
     @Override

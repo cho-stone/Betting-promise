@@ -105,7 +105,6 @@
                 android:layout_width="120dp"
                 android:layout_height="60dp"
                 android:background="@drawable/round_button"
-                android:clickable="true"
                 android:gravity="center"
                 android:onClick="intent_btn_search_local"
                 android:text="@string/select_location"
@@ -136,7 +135,6 @@
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/round_button"
-                android:clickable="true"
                 android:gravity="center"
                 android:onClick="btn_intent_invite_friend"
                 android:text="@string/join_friend"
@@ -167,9 +165,8 @@
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/round_button"
-                android:clickable="true"
                 android:gravity="center"
-                android:onClick="btn_intent_invite_friend"
+                android:onClick="btn_create_room"
                 android:text="@string/create"
                 android:textColor="@color/white" />
 
