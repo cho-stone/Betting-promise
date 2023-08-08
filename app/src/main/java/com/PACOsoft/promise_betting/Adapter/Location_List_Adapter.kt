@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.PACOsoft.promise_betting.R
-import com.PACOsoft.promise_betting.obj.ListLayout
+import com.PACOsoft.promise_betting.obj.Location
 
-class ListAdapter(val itemList: ArrayList<ListLayout>): RecyclerView.Adapter<ListAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
+class Location_List_Adapter(val itemList: ArrayList<Location>): RecyclerView.Adapter<Location_List_Adapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Location_List_Adapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_layout, parent, false)
         return ViewHolder(view)
     }
@@ -19,7 +19,7 @@ class ListAdapter(val itemList: ArrayList<ListLayout>): RecyclerView.Adapter<Lis
         return itemList.size
     }
 
-    override fun onBindViewHolder(holder: ListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: Location_List_Adapter.ViewHolder, position: Int) {
         holder.name.text = itemList[position].name
    //    holder.category.text = itemList[position].category
         holder.road.text = itemList[position].road

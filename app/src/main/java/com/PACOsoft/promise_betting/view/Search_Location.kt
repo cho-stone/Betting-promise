@@ -10,13 +10,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.text.set
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.PACOsoft.promise_betting.Adapter.ListAdapter
+import com.PACOsoft.promise_betting.Adapter.Location_List_Adapter
 
 import com.PACOsoft.promise_betting.databinding.ActivitySearchLocationBinding
-import com.PACOsoft.promise_betting.obj.ListLayout
 import com.PACOsoft.promise_betting.obj.Location
 
 import retrofit2.Call
@@ -24,7 +21,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.log
 
 class Search_Location : AppCompatActivity() {
     companion object {
@@ -33,8 +29,8 @@ class Search_Location : AppCompatActivity() {
     }
 
     private lateinit var binding : ActivitySearchLocationBinding
-    private val listItems = arrayListOf<ListLayout>()   // 리사이클러 뷰 아이템
-    private val listAdapter = ListAdapter(listItems)    // 리사이클러 뷰 어댑터
+    private val listItems = arrayListOf<Location>()   // 리사이클러 뷰 아이템
+    private val locationListAdapter = Location_List_Adapter(listItems)    // 리사이클러 뷰 어댑터
     private var keyword = ""        // 검색 키워드
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +41,9 @@ class Search_Location : AppCompatActivity() {
 
         // 리사이클러 뷰
         binding.rvList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rvList.adapter = listAdapter
+        binding.rvList.adapter = locationListAdapter
         // 리스트 아이템 클릭 시 해당 위치로 이동
-        listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
+        locationListAdapter.setItemClickListener(object: Location_List_Adapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
 
                 val intent = Intent(applicationContext, Create_Room::class.java).apply {
@@ -76,7 +72,7 @@ class Search_Location : AppCompatActivity() {
                 keyword = binding.etSearchField.text.toString()
                 if(keyword == "") {
                     listItems.clear()
-                    listAdapter.notifyDataSetChanged()
+                    locationListAdapter.notifyDataSetChanged()
                 }
                 else {
                     searchKeyword(keyword)
@@ -89,7 +85,7 @@ class Search_Location : AppCompatActivity() {
         binding.btnSearch.setOnClickListener {
             binding.etSearchField.text.clear()
             listItems.clear()
-            listAdapter.notifyDataSetChanged()
+            locationListAdapter.notifyDataSetChanged()
         }
 
     }
@@ -125,7 +121,7 @@ class Search_Location : AppCompatActivity() {
             //binding.mapView.removeAllPOIItems() // 지도의 마커 모두 제거
             for (document in searchResult!!.documents) {
                 // 결과를 리사이클러 뷰에 추가
-                val item = ListLayout(document.place_name,
+                val item = Location(document.place_name,
                    // document.category_group_name,
                     document.road_address_name,
                     document.address_name,
@@ -133,7 +129,7 @@ class Search_Location : AppCompatActivity() {
                     document.y.toDouble())
                 listItems.add(item)
             }
-            listAdapter.notifyDataSetChanged()
+            locationListAdapter.notifyDataSetChanged()
         } else {
             // 검색 결과 없음
             Toast.makeText(this, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()

@@ -7,20 +7,15 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.PACOsoft.promise_betting.obj.ListLayout;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     TextView timeText, textView, locationText, friendsText;
