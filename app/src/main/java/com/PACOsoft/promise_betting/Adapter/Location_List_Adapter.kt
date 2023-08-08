@@ -21,7 +21,7 @@ class Location_List_Adapter(val itemList: ArrayList<Location>): RecyclerView.Ada
 
     override fun onBindViewHolder(holder: Location_List_Adapter.ViewHolder, position: Int) {
         holder.name.text = itemList[position].name
-       //holder.category.text = itemList[position].category
+       holder.category.text = itemList[position].category
         holder.road.text = itemList[position].road
         holder.address.text = itemList[position].address
         // 아이템 클릭 이벤트
@@ -32,7 +32,7 @@ class Location_List_Adapter(val itemList: ArrayList<Location>): RecyclerView.Ada
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.tv_list_name)
-        //val category: TextView = itemView.findViewById(R.id.tv_list_category)
+        val category: TextView = itemView.findViewById(R.id.tv_list_category)
         val road: TextView = itemView.findViewById(R.id.tv_list_road)
         val address: TextView = itemView.findViewById(R.id.tv_list_address)
     }

@@ -51,8 +51,8 @@ class Search_Location : AppCompatActivity() {
                     putExtra("category", listItems[position].category)
                     putExtra("address", listItems[position].address)
                     putExtra("road", listItems[position].road)
-                    putExtra("x", listItems[position].x)
-                    putExtra("y", listItems[position].y)
+                    putExtra("x", listItems[position].x.toString())
+                    putExtra("y", listItems[position].y.toString())
                 }
                 setResult(RESULT_OK, intent)
                 finish()

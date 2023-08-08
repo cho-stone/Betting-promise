@@ -73,7 +73,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             String roadAddress = intent.getStringExtra("road");
             String mapx = intent.getStringExtra("x");
             String mapy = intent.getStringExtra("y");
-            Log.v("tt", title);
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
