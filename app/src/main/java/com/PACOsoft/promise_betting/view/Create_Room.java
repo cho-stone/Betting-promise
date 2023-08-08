@@ -14,10 +14,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.PACOsoft.promise_betting.obj.ListLayout;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
@@ -67,13 +69,18 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //위치 선택 버튼
     public void intent_btn_search_local(View view) {
-        Intent intent = new Intent(this, Search_Local.class);
+        Intent intent = new Intent(this, Search_Location.class);
         search_local_start.launch(intent);
     }
 
     ActivityResultLauncher<Intent> search_local_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == RESULT_OK){
-            //TODO 값 받아오기
+            Intent intent = result.getData();
+            String title = intent.getStringExtra("title");
+            String address = intent.getStringExtra("address");
+            String roadAddress = intent.getStringExtra("road");
+            String mapx = intent.getStringExtra("x");
+            String mapy = intent.getStringExtra("y");
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
@@ -125,23 +132,4 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         i_min = minute;
     }
 
-    public int getYear() {
-        return i_year;
-    }
-
-    public int getMonth() {
-        return i_month;
-    }
-
-    public int getDay() {
-        return i_day;
-    }
-
-    public int getHour() {
-        return i_hour;
-    }
-
-    public int getMin() {
-        return i_min;
-    }
 }
