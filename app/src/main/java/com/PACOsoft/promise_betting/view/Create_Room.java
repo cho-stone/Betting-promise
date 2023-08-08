@@ -13,18 +13,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     TextView timeText, textView, locationText, friendsText;
-    private int i_year;
-    private int i_month;
-    private int i_day;
-    private int i_hour;
-    private int i_min;
     private String myId;
+    Promise promise;
+
+    String all_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +40,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         String month_string = Integer.toString(month + 1);
         String day_string = Integer.toString(day);
         String year_string = Integer.toString(year);
-        String dateMessage = (year_string + "/" + month_string + "/" + day_string);
-
+        String dateMessage = (year_string + " " + month_string + " " + day_string);
         textView = findViewById(R.id.date_Tview);
         textView.setText(dateMessage);
-        i_year = year;
-        i_month = month + 1;
-        i_day = day;
     }
 
     //날짜 선택 버튼
@@ -71,12 +66,14 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     ActivityResultLauncher<Intent> search_local_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == RESULT_OK){
             Intent intent = result.getData();
+            assert intent != null;
             String title = intent.getStringExtra("title");
             String category = intent.getStringExtra("category");
             String address = intent.getStringExtra("address");
             String roadAddress = intent.getStringExtra("road");
             String mapx = intent.getStringExtra("x");
             String mapy = intent.getStringExtra("y");
+            Log.v("tt", title);
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
@@ -93,6 +90,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     ActivityResultLauncher<Intent> invite_friend_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == RESULT_OK){
             Intent intent = result.getData();
+            assert intent != null;
             String[] friends = intent.getStringArrayExtra("friends");
             String friends_list = String.join(" ", friends);
             friendsText.setText(friends_list);
@@ -105,7 +103,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     //생성 버튼
     public void btn_create_room(View view){
         Intent intent = new Intent(this, Map.class);
+        //TODO 정보를 객체에 담아서 넘기기
         startActivity(intent);
+        finish();
     }
 
     //닫기 버튼
@@ -124,8 +124,5 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             hourOfDay -= 12;
             timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
         }
-        i_hour = hourOfDay;
-        i_min = minute;
     }
-
 }
