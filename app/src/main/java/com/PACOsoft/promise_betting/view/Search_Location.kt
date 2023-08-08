@@ -48,6 +48,7 @@ class Search_Location : AppCompatActivity() {
 
                 val intent = Intent(applicationContext, Create_Room::class.java).apply {
                     putExtra("title", listItems[position].name)
+                    putExtra("category", listItems[position].category)
                     putExtra("address", listItems[position].address)
                     putExtra("road", listItems[position].road)
                     putExtra("x", listItems[position].x)
@@ -118,11 +119,10 @@ class Search_Location : AppCompatActivity() {
         if (!searchResult?.documents.isNullOrEmpty()) {
             // 검색 결과 있음
             listItems.clear()                   // 리스트 초기화
-            //binding.mapView.removeAllPOIItems() // 지도의 마커 모두 제거
             for (document in searchResult!!.documents) {
                 // 결과를 리사이클러 뷰에 추가
                 val item = Location(document.place_name,
-                   // document.category_group_name,
+                    document.category_group_name,
                     document.road_address_name,
                     document.address_name,
                     document.x.toDouble(),

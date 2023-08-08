@@ -72,6 +72,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         if(result.getResultCode() == RESULT_OK){
             Intent intent = result.getData();
             String title = intent.getStringExtra("title");
+            String category = intent.getStringExtra("category");
             String address = intent.getStringExtra("address");
             String roadAddress = intent.getStringExtra("road");
             String mapx = intent.getStringExtra("x");
