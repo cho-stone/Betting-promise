@@ -5,11 +5,8 @@ public class Promise {
     private String promiseName;//약속 이름
     private int numOfPlayer;//약속 인원수
     private int bettingMoney;//총 배팅 금액
-    private String nickName;//닉네임
-    private String position;//사람별 위치
-    private int ranking;//사람별 순위
-    private int arrival;//사람별 도착 여부
-    private String date;//약속 날짜 + 시간
+    private String date;//약속 날짜
+    private String time;//약속 시간
     private String promisePlace;//약속 장소
     private int vote;//투표 찬성 수
 
@@ -48,38 +45,6 @@ public class Promise {
         this.bettingMoney = bettingMoney;
     }
 
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public int getRanking() {
-        return ranking;
-    }
-
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
-    }
-
-    public int getArrival() {
-        return arrival;
-    }
-
-    public void setArrival(int arrival) {
-        this.arrival = arrival;
-    }
-
     public String getDate() {
         return date;
     }
@@ -87,6 +52,10 @@ public class Promise {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public void setTime(String time) { this.time = time; }
+
+    public String getTime() { return time; }
 
     public String getPromisePlace() {
         return promisePlace;

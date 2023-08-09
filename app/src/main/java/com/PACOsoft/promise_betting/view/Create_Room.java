@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.PACOsoft.promise_betting.obj.Promise;
+import com.PACOsoft.promise_betting.obj.PromisePlayer;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
@@ -22,8 +23,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextView timeText, textView, locationText, friendsText;
     private String myId;
     Promise promise;
-
-    String all_time;
+    PromisePlayer promisePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
