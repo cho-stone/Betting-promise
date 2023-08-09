@@ -57,7 +57,12 @@
         <activity
             android:name=".view.MainActivity"
             android:exported="true"/>
-
+        <activity
+            android:name=".view.Test_Signin"
+            android:exported="true"/>
+        <activity
+            android:name=".view.Test_Signin2"
+            android:exported="true"/>
         <activity
             android:name=".view.Search_Location"
             android:exported="true">
