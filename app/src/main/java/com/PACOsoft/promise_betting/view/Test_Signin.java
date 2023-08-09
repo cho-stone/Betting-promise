@@ -68,8 +68,8 @@ public class Test_Signin extends AppCompatActivity {
     result -> {
         if(result.getResultCode() == RESULT_OK){
             Log.e("result success", "받아오기 성공");
-            Intent myintent = result.getData();
-            onActivityResult(myintent);
+//            Intent myintent = result.getData();
+//            onActivityResult(myintent);
 
         }
         if(result.getResultCode() == RESULT_CANCELED){
