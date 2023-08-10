@@ -18,7 +18,7 @@ public class Test_Signin2 extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test2);
 
-        btnLogout = (Button)findViewById(R.id.btn_logout);
+        btnLogout = (Button)findViewById(R.id.btn_signout);
         btnRevoke = (Button)findViewById(R.id.btn_revoke);
 
         mAuth = FirebaseAuth.getInstance();
@@ -37,7 +37,7 @@ public class Test_Signin2 extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_logout) {
+        if(v.getId() == R.id.btn_signout) {
             signOut();
             finishAffinity();
         } else if (v.getId() == R.id.btn_revoke) {

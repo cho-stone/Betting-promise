@@ -92,7 +92,6 @@ public class Test_Signin extends AppCompatActivity {
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(intent);
                     try{
                         GoogleSignInAccount account = task.getResult(ApiException.class);
-                        Toast.makeText(getApplicationContext(), "first", Toast.LENGTH_LONG).show();
                         firebaseAuthWithGoogle(account);
                     } catch (ApiException e) {
                         Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_LONG).show();
@@ -101,7 +100,7 @@ public class Test_Signin extends AppCompatActivity {
             }
         });
         configSignIn();
-        initAuth();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     private void configSignIn() {
@@ -111,23 +110,11 @@ public class Test_Signin extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-    private void initAuth() {
-        mAuth = FirebaseAuth.getInstance();
-    }
     @Override
     public void onStart() {
         super.onStart();
-        if(isUserNonNull()){
+        if(mAuth.getCurrentUser()==null ? false : true)
             updateUI();
-        }
-    }
-    private boolean isUserNonNull(){
-        if(mAuth.getCurrentUser()==null){
-            return false;
-        }
-        else {
-            return true;
-        }
     }
 
     private void updateUI() {
@@ -145,12 +132,12 @@ public class Test_Signin extends AppCompatActivity {
                 if(task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
                     //updateUI(user);
-                    Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
                     //updateUI(null);
                 }
             }

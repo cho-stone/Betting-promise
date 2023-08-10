@@ -64,6 +64,12 @@
             android:name=".view.Test_Signin2"
             android:exported="true"/>
         <activity
+            android:name=".view.Test_Signin3"
+            android:exported="true"/>
+        <activity
+            android:name=".view.Test_Signin4"
+            android:exported="true"/>
+        <activity
             android:name=".view.Search_Location"
             android:exported="true">
             <intent-filter>
