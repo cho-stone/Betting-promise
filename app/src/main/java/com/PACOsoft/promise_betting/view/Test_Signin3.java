@@ -92,18 +92,9 @@ public class Test_Signin3 extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
                                 }
                             }
-
                     );
         }
     }
-
-
-
-
-
-
-
-
 
 
 
