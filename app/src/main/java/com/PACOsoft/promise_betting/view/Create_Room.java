@@ -8,6 +8,8 @@ import androidx.fragment.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,14 +21,22 @@ import com.PACOsoft.promise_betting.obj.PromisePlayer;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+    private final String room_validation = "^[a-z가-힇]+[a-z0-9가-힇]{1,10}$";
+    private int people;
+    private String location_xy;
     TextView timeText, textView, locationText, friendsText;
+    TextInputLayout lo_roomname;
+    TextInputEditText et_roomname;
     private String myId;
     Promise promise;
-    PromisePlayer promisePlayer;
+    PromisePlayer[] promisePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,31 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
         locationText = findViewById(R.id.location_Tview);
         friendsText = findViewById(R.id.friends_Tview);
+        lo_roomname = findViewById(R.id.lo_room_name);
+        et_roomname = findViewById(R.id.et_room_name);
+
+        et_roomname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String nickCheck = et_roomname.getText().toString();
+                boolean validation = Pattern.matches(room_validation, nickCheck);
+                if (validation) {
+                    lo_roomname.setError("");
+                } else if (nickCheck.isEmpty()) {
+                    lo_roomname.setError("방 이름을 입력해 주세요.");
+                } else {
+                    lo_roomname.setError("방 이름이 올바르지 않습니다.");
+                }
+            }
+        });
     }
 
     //날짜데이터 받아오기
@@ -76,6 +111,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             String roadAddress = intent.getStringExtra("road");
             String mapx = intent.getStringExtra("x");
             String mapy = intent.getStringExtra("y");
+            location_xy = mapx + " " + mapy;
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
@@ -94,6 +130,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             Intent intent = result.getData();
             assert intent != null;
             String[] friends = intent.getStringArrayExtra("friends");
+            people = friends.length;
             String friends_list = String.join(" ", friends);
             friendsText.setText(friends_list);
         }
@@ -104,8 +141,19 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //생성 버튼
     public void btn_create_room(View view){
+        textView = findViewById(R.id.date_Tview);
+        timeText = findViewById(R.id.time_Tview);
+        et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
+
+        promise.setPromiseCode(uid); //고유코드
+        promise.setPromiseName(et_roomname.getText().toString());//방이름
+        promise.setNumOfPlayer(people);//인원수
+        promise.setDate(textView.getText().toString());//날짜
+        promise.setTime(timeText.getText().toString());//시간
+        promise.setPromisePlace(location_xy);
+        promise.setVote(0);
 
         Intent intent = new Intent(this, Map.class);
         //TODO 정보를 객체에 담아서 넘기기

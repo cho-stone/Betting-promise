@@ -1,10 +1,14 @@
 package com.PACOsoft.promise_betting.obj;
 
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+
 public class Promise {
     private String promiseCode; //약속 고유 코드
     private String promiseName;//약속 이름
     private int numOfPlayer;//약속 인원수
-    private int bettingMoney;//총 배팅 금액
+    private ArrayList<PromisePlayer> promisePlayer;
     private String date;//약속 날짜
     private String time;//약속 시간
     private String promisePlace;//약속 장소
@@ -35,14 +39,6 @@ public class Promise {
 
     public void setNumOfPlayer(int numOfPlayer) {
         this.numOfPlayer = numOfPlayer;
-    }
-
-    public int getBettingMoney() {
-        return bettingMoney;
-    }
-
-    public void setBettingMoney(int bettingMoney) {
-        this.bettingMoney = bettingMoney;
     }
 
     public String getDate() {

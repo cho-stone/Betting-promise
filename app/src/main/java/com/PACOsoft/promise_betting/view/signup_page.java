@@ -26,13 +26,12 @@ import java.util.regex.Pattern;
 
 public class signup_page extends AppCompatActivity {
     private final String nick_validation = "^[a-z가-힇]+[a-z0-9가-힇]{1,10}$";
-    private final String id_validation = "^[a-z]+[a-z0-9]{5,12}$";
-    private final String pw_validation = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$";
+    private final String id_validation = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+    private final String pw_validation = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,20}$";
     private TextInputEditText et_nick, et_id, et_pw, et_check;
     private TextInputLayout lo_nick, lo_id, lo_pw, lo_check;
-    private TextView dupli_tv;
     private TextView signup_tv;
-    private boolean[] booleans = {false, false, false, false, false}; // 0 : 닉네임, 1 : 아이디, 2 : 비밀번호, 3 : 비밀번호 확인, 4 : 중복확인
+    private boolean[] booleans = {false, false, false, false}; // 0 : 닉네임, 1 : 아이디, 2 : 비밀번호, 3 : 비밀번호 확인
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
@@ -41,7 +40,6 @@ public class signup_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_page);
-        dupli_tv = findViewById(R.id.dupli_tv);
         signup_tv = findViewById(R.id.tv_signup);
         et_nick = findViewById(R.id.et_nickname);
         et_id = findViewById(R.id.et_id);
@@ -92,19 +90,15 @@ public class signup_page extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 String idCheck = et_id.getText().toString();
                 boolean validation = Pattern.matches(id_validation, idCheck);
-                booleans[4] = false;
                 if (validation) {
                     lo_id.setError("");
                     booleans[1] = true;
-                    dupli_tv.setEnabled(true);
                 } else if (idCheck.isEmpty()) {
                     lo_id.setError("아이디를 입력해 주세요.");
                     booleans[1] = false;
-                    dupli_tv.setEnabled(false);
                 } else {
                     lo_id.setError("* 영소문자, 숫자 조합으로 6자리 이상");
                     booleans[1] = false;
-                    dupli_tv.setEnabled(false);
                 }
                 signup_enable();
             }
@@ -174,43 +168,8 @@ public class signup_page extends AppCompatActivity {
         });
     }
 
-    public void btn_dupli_check(View view) {
-        String myId = et_id.getText().toString();
-        arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); //기존 배열리스트를 초기화
-                ArrayList<User> users = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    users.add(snapshot.getValue(User.class));
-                }
-                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//사용자가 정한 id와 동일한 id가 DB에 있는지 확인
-                    Toast toast = Toast.makeText(getApplicationContext(), "이미 존재하는 ID입니다.", Toast.LENGTH_SHORT);
-                    toast.show(); //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
-                    booleans[4] = false;
-                    signup_enable();
-                } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT);
-                    toast.show();  //회원 가입 완료 후 이 데이터 변경 때문에 토스트 메시지 출력되는 버그 방지
-                    booleans[4] = true;
-                    signup_enable();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //DB를 가져오는 중에 에러 발생 시
-                Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
-            }
-        });
-    }
-
     public void signup_enable() {
-        if (booleans[0] && booleans[1] && booleans[2] && booleans[3] && booleans[4]) {
+        if (booleans[0] && booleans[1] && booleans[2] && booleans[3]) {
             signup_tv.setEnabled(true);
         } else {
             signup_tv.setEnabled(false);

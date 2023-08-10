@@ -42,12 +42,6 @@ public class Invite_Friend extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friend);
         Intent intent = getIntent();
-        int year = intent.getIntExtra("year", 0);
-        int month = intent.getIntExtra("month", 0);
-        int day = intent.getIntExtra("day", 0);
-        int hour = intent.getIntExtra("hour", 0);
-        int min = intent.getIntExtra("min", 0);
-        int position = intent.getIntExtra("position", 0);
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
 
         recyclerView = findViewById(R.id.inviteFriendsRecyclerview); // 아이디 연결
