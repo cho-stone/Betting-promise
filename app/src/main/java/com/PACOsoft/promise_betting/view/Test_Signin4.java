@@ -28,9 +28,17 @@ public class Test_Signin4 extends AppCompatActivity {
     }
 
 
-    public void btn_signup(View view) {
-        ID = (TextInputEditText)findViewById(R.id.et_id);
-        Password = (TextView)findViewById(R.id.lo_pw_check);
+    public void Test4_btn_signup(View view) {
+        ID = (TextInputEditText)findViewById(R.id.test4_et_ID);
+        Password = (TextView)findViewById(R.id.test4_et_PWCheck);
+        signup();
+    }
+
+    public void Test4_btn_signup_close(View view){
+        finish();
+    }
+
+    public void signup() {
         try {
             auth.createUserWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
                     .addOnCompleteListener(task -> {
@@ -49,12 +57,6 @@ public class Test_Signin4 extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
     }
-
-    public void btn_signup_close(View view){
-        finish();
-    }
-
 
 }

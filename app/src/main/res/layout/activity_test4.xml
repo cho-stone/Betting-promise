@@ -25,7 +25,7 @@
             android:textSize="24sp"></TextView>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lo_nickname"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -34,7 +34,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_nickname"
+
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="닉네임"
@@ -50,7 +50,6 @@
             android:weightSum="10">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lo_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
@@ -60,7 +59,7 @@
                 app:counterMaxLength="30">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_id"
+                    android:id="@+id/test4_et_ID"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:hint="아이디"
@@ -70,7 +69,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/dupli_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
@@ -78,14 +76,12 @@
                 android:background="@drawable/round_button"
                 android:enabled="false"
                 android:gravity="center"
-                android:onClick="btn_dupli_check"
                 android:text="@string/id_dupli"
                 android:textColor="@color/white" />
 
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lo_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -94,7 +90,7 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_pw"
+                android:id="@+id/test4_et_PW"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="비밀번호"
@@ -105,7 +101,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lo_pw_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -114,7 +109,7 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_pw_check"
+                android:id="@+id/test4_et_PWCheck"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="비밀번호 확인"
@@ -138,7 +133,7 @@
                 android:background="@drawable/round_button"
 
                 android:gravity="center"
-                android:onClick="btn_signup"
+                android:onClick="Test4_btn_signup"
                 android:text="@string/reg"
                 android:textColor="@color/white" />
 
@@ -153,7 +148,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/round_button"
                 android:gravity="center"
-                android:onClick="btn_signup_close"
+                android:onClick="Test4_btn_signup_close"
                 android:text="@string/close"
                 android:textColor="@color/white"></TextView>
         </LinearLayout>
