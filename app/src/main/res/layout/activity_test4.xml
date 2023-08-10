@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".view.signup_page">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingRight="16dp"
-        tools:context=".view.signup_page">
+        >
 
         <TextView
             android:layout_width="match_parent"
@@ -59,7 +60,11 @@
                 app:counterMaxLength="30">
 
                 <com.google.android.material.textfield.TextInputEditText
+<<<<<<< HEAD
                     android:id="@+id/test4_et_ID"
+=======
+                    android:id="@+id/et_i"
+>>>>>>> e67df6cb5b66c85b57c9db4023345c8f9ff78079
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:hint="아이디"
@@ -133,7 +138,11 @@
                 android:background="@drawable/round_button"
 
                 android:gravity="center"
+<<<<<<< HEAD
                 android:onClick="Test4_btn_signup"
+=======
+                android:onClick="btn_signu"
+>>>>>>> e67df6cb5b66c85b57c9db4023345c8f9ff78079
                 android:text="@string/reg"
                 android:textColor="@color/white" />
 
