@@ -3,6 +3,7 @@ package com.PACOsoft.promise_betting.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,6 +32,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class Test_Signin3 extends AppCompatActivity {
 
@@ -40,6 +50,8 @@ public class Test_Signin3 extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private SignInButton signInButton;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,15 +152,49 @@ public class Test_Signin3 extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+                    databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //파이어베이스 데이터베이스의 데이터를 받아오는 곳
+
+                            ArrayList<User> users = new ArrayList<>();
+
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                users.add(snapshot.getValue(User.class));
+                            }
+
+                            if (users.stream().parallel().anyMatch(u -> u.getId().equals(mAuth.getCurrentUser().getUid()))) {
+                                //myId와 동일한 id가 DB에 있는지 확인 이미 존재하며 아무 것도 안 함
+                            }
+                            else{
+                                //없다면 DB에 유저 정보 추가
+                                User user = new User();
+                                user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
+                                user.setAccount(0);
+                                user.setId(mAuth.getCurrentUser().getEmail());
+                                user.setNickName(mAuth.getCurrentUser().getDisplayName());
+                                user.setPw("0");
+                                user.setPromiseKey("");
+                                user.setFriendsId("");
+                                String UID = auth.getCurrentUser().getUid();
+                                databaseReference.child(UID).setValue(user);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                            Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
+                        }
+                    });
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user.getUid());
-                    //Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();
-//                    Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
-//                    startActivity(intent);
                 }
                 else{
-                    //Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
-                    //updateUI(null);
+                    Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
+
                 }
             }
         });

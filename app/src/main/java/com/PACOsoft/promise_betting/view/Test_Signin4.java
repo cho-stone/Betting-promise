@@ -30,6 +30,7 @@ public class Test_Signin4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test4);
         auth = FirebaseAuth.getInstance();
+
     }
     public void Test4_btn_signup(View view) {
         Nick = (TextInputEditText) findViewById(R.id.test4_et_Nick);
