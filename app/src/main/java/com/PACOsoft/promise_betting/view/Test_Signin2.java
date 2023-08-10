@@ -20,9 +20,7 @@ public class Test_Signin2 extends AppCompatActivity implements View.OnClickListe
 
         btnLogout = (Button)findViewById(R.id.btn_signout);
         btnRevoke = (Button)findViewById(R.id.btn_revoke);
-
         mAuth = FirebaseAuth.getInstance();
-
         btnLogout.setOnClickListener(this);
         btnRevoke.setOnClickListener(this);
     }
