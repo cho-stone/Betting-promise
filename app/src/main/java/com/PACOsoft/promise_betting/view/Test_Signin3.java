@@ -36,10 +36,6 @@ public class Test_Signin3 extends AppCompatActivity {
     private FirebaseAuth auth;
     private TextInputEditText ID;
     private TextInputEditText Password;
-
-
-
-
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private SignInButton signInButton;
@@ -49,11 +45,8 @@ public class Test_Signin3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test3);
-
         auth = FirebaseAuth.getInstance();
-
         init();
-
         signInButton = findViewById(R.id.btn_google_sign_in);
         signInButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -96,12 +89,11 @@ public class Test_Signin3 extends AppCompatActivity {
         }
     }
 
-
-
 //구글 로그인 시작
-
-
-
+    private void googlesignIn(){
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        activityResultLauncher.launch(signInIntent);
+    }
     private void init(){
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -133,16 +125,15 @@ public class Test_Signin3 extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         if(mAuth.getCurrentUser()==null ? false : true)
-            updateUI();
+            updateUI(mAuth.getCurrentUser().getUid());
     }
 
-    private void updateUI() {
+    private void updateUI(String UID) {
+        Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
+        intent.putExtra("UID", UID);
+        startActivity(intent);
+    }
 
-    }
-    private void googlesignIn(){
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        activityResultLauncher.launch(signInIntent);
-    }
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -150,10 +141,10 @@ public class Test_Signin3 extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
-                    //updateUI(user);
+                    updateUI(user.getUid());
                     //Toast.makeText(getApplicationContext(), "Complete", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
+//                    startActivity(intent);
                 }
                 else{
                     //Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
