@@ -28,8 +28,8 @@ public class Test_Signin4 extends AppCompatActivity {
     }
 
 
-    public void btn_signup(View view) {
-        ID = (TextInputEditText)findViewById(R.id.et_id);
+    public void btn_signu(View view) {
+        ID = (TextInputEditText)findViewById(R.id.et_i);
         Password = (TextView)findViewById(R.id.lo_pw_check);
         try {
             auth.createUserWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
