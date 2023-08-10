@@ -12,12 +12,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
+
+import java.util.UUID;
 
 public class Create_Room extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     TextView timeText, textView, locationText, friendsText;
@@ -101,6 +104,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //생성 버튼
     public void btn_create_room(View view){
+        UUID uuid = UUID.randomUUID();//UUID생성
+        String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
+
         Intent intent = new Intent(this, Map.class);
         //TODO 정보를 객체에 담아서 넘기기
         startActivity(intent);
@@ -124,4 +130,34 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
         }
     }
+
+    //UUID 짧게 변환
+    public static String toUnsignedString(long i, int shift) {
+        char[] buf = new char[64];
+        int charPos = 64;
+        int radix = 1 << shift;
+        long mask = radix - 1;
+        long number = i;
+        do {
+
+            buf[--charPos] = digits[(int) (number & mask)];
+
+            number >>>= shift;
+
+        } while (number != 0);
+        return new String(buf, charPos, (64 - charPos));
+    }
+
+
+
+    final static char[] digits = {
+            '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+            'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+            'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+            'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+            'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+            'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+            'U', 'V', 'W', 'X', 'Y', 'Z', '_', '*', '.', '-'
+    };
 }
