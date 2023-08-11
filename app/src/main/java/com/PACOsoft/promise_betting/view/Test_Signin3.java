@@ -83,16 +83,24 @@ public class Test_Signin3 extends AppCompatActivity {
 
     public void signIn() {
         if (ID.getText().toString().trim().isEmpty() || ID.getText().toString() == null) {
+            //아이디 오류
             Toast.makeText(getApplicationContext(), "ID err", Toast.LENGTH_LONG).show();
         } else if (Password.getText().toString().trim().isEmpty() || Password.getText().toString() == null) {
+            //비밀번호 오류
             Toast.makeText(getApplicationContext(), "Password err", Toast.LENGTH_LONG).show();
         } else {
+            //로그인 성공
             auth.signInWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
                     .addOnCompleteListener(
                             task -> {
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
-                                    startActivity(intent);
+                                    //이메일 인증받은 계정인지 검사
+                                    if(auth.getCurrentUser().isEmailVerified()) {
+                                        updateUI(auth.getCurrentUser().getUid());
+                                    }
+                                   else{
+                                        Toast.makeText(getApplicationContext(), "verify Fail", Toast.LENGTH_LONG).show();
+                                    }
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
                                 }
@@ -142,7 +150,8 @@ public class Test_Signin3 extends AppCompatActivity {
 
     private void updateUI(String UID) {
         Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
-        intent.putExtra("UID", UID);
+        intent.putExtra("UID", UID);//UID 전송
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
         startActivity(intent);
     }
 
@@ -158,9 +167,7 @@ public class Test_Signin3 extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-
                             ArrayList<User> users = new ArrayList<>();
-
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 users.add(snapshot.getValue(User.class));
                             }
@@ -175,7 +182,6 @@ public class Test_Signin3 extends AppCompatActivity {
                                 user.setAccount(0);
                                 user.setId(mAuth.getCurrentUser().getEmail());
                                 user.setNickName(mAuth.getCurrentUser().getDisplayName());
-                                user.setPw("0");
                                 user.setPromiseKey("");
                                 user.setFriendsId("");
                                 String UID = auth.getCurrentUser().getUid();

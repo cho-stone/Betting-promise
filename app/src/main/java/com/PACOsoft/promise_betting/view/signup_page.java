@@ -184,13 +184,11 @@ public class signup_page extends AppCompatActivity {
         String nick = et_nick.getText().toString();
         String id = et_id.getText().toString();
         String pw = et_pw.getText().toString();
-
         User user = new User();
         user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
         user.setAccount(0);
         user.setId(id);
         user.setNickName(nick);
-        user.setPw(pw);
         user.setPromiseKey("");
         user.setFriendsId("");
 
