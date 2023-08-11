@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE); //자동로그인 키값 생성
         loginId = auto.getString("inputId", null); //처음에는 null값 삽입
         loginPw = auto.getString("inputPw", null);
-
         if(loginPw != null && loginId != null){
             Intent intent = new Intent(getApplicationContext(), Home.class);//Home으로 intent
             intent.putExtra("myId", loginId);//ID 정보 intent
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view) {
         ID = findViewById(R.id.inputLoginId);
         Password = findViewById(R.id.inputLoginPassword);
-
         ArrayList arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         FirebaseDatabase database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         DatabaseReference databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근

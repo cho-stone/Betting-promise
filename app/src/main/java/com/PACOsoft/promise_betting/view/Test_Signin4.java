@@ -30,7 +30,6 @@ public class Test_Signin4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test4);
         auth = FirebaseAuth.getInstance();
-
     }
 
     public void Test4_btn_signup(View view) {
@@ -50,31 +49,25 @@ public class Test_Signin4 extends AppCompatActivity {
             auth.createUserWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "인증 메일을 확인 해주세요", Toast.LENGTH_LONG).show();
                             //사용자 인증 메일 보내기
                             auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(verifiTask -> {
                                         if (verifiTask.isSuccessful()) {//이메일 인증 성공
                                             databaseReference = FirebaseDatabase.getInstance().getReference();//DB연결
-                                            //사용자 로그인
-                                            auth.signInWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
-                                                    .addOnCompleteListener(
-                                                            result -> {
-                                                                if (result.isSuccessful()) {
-                                                                    //사용자 정보 유저 객체에 담아서 DB에 저장
-                                                                    User user = new User();
-                                                                    user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
-                                                                    user.setAccount(0);
-                                                                    user.setId(ID.getText().toString().trim());
-                                                                    user.setNickName(Nick.getText().toString().trim());
-                                                                    user.setPromiseKey("");
-                                                                    user.setFriendsId("");
-                                                                    String UID = auth.getCurrentUser().getUid();
-                                                                    databaseReference.child("User").child(UID).setValue(user);
-                                                                } else {
-                                                                }
-                                                                auth.signOut();//사용자 로그아웃
-                                                                finish();
-                                                            });
-
+                                            //사용자 정보 유저 객체에 담아서 DB에 저장
+                                            User user = new User();
+                                            user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
+                                            user.setAccount(0);
+                                            user.setId(ID.getText().toString().trim());
+                                            user.setNickName(Nick.getText().toString().trim());
+                                            user.setPromiseKey("");
+                                            user.setFriendsId("");
+                                            user.setUID(auth.getCurrentUser().getUid());
+                                            databaseReference.child("User").child(auth.getCurrentUser().getUid()).setValue(user);
+                                            //finish();
+                                            Intent intent = new Intent(getApplicationContext(), Test_Signin3.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
+                                            startActivity(intent);
                                         } else {//이메일 인증 실패
                                             Toast.makeText(getApplicationContext(), "이메일 인증 실패", Toast.LENGTH_LONG).show();
                                         }

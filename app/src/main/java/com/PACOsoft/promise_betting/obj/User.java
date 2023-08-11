@@ -2,6 +2,7 @@ package com.PACOsoft.promise_betting.obj;
 
 public class User {
     private String profile;//프로필 사진
+    private String UID;//해시값
     private String id;//아이디
     private String nickName;//닉네임
     private int account;//계좌 잔액
@@ -17,6 +18,13 @@ public class User {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public String getId() {

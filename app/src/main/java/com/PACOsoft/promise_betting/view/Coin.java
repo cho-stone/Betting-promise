@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.User;
@@ -29,6 +30,8 @@ public class Coin extends Activity {
     private int tempcoin;
     private int my_coin;
     private String myId;
+    private String UID;
+    private int originCoin;
     private TextInputEditText coin_tv;
     private TextView after_coin_tv;
     private DatabaseReference databaseReference;
@@ -42,40 +45,77 @@ public class Coin extends Activity {
         setContentView(R.layout.activity_coin);
         Intent intent = getIntent();
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
+        UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
+        originCoin = intent.getIntExtra("coin", 0); //Home에서 intent해준 coin을 받아옴
         coin_tv = findViewById(R.id.et_coin);
         after_coin_tv = findViewById(R.id.tv_afterCoin);
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference();//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         user = new User();
-        ValueEventListener dataListener = new ValueEventListener() {
+
+        after_coin_tv.setText(String.valueOf(originCoin));
+        coin_tv.addTextChangedListener(new TextWatcher() {
+            int charge_coin;
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                my_coin = (int)dataSnapshot.child("User").child(myId).child("account").getValue(Integer.class);
-                user.setAccount(my_coin);
-                after_coin_tv.setText(String.valueOf(user.getAccount()));
-                coin_tv.addTextChangedListener(new TextWatcher() {
-                    int charge_coin;
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        charge_coin = Integer.valueOf(coin_tv.getText().toString());
-                        charge_coin += user.getAccount();
-                        after_coin_tv.setText(String.valueOf(charge_coin));
-                    }
-                });
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //데이터 가져오기 실패
-                Log.w("error", "loadPost:onCancelled", databaseError.toException());
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
-        };
-        databaseReference.addValueEventListener(dataListener);
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                charge_coin = 0;
+                if(0 < coin_tv.getText().length() && coin_tv.getText().length() < 11) {
+                    charge_coin += Integer.valueOf(coin_tv.getText().toString());
+                    after_coin_tv.setText(String.valueOf(charge_coin + originCoin));
+                }
+                else if(coin_tv.getText().length() <= 0){
+                    after_coin_tv.setText(String.valueOf(originCoin));
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "11자리 이상의 숫자는 입력할 수 없습니다", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                  기존 코드
+//        ValueEventListener dataListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                //my_coin = (int)dataSnapshot.child("User").child(UID).child("account").getValue(Integer.class);
+//                user.setAccount(my_coin);
+//                after_coin_tv.setText(String.valueOf(user.getAccount()));
+//                coin_tv.addTextChangedListener(new TextWatcher() {
+//                    int charge_coin;
+//                    @Override
+//                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//                    @Override
+//                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//                    @Override
+//                    public void afterTextChanged(Editable editable) {
+//                        charge_coin = Integer.valueOf(coin_tv.getText().toString());
+//                        charge_coin += user.getAccount();
+//                        after_coin_tv.setText(String.valueOf(charge_coin));
+//                    }
+//                });
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                //데이터 가져오기 실패
+//                Log.w("Coin", "loadPost:onCancelled", databaseError.toException());
+//            }
+//        };
+//        databaseReference.addValueEventListener(dataListener);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     }
 
     //바깥영역 터치방지
@@ -111,14 +151,14 @@ public class Coin extends Activity {
                 for (DataSnapshot snapshot : DataSnapshot.getChildren()) {//데이터 베이스 내의 User객체들은 전부 User타입의 배열리스트 users에 추가
                     users.add(snapshot.getValue(User.class));
                 }
-                if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//그 중 myId와 같은 id 있는지 탐색
+                if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//그 중 myId와 같은 id 있는지 탐색
                     //myId와 같은 id가 있다면 그게 내 객체이므로 그 객체를 anyElement에 저장
-                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
+                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
                     //나의 account 불러와서 내가 충전에 입력한 coin과 더해줌
                     int tempcoin2 = anyElement.get().getAccount();
                     tempcoin = tempcoin + tempcoin2;
                 }
-                databaseReference.child(myId).child("account").setValue(tempcoin);//더해준 최종 값 DB에 추가
+                databaseReference.child(UID).child("account").setValue(tempcoin);//더해준 최종 값 DB에 추가
                 TextView text = (TextView) findViewById(R.id.tv_afterCoin);//코인 충전 후 TextView 참조 객체 선언
                 text.setText(String.valueOf(tempcoin));//위에서 선언한 참조 객체에 값 넘겨줌
             }

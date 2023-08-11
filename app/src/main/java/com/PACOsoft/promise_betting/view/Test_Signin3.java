@@ -76,7 +76,8 @@ public class Test_Signin3 extends AppCompatActivity {
     }
 
     public void reg(View view) {
-        Intent intent = new Intent(this, Test_Signin4.class);
+        Intent intent = new Intent(getApplicationContext(), Test_Signin4.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
         startActivity(intent);
     }
 
@@ -144,12 +145,14 @@ public class Test_Signin3 extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser()==null ? false : true)
-            updateUI(mAuth.getCurrentUser().getUid());
+        //자동 로그인
+//        if(mAuth.getCurrentUser()==null ? false : true)
+//            updateUI(mAuth.getCurrentUser().getUid());
     }
 
     private void updateUI(String UID) {
-        Intent intent = new Intent(getApplicationContext(), Test_Signin2.class);
+        Intent intent = new Intent(getApplicationContext(), Home.class);
+        intent.putExtra("myId", ID.getText().toString().trim());//UID 전송
         intent.putExtra("UID", UID);//UID 전송
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
         startActivity(intent);
@@ -184,11 +187,10 @@ public class Test_Signin3 extends AppCompatActivity {
                                 user.setNickName(mAuth.getCurrentUser().getDisplayName());
                                 user.setPromiseKey("");
                                 user.setFriendsId("");
-                                String UID = auth.getCurrentUser().getUid();
-                                databaseReference.child(UID).setValue(user);
+                                user.setUID(auth.getCurrentUser().getUid());
+                                databaseReference.child(auth.getCurrentUser().getUid()).setValue(user);
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
