@@ -40,7 +40,8 @@
                 android:layout_height="50dp"
                 android:hint="충전금액"
                 android:inputType="number"
-                android:textColor="@color/black">
+                android:textColor="@color/black"
+                android:maxLength="9">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>

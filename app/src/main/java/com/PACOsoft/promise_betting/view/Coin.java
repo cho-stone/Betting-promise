@@ -77,9 +77,6 @@ public class Coin extends Activity {
                 else if(coin_tv.getText().length() <= 0){
                     after_coin_tv.setText(String.valueOf(originCoin));
                 }
-                else {
-                    Toast.makeText(getApplicationContext(), "11자리 이상의 숫자는 입력할 수 없습니다", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

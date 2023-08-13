@@ -77,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reg(View view) {
-        Intent intent = new Intent(getApplicationContext(), Test_Signin4.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
+        Intent intent = new Intent(getApplicationContext(), signup_page.class);
         startActivity(intent);
     }
 

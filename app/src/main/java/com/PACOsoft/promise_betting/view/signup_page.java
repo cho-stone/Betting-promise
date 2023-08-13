@@ -3,6 +3,7 @@ package com.PACOsoft.promise_betting.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +37,7 @@ public class signup_page extends AppCompatActivity {
     private ArrayList<User> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class signup_page extends AppCompatActivity {
         lo_id = findViewById(R.id.lo_id);
         lo_pw = findViewById(R.id.lo_pw);
         lo_check = findViewById(R.id.lo_pw_check);
+        auth = FirebaseAuth.getInstance();
 
         et_nick.addTextChangedListener(new TextWatcher() {
             @Override
@@ -180,19 +184,39 @@ public class signup_page extends AppCompatActivity {
     }
 
     public void btn_signup(View view) {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        String nick = et_nick.getText().toString();
-        String id = et_id.getText().toString();
-        String pw = et_pw.getText().toString();
-        User user = new User();
-        user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
-        user.setAccount(0);
-        user.setId(id);
-        user.setNickName(nick);
-        user.setPromiseKey("");
-        user.setFriendsId("");
-
-        databaseReference.child("User").child(id).setValue(user);
+        try {
+            //회원가입 시작
+            auth.createUserWithEmailAndPassword(et_id.getText().toString().trim(), et_pw.getText().toString().trim())
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "인증 메일을 확인 해주세요", Toast.LENGTH_LONG).show();
+                            //사용자 인증 메일 보내기
+                            auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(verifiTask -> {
+                                        if (verifiTask.isSuccessful()) {//이메일 인증 성공
+                                            databaseReference = FirebaseDatabase.getInstance().getReference();//DB연결
+                                            //사용자 정보 유저 객체에 담아서 DB에 저장
+                                            User user = new User();
+                                            user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
+                                            user.setAccount(0);
+                                            user.setId(et_id.getText().toString().trim());
+                                            user.setNickName(et_nick.getText().toString().trim());
+                                            user.setPromiseKey("");
+                                            user.setFriendsId("");
+                                            user.setUID(auth.getCurrentUser().getUid());
+                                            databaseReference.child("User").child(auth.getCurrentUser().getUid()).setValue(user);
+                                            finish();
+                                        } else {//이메일 인증 실패
+                                            Toast.makeText(getApplicationContext(), "이메일 인증 실패", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                            );
+                        } else {
+                            Toast.makeText(getApplicationContext(), "올바르지 않은 형식입니다", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         finish();
     }
 }
