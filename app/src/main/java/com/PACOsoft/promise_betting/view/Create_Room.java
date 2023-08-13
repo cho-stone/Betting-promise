@@ -141,19 +141,19 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //생성 버튼
     public void btn_create_room(View view){
-        textView = findViewById(R.id.date_Tview);
-        timeText = findViewById(R.id.time_Tview);
-        et_roomname = findViewById(R.id.et_room_name);
-        UUID uuid = UUID.randomUUID();//UUID생성
-        String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-
-        promise.setPromiseCode(uid); //고유코드
-        promise.setPromiseName(et_roomname.getText().toString());//방이름
-        promise.setNumOfPlayer(people);//인원수
-        promise.setDate(textView.getText().toString());//날짜
-        promise.setTime(timeText.getText().toString());//시간
-        promise.setPromisePlace(location_xy);
-        promise.setVote(0);
+//        textView = findViewById(R.id.date_Tview);
+//        timeText = findViewById(R.id.time_Tview);
+//        et_roomname = findViewById(R.id.et_room_name);
+//        UUID uuid = UUID.randomUUID();//UUID생성
+//        String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
+//
+//        promise.setPromiseCode(uid); //고유코드
+//        promise.setPromiseName(et_roomname.getText().toString());//방이름
+//        promise.setNumOfPlayer(people);//인원수
+//        promise.setDate(textView.getText().toString());//날짜
+//        promise.setTime(timeText.getText().toString());//시간
+//        promise.setPromisePlace(location_xy);
+//        promise.setVote(0);
 
         Intent intent = new Intent(this, Map.class);
         //TODO 정보를 객체에 담아서 넘기기

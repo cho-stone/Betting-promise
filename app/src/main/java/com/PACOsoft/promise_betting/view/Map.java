@@ -3,12 +3,14 @@ package com.PACOsoft.promise_betting.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.PACOsoft.promise_betting.R;
 import com.naver.maps.geometry.LatLng;
@@ -30,17 +32,27 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
+    private DrawerLayout drawerLayout;
+    private View drawerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerView = (View)findViewById(R.id.drawer);
+
         //네이버 지도
         mapView = (MapView) findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
+
+    }
+
+    public void room_menu(View view){
+        drawerLayout.openDrawer(drawerView);
     }
 
     @Override

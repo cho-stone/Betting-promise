@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:weightSum="14"
-    tools:context=".view.Map">
-
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="top"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="10"
-        android:background="@color/white">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="14"
+        tools:context=".view.Map">
 
-        <TextView
-            android:id="@+id/tv_room_people_count"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="2"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="0"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tv_room_promise"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="6"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="방이름"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textColor="@color/black"/>
-
-        <ImageButton
-            android:id="@+id/tv_room_menu"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="2"
-            android:adjustViewBounds="true"
-            android:background="@color/white"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/menu_icon"/>
-
-    </LinearLayout>
-
-    <!-- 네이버 지도 -->
-    <com.naver.maps.map.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="12">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:onClick="target_select"
-            android:src="@drawable/target_icon"/>
-    </com.naver.maps.map.MapView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@color/white">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/round_button"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:layout_weight="1"
             android:gravity="center"
-            android:onClick="btn_reach_place"
-            android:text="도착"
-            android:textSize="25dp"
-            android:textColor="@color/black"/>
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_room_people_count"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="0"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_room_promise"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="6"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="방이름"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
+
+            <ImageButton
+                android:id="@+id/tv_room_menu"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2"
+                android:adjustViewBounds="true"
+                android:background="@color/white"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/menu_icon"
+                android:onClick="room_menu"/>
+
+        </LinearLayout>
+
+        <!-- 네이버 지도 -->
+        <com.naver.maps.map.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="12">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="16dp"
+                android:onClick="target_select"
+                android:src="@drawable/target_icon"/>
+        </com.naver.maps.map.MapView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_button"
+                android:gravity="center"
+                android:onClick="btn_reach_place"
+                android:text="도착"
+                android:textSize="25dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <include
+        layout="@layout/activity_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
