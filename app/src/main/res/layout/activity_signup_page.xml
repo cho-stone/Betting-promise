@@ -57,8 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="아이디"
-                android:maxLength="30"
-                android:ellipsize="end">
+                android:maxLength="30">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
