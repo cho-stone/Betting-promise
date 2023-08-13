@@ -10,13 +10,12 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
             android:gravity="center"
-            android:onClick="btnLogOutClicked"
+            android:onClick="btnSignOut"
             android:text="로그아웃"
             android:textColor="@color/white"></Button>
 
@@ -25,10 +24,17 @@
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
-            android:gravity="center"
             android:onClick="btnExitClicked"
+            android:gravity="center"
             android:text="앱 종료"
             android:textColor="@color/white"></Button>
+
+        <Button
+            android:onClick="btn_revoke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="회원탈퇴"/>
     </LinearLayout>
 
 </LinearLayout>
