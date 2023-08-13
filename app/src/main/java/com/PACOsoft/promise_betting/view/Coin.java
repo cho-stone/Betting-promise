@@ -28,7 +28,6 @@ import java.util.Optional;
 
 public class Coin extends Activity {
     private int tempcoin;
-    private int my_coin;
     private String myId;
     private String UID;
     private int originCoin;
@@ -79,39 +78,6 @@ public class Coin extends Activity {
                 }
             }
         });
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                  기존 코드
-//        ValueEventListener dataListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                //my_coin = (int)dataSnapshot.child("User").child(UID).child("account").getValue(Integer.class);
-//                user.setAccount(my_coin);
-//                after_coin_tv.setText(String.valueOf(user.getAccount()));
-//                coin_tv.addTextChangedListener(new TextWatcher() {
-//                    int charge_coin;
-//                    @Override
-//                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                    }
-//                    @Override
-//                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                    }
-//                    @Override
-//                    public void afterTextChanged(Editable editable) {
-//                        charge_coin = Integer.valueOf(coin_tv.getText().toString());
-//                        charge_coin += user.getAccount();
-//                        after_coin_tv.setText(String.valueOf(charge_coin));
-//                    }
-//                });
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                //데이터 가져오기 실패
-//                Log.w("Coin", "loadPost:onCancelled", databaseError.toException());
-//            }
-//        };
-//        databaseReference.addValueEventListener(dataListener);
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     }
 

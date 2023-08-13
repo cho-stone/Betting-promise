@@ -34,8 +34,6 @@ public class signup_page extends AppCompatActivity {
     private TextInputLayout lo_nick, lo_id, lo_pw, lo_check;
     private TextView signup_tv;
     private boolean[] booleans = {false, false, false, false}; // 0 : 닉네임, 1 : 아이디, 2 : 비밀번호, 3 : 비밀번호 확인
-    private ArrayList<User> arrayList;
-    private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
 
