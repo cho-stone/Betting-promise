@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.PACOsoft.promise_betting.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +37,19 @@ public class Option extends AppCompatActivity {
 
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
+    }
+
+    public void btnSignOut(View view) {
+        signOut();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    public void btnAppClose(View view) {
+        finishAffinity();
+        System.runFinalization();
+        System.exit(0);
     }
 
     private void revokeAccess() {
@@ -59,22 +73,6 @@ public class Option extends AppCompatActivity {
 //            System.exit(0);
 //        }
 //    }
-
-    public void btnSignOut() {
-        signOut();
-        System.runFinalization();
-        System.exit(0);
-//        finishAffinity();
-//        Intent i = new Intent(this, Test_Signin3.class);
-//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(i);
-    }
-
-    public void btnExitClicked() {
-        //finishAffinity();
-        System.runFinalization();
-        System.exit(0);
-    }
 
     public void btn_revoke() {
         revokeAccess();

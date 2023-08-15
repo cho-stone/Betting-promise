@@ -146,13 +146,13 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         //자동 로그인
-//        if(mAuth.getCurrentUser()==null ? false : true)
-//            updateUI(mAuth.getCurrentUser().getUid());
+        if(mAuth.getCurrentUser()==null ? false : true)
+            updateUI(mAuth.getCurrentUser().getUid());
     }
 
     private void updateUI(String UID) {
         Intent intent = new Intent(getApplicationContext(), Home.class);
-        intent.putExtra("myId", ID.getText().toString().trim());//UID 전송
+        //intent.putExtra("myId", ID.getText().toString().trim());//UID 전송
         intent.putExtra("UID", UID);//UID 전송
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
         startActivity(intent);
