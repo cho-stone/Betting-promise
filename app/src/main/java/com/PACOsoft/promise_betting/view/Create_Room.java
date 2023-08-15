@@ -24,6 +24,7 @@ import com.PACOsoft.promise_betting.util.Time_Picker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -35,7 +36,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextInputLayout lo_roomname;
     TextInputEditText et_roomname;
     private String myId;
-    Promise promise;
+    Promise promise = new Promise();
     PromisePlayer[] promisePlayer;
 
     @Override
@@ -112,6 +113,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             String mapx = intent.getStringExtra("x");
             String mapy = intent.getStringExtra("y");
             location_xy = mapx + " " + mapy;
+            locationText.setText(title + " " + address);
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
@@ -141,22 +143,22 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //생성 버튼
     public void btn_create_room(View view){
-//        textView = findViewById(R.id.date_Tview);
-//        timeText = findViewById(R.id.time_Tview);
-//        et_roomname = findViewById(R.id.et_room_name);
-//        UUID uuid = UUID.randomUUID();//UUID생성
-//        String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-//
-//        promise.setPromiseCode(uid); //고유코드
-//        promise.setPromiseName(et_roomname.getText().toString());//방이름
-//        promise.setNumOfPlayer(people);//인원수
-//        promise.setDate(textView.getText().toString());//날짜
-//        promise.setTime(timeText.getText().toString());//시간
-//        promise.setPromisePlace(location_xy);
-//        promise.setVote(0);
+        textView = findViewById(R.id.date_Tview);
+        timeText = findViewById(R.id.time_Tview);
+        et_roomname = findViewById(R.id.et_room_name);
+        UUID uuid = UUID.randomUUID();//UUID생성
+        String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
+
+        promise.setPromiseCode(uid); //고유코드
+        promise.setPromiseName(et_roomname.getText().toString());//방이름
+        promise.setNumOfPlayer(people);//인원수
+        promise.setDate(textView.getText().toString());//날짜
+        promise.setTime(timeText.getText().toString());//시간
+        promise.setPromisePlace(location_xy);
+        promise.setVote(0);
 
         Intent intent = new Intent(this, Map.class);
-        //TODO 정보를 객체에 담아서 넘기기
+        intent.putExtra("promise", (Serializable) promise);
         startActivity(intent);
         finish();
     }

@@ -6,13 +6,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.Promise;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.LocationTrackingMode;
@@ -34,6 +37,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     };
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private Promise promise = new Promise();
+    private TextView people_number, room_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
+        drawerLayout.setDrawerLockMode(drawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //네이버 지도
         mapView = (MapView) findViewById(R.id.map_view);
@@ -49,6 +55,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
 
+        promise = (Promise) getIntent().getSerializableExtra("promise");
+        people_number = findViewById(R.id.tv_room_people_count);
+        room_name = findViewById(R.id.tv_room_promise);
+
+        people_number.setText(String.valueOf(promise.getNumOfPlayer()));
+        room_name.setText(promise.getPromiseName());
     }
 
     public void room_menu(View view){
