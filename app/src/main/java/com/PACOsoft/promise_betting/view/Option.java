@@ -54,32 +54,18 @@ public class Option extends AppCompatActivity {
 
     private void revokeAccess() {
         mAuth.getCurrentUser().delete();
+        FirebaseAuth.getInstance().signOut();
     }
-    //@Override
-//    public void onClick(View v) {
-//        if(v.getId() == R.id.btn_signout) {
-//            signOut();
-//            //finishAffinity();
-//            Intent i = new Intent(this, Test_Signin3.class);
-//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(i);
-//        } else if (v.getId() == R.id.btn_revoke) {
-//            revokeAccess();
-//            finishAffinity();
-//        }
-//        else{
-//            finishAffinity();
-//            System.runFinalization();
-//            System.exit(0);
-//        }
-//    }
 
-    public void btn_revoke() {
+    public void btn_revoke(View view) {
         revokeAccess();
-        System.runFinalization();
-        System.exit(0);
-        //finishAffinity();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
+
+
+
 
 
 
