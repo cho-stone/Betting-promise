@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -148,7 +149,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-
         promise.setPromiseCode(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
@@ -156,6 +156,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setTime(timeText.getText().toString());//시간
         promise.setPromisePlace(location_xy);
         promise.setVote(0);
+
 
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("promise", (Serializable) promise);

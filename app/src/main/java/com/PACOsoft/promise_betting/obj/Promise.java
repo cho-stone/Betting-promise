@@ -42,6 +42,14 @@ public class Promise implements Serializable {
         this.numOfPlayer = numOfPlayer;
     }
 
+    public ArrayList<PromisePlayer> getPromisePlayer() {
+        return promisePlayers;
+    }
+
+    public void setPromisePlayer(ArrayList<PromisePlayer> promisePlayers) {
+        this.promisePlayers = promisePlayers;
+    }
+
     public String getDate() {
         return date;
     }
