@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -44,7 +45,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private final String room_validation = "^[a-z가-힇]+[a-z0-9가-힇]{1,10}$";
     private int people;
     private String location_xy;
-    TextView timeText, textView, locationText, friendsText;
+    TextView timeText, textView, locationText, friendsText, create;
     TextInputLayout lo_roomname;
     TextInputEditText et_roomname;
     private String TAG;
@@ -54,6 +55,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private ArrayList<PromisePlayer> friendsArray;
     Promise promise = new Promise();
     PromisePlayer[] promisePlayer;
+    private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         friendsText = findViewById(R.id.friends_Tview);
         lo_roomname = findViewById(R.id.lo_room_name);
         et_roomname = findViewById(R.id.et_room_name);
+        create = findViewById(R.id.select_create_room);
 
         et_roomname.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,11 +86,15 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                 boolean validation = Pattern.matches(room_validation, nickCheck);
                 if (validation) {
                     lo_roomname.setError("");
+                    check[0] = true;
                 } else if (nickCheck.isEmpty()) {
                     lo_roomname.setError("방 이름을 입력해 주세요.");
+                    check[0] = false;
                 } else {
                     lo_roomname.setError("방 이름이 올바르지 않습니다.");
+                    check[0] = false;
                 }
+                create_enable();
             }
         });
     }
@@ -100,12 +107,30 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         String dateMessage = (year_string + " " + month_string + " " + day_string);
         textView = findViewById(R.id.date_Tview);
         textView.setText(dateMessage);
+        check[1] = true;
+        create_enable();
     }
 
     //날짜 선택 버튼
     public void btn_date_set(View view) {
         DialogFragment newFragment = new Date_Picker();
         newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    //시간데이터 받아오기
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        timeText = findViewById(R.id.time_Tview);
+        if (hourOfDay < 12) {
+            timeText.setText("오전 " + hourOfDay + "시 " + minute + "분");
+        } else if (hourOfDay == 12) {
+            timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
+        } else {
+            hourOfDay -= 12;
+            timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
+        }
+        check[2] = true;
+        create_enable();
     }
 
     //시간 선택 버튼
@@ -132,6 +157,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             String mapy = intent.getStringExtra("y");
             location_xy = mapx + " " + mapy;
             locationText.setText(title + " " + address);
+            check[3] = true;
+            create_enable();
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
@@ -154,11 +181,21 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             people = friends.length;
             String friends_list = String.join(" ", friends);
             friendsText.setText(friends_list);
+            check[4] = true;
+            create_enable();
         }
         if(result.getResultCode() == RESULT_CANCELED){
             Log.e("result error", "받아오기 실패");
         }
     });
+
+    public void create_enable() {
+        if (check[0] && check[1] && check[2] && check[3] && check[4]) {
+            create.setEnabled(true);
+        } else {
+            create.setEnabled(false);
+        }
+    }
 
     //생성 버튼
     public void btn_create_room(View view){
@@ -215,19 +252,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     //닫기 버튼
     public void create_room_close(View view) {
         finish();
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        timeText = findViewById(R.id.time_Tview);
-        if (hourOfDay < 12) {
-            timeText.setText("오전 " + hourOfDay + "시 " + minute + "분");
-        } else if (hourOfDay == 12) {
-            timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
-        } else {
-            hourOfDay -= 12;
-            timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
-        }
     }
 
     //UUID 짧게 변환

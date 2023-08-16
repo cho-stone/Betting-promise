@@ -167,6 +167,7 @@
             android:orientation="horizontal"
             android:paddingTop="16dp">
             <TextView
+                android:id="@+id/select_create_room"
                 android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
@@ -174,7 +175,8 @@
                 android:gravity="center"
                 android:onClick="btn_create_room"
                 android:text="@string/create"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:enabled="false"/>
 
             <TextView
                 android:layout_width="100dp"

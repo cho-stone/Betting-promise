@@ -19,15 +19,23 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    private int year, month, day;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(requireActivity(), this, year, month, day);
+        DatePickerDialog dialog = new DatePickerDialog(requireActivity(), this, year, month, day);
+        Calendar minDate = Calendar.getInstance(); //캘린더에서 선택할 수 있는 최소날짜
+
+        minDate.set(year, month, day+1);
+        dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+
+        return dialog;
     }
 
     @Override
@@ -35,5 +43,4 @@ public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDa
         Create_Room activity = (Create_Room) getActivity();
         activity.processDatePickerResult(year, month, day);
     }
-
 }
