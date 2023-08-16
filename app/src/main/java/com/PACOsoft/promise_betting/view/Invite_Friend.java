@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.Adapter.User_List_Adapter;
 import com.PACOsoft.promise_betting.R;
@@ -150,6 +151,10 @@ public class Invite_Friend extends AppCompatActivity {
 
     public void btv_Invite_Friend_Clicked(View v) {
         String[] friend_arr = hashSet.toArray(new String[0]);
+        if(friend_arr.length == 0){
+            Toast.makeText(getApplicationContext(), "1명 이상 선택", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent resultIntent = new Intent();
         resultIntent.putExtra("friends", friend_arr);
         setResult(RESULT_OK, resultIntent);
