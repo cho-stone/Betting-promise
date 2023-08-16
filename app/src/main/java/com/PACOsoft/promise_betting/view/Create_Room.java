@@ -2,8 +2,11 @@ package com.PACOsoft.promise_betting.view;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -16,16 +19,24 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.PACOsoft.promise_betting.Adapter.User_List_Adapter;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
+import com.PACOsoft.promise_betting.obj.User;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -36,7 +47,11 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextView timeText, textView, locationText, friendsText;
     TextInputLayout lo_roomname;
     TextInputEditText et_roomname;
+    private String TAG;
     private String myId;
+    private String UID;
+    private String[] friends;
+    private ArrayList<PromisePlayer> friendsArray;
     Promise promise = new Promise();
     PromisePlayer[] promisePlayer;
 
@@ -45,7 +60,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
         Intent intent = getIntent();
+        TAG = "Create_Room";
         myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
+        UID = intent.getStringExtra("UID"); //Home에서 intent해준 id를 받아옴
         locationText = findViewById(R.id.location_Tview);
         friendsText = findViewById(R.id.friends_Tview);
         lo_roomname = findViewById(R.id.lo_room_name);
@@ -125,6 +142,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     public void btn_intent_invite_friend(View view) {
         Intent intent = new Intent(this, Invite_Friend.class);
         intent.putExtra("myId", myId);//ID 정보 intent
+        intent.putExtra("UID", UID);
         invite_friend_start.launch(intent);
     }
 
@@ -132,7 +150,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         if(result.getResultCode() == RESULT_OK){
             Intent intent = result.getData();
             assert intent != null;
-            String[] friends = intent.getStringArrayExtra("friends");
+            friends = intent.getStringArrayExtra("friends");
             people = friends.length;
             String friends_list = String.join(" ", friends);
             friendsText.setText(friends_list);
@@ -144,6 +162,38 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //생성 버튼
     public void btn_create_room(View view){
+        friendsArray.clear(); //기존 배열리스트를 초기화
+        for(String FID : friends) {
+            //ArrayList<PromisePlayer> players = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
+            FirebaseDatabase database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+            DatabaseReference databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //파이어베이스 데이터베이스의 데이터를 받아오는 곳
+                    ArrayList<User> users = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        users.add(snapshot.getValue(User.class));
+                    }
+                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(FID)).findFirst();
+                    PromisePlayer player = new PromisePlayer();
+                    player.setPlayerUID(anyElement.get().getUID());
+                    player.setNickName(anyElement.get().getNickName());
+                    player.setX(0.0);
+                    player.setY(0.0);
+                    player.setArrival(false);
+                    player.setRanking(0);
+                    player.setBettingMoney(0);
+                    friendsArray.add(player);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                    Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
+                }
+            });
+        }
+        promise.setPromisePlayer(friendsArray);
         textView = findViewById(R.id.date_Tview);
         timeText = findViewById(R.id.time_Tview);
         et_roomname = findViewById(R.id.et_room_name);
@@ -156,8 +206,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setTime(timeText.getText().toString());//시간
         promise.setPromisePlace(location_xy);
         promise.setVote(0);
-
-
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("promise", (Serializable) promise);
         startActivity(intent);
