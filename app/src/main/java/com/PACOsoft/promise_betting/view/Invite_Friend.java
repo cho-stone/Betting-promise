@@ -37,7 +37,8 @@ public class Invite_Friend extends AppCompatActivity {
     private String myId;
     private String UID;
     private String TAG;
-    private HashSet<String> hashSet = new HashSet<>();//중복 방지 위해 해쉬셋 이용
+    private HashSet<String> hashSet = new HashSet<>();//중복 방지 위해 해쉬셋 이용,ID 저장용
+    private HashSet<String> hashSet2 = new HashSet<>();//중복 방지 위해 해쉬셋 이용,nickname 저장용
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +62,12 @@ public class Invite_Friend extends AppCompatActivity {
                 arrayList.clear(); //기존 배열리스트를 초기화
 
                 ArrayList<User> users = new ArrayList<>();
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     users.add(snapshot.getValue(User.class));
                 }
 
                 if (users.stream().parallel().anyMatch(u ->u.getUID().equals(UID))) {//myId와 동일한 id가 DB에 있는지 확인
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
-                    //User에서 id가 myId와 동일한 객체를 필터링
-                    // 람다식 : 델리게이트 -> 일반화(간소화)
-                    // 델리게이트 : 함수를 변수처럼 사용하게 해주는 기능
-                    // 1회용함수
                     String[] s = anyElement.get().getFriendsId().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
@@ -139,24 +135,29 @@ public class Invite_Friend extends AppCompatActivity {
     public void btn_UserClicked(View v) {
         ColorDrawable color = (ColorDrawable) v.getBackground();
         int bgcolor = color.getColor();
-        TextView textView = v.findViewById(R.id.tv_id);
+        TextView tv_id = v.findViewById(R.id.tv_id);
+        TextView tv_nickName = v.findViewById(R.id.tv_nickName);
         if (bgcolor == Color.LTGRAY) {
             v.setBackgroundColor(Color.WHITE);
-            hashSet.remove(String.valueOf(textView.getText()));
+            hashSet.remove(String.valueOf(tv_id.getText()));
+            hashSet2.remove(String.valueOf(tv_nickName.getText()));
         } else {
             v.setBackgroundColor(Color.LTGRAY);
-            hashSet.add(String.valueOf(textView.getText()));
+            hashSet.add(String.valueOf(tv_id.getText()));
+            hashSet2.add(String.valueOf(tv_nickName.getText()));
         }
     }
 
     public void btv_Invite_Friend_Clicked(View v) {
         String[] friend_arr = hashSet.toArray(new String[0]);
+        String[] friend_arr2 = hashSet2.toArray(new String[0]);
         if(friend_arr.length == 0){
             Toast.makeText(getApplicationContext(), "1명 이상 선택", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent resultIntent = new Intent();
         resultIntent.putExtra("friends", friend_arr);
+        resultIntent.putExtra("friends2", friend_arr2);
         setResult(RESULT_OK, resultIntent);
         finish();
     }
