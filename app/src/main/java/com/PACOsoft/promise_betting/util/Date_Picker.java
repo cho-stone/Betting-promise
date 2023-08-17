@@ -32,7 +32,7 @@ public class Date_Picker extends DialogFragment implements DatePickerDialog.OnDa
         DatePickerDialog dialog = new DatePickerDialog(requireActivity(), this, year, month, day);
         Calendar minDate = Calendar.getInstance(); //캘린더에서 선택할 수 있는 최소날짜
 
-        minDate.set(year, month, day+1);
+        minDate.set(year, month, day);
         dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
 
         return dialog;

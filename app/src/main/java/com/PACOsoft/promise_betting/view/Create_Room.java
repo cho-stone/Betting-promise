@@ -35,8 +35,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -56,6 +65,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     Promise promise = new Promise();
     PromisePlayer[] promisePlayer;
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
+    private int y, mo, d, h, m; // 시간 받는 값
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +111,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //날짜데이터 받아오기
     public void processDatePickerResult(int year, int month, int day) {
+        y = year;
+        mo = month + 1;
+        d = day;
         String month_string = Integer.toString(month + 1);
         String day_string = Integer.toString(day);
         String year_string = Integer.toString(year);
@@ -121,6 +134,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         timeText = findViewById(R.id.time_Tview);
+        h = hourOfDay;
+        m = minute;
         if (hourOfDay < 12) {
             timeText.setText("오전 " + hourOfDay + "시 " + minute + "분");
         } else if (hourOfDay == 12) {
@@ -129,6 +144,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             hourOfDay -= 12;
             timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
         }
+
         check[2] = true;
         create_enable();
     }
@@ -197,8 +213,26 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         }
     }
 
+    //시간 검증
+    public boolean time_validation(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime setTime = LocalDateTime.of(y, mo, d, h, m);
+
+        if(now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     //생성 버튼
     public void btn_create_room(View view){
+        if(!time_validation()){
+            Toast.makeText(getApplicationContext(), "약속은 30분 이후로만 가능합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         friendsArray.clear(); //기존 배열리스트를 초기화
         for(String FID : friends) {
             //ArrayList<PromisePlayer> players = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
