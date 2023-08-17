@@ -235,15 +235,12 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             return;
         }
 
-        Log.e(TAG, "들어옴");
         ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
         int i = 0;
         for (String id : friends) {
             PromisePlayer player = new PromisePlayer(id,friends2[i],0,0.0,0.0,false,0 );
             friendsArray.add(player);
             i++;
-            Log.e(TAG, "생성됨");
-            Log.e(TAG, String.valueOf(i));
         }
 
 
@@ -253,10 +250,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-//        for(PromisePlayer p : friendsArray){
-//            promise.setPromisePlayer(p);
-//        }
-        //promise.setPromisePlayer(friendsArray);
+
+        promise.setPromisePlayer(friendsArray);
         promise.setPromiseCode(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수

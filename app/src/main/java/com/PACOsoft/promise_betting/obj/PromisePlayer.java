@@ -1,6 +1,8 @@
 package com.PACOsoft.promise_betting.obj;
 
-public class PromisePlayer {
+import java.io.Serializable;
+
+public class PromisePlayer implements Serializable {
     private String playerID;//방에 있는 사람 아이디
     private String nickName;//방에 있는 사람 닉네임
     private int bettingMoney;//배팅 금액
