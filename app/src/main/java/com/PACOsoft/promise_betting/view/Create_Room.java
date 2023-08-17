@@ -61,9 +61,11 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private String myId;
     private String UID;
     private String[] friends;
-    private ArrayList<PromisePlayer> friendsArray;
-    Promise promise = new Promise();
-    PromisePlayer[] promisePlayer;
+    private String[] friends2;
+    //private Promise promise = new Promise();
+    //private PromisePlayer player ;
+    //private ArrayList<PromisePlayer> friendsArray;
+    //PromisePlayer[] promisePlayer;
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
 
@@ -144,7 +146,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             hourOfDay -= 12;
             timeText.setText("오후 " + hourOfDay + "시 " + minute + "분");
         }
-
         check[2] = true;
         create_enable();
     }
@@ -162,7 +163,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     }
 
     ActivityResultLauncher<Intent> search_local_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if(result.getResultCode() == RESULT_OK){
+        if (result.getResultCode() == RESULT_OK) {
             Intent intent = result.getData();
             assert intent != null;
             String title = intent.getStringExtra("title");
@@ -176,7 +177,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             check[3] = true;
             create_enable();
         }
-        if(result.getResultCode() == RESULT_CANCELED){
+        if (result.getResultCode() == RESULT_CANCELED) {
             Log.e("result error", "받아오기 실패");
         }
     });
@@ -190,17 +191,18 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     }
 
     ActivityResultLauncher<Intent> invite_friend_start = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if(result.getResultCode() == RESULT_OK){
+        if (result.getResultCode() == RESULT_OK) {
             Intent intent = result.getData();
             assert intent != null;
             friends = intent.getStringArrayExtra("friends");
+            friends2 = intent.getStringArrayExtra("friends2");
             people = friends.length;
-            String friends_list = String.join(" ", friends);
-            friendsText.setText(friends_list);
+            String friends_list2 = String.join(" ", friends2);
+            friendsText.setText(friends_list2);
             check[4] = true;
             create_enable();
         }
-        if(result.getResultCode() == RESULT_CANCELED){
+        if (result.getResultCode() == RESULT_CANCELED) {
             Log.e("result error", "받아오기 실패");
         }
     });
@@ -227,49 +229,34 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     }
 
     //생성 버튼
-    public void btn_create_room(View view){
+    public void btn_create_room(View view) {
         if(!time_validation()){
             Toast.makeText(getApplicationContext(), "약속은 30분 이후로만 가능합니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        friendsArray.clear(); //기존 배열리스트를 초기화
-        for(String FID : friends) {
-            //ArrayList<PromisePlayer> players = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
-            FirebaseDatabase database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-            DatabaseReference databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                    ArrayList<User> users = new ArrayList<>();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        users.add(snapshot.getValue(User.class));
-                    }
-                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(FID)).findFirst();
-                    PromisePlayer player = new PromisePlayer();
-                    player.setPlayerUID(anyElement.get().getUID());
-                    player.setNickName(anyElement.get().getNickName());
-                    player.setX(0.0);
-                    player.setY(0.0);
-                    player.setArrival(false);
-                    player.setRanking(0);
-                    player.setBettingMoney(0);
-                    friendsArray.add(player);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                    Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
-                }
-            });
+        Log.e(TAG, "들어옴");
+        ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
+        int i = 0;
+        for (String id : friends) {
+            PromisePlayer player = new PromisePlayer(id,friends2[i],0,0.0,0.0,false,0 );
+            friendsArray.add(player);
+            i++;
+            Log.e(TAG, "생성됨");
+            Log.e(TAG, String.valueOf(i));
         }
-        promise.setPromisePlayer(friendsArray);
+
+
+        Promise promise = new Promise();
         textView = findViewById(R.id.date_Tview);
         timeText = findViewById(R.id.time_Tview);
         et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
+//        for(PromisePlayer p : friendsArray){
+//            promise.setPromisePlayer(p);
+//        }
+        //promise.setPromisePlayer(friendsArray);
         promise.setPromiseCode(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
