@@ -224,7 +224,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 //        for(PromisePlayer p : friendsArray){
 //            promise.setPromisePlayer(p);
 //        }
-        //promise.setPromisePlayer(friendsArray.get());
+        //promise.setPromisePlayer(friendsArray);
         promise.setPromiseCode(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
