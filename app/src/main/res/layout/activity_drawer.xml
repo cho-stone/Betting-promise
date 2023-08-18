@@ -15,7 +15,7 @@
         android:textColor="#82966b"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="테스트 메뉴" />
+        android:text="참가자" />
 
 
 </LinearLayout>

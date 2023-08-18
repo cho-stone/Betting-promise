@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -217,15 +218,19 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //시간 검증
     public boolean time_validation(){
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime setTime = LocalDateTime.of(y, mo, d, h, m);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime setTime = LocalDateTime.of(y, mo, d, h, m);
 
-        if(now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30){
-            return true;
+            if(now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-        else{
-            return false;
-        }
+        Toast.makeText(getApplicationContext(), "현재 안드로이드의 버전에서는 지원하지 않습니다.", Toast.LENGTH_LONG);
+        return false;
     }
 
     //생성 버튼

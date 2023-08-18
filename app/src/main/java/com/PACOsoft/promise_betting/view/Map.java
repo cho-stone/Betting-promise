@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
@@ -39,6 +41,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private View drawerView;
     private Promise promise = new Promise();
     private TextView people_number, room_name;
+    private String[] location_xy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         people_number.setText(String.valueOf(promise.getNumOfPlayer()));
         room_name.setText(promise.getPromiseName());
+        location_xy = promise.getPromisePlace().split(" ");
     }
 
     public void room_menu(View view){
@@ -71,7 +75,21 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
         naverMap.setLocationSource(locationSource); //현재 위치 반영
-        ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE); //권한 확인
+        ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE);
+
+        double x = Double.valueOf(location_xy[0]);
+        double y = Double.valueOf(location_xy[1]);
+        Marker locat = new Marker();
+        locat.setPosition(new LatLng(y, x));
+        locat.setMap(naverMap);
+
+        CircleOverlay circle = new CircleOverlay();
+        circle.setCenter(new LatLng(y, x));
+        circle.setRadius(50);
+        circle.setColor(Color.argb(70, 153, 232, 174));
+        circle.setOutlineWidth(5);
+        circle.setOutlineColor(Color.argb(70, 0,0,0));
+        circle.setMap(naverMap);
     }
 
     @Override
