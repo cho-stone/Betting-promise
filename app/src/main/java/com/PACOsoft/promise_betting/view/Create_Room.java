@@ -63,12 +63,10 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private String UID;
     private String[] friends;
     private String[] friends2;
-    //private Promise promise = new Promise();
-    //private PromisePlayer player ;
-    //private ArrayList<PromisePlayer> friendsArray;
-    //PromisePlayer[] promisePlayer;
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,6 +233,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //생성 버튼
     public void btn_create_room(View view) {
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+
         if(!time_validation()){
             Toast.makeText(getApplicationContext(), "약속은 30분 이후로만 가능합니다.", Toast.LENGTH_SHORT).show();
             return;
@@ -260,10 +261,13 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setPromiseCode(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
-        promise.setDate(textView.getText().toString());//날짜
-        promise.setTime(timeText.getText().toString());//시간
+        promise.setDate(y + " " + mo + " " + d);//날짜
+        promise.setTime(h + " " + m);//시간
         promise.setPromisePlace(location_xy);
         promise.setVote(0);
+
+        databaseReference.child("Promise").child(uid).setValue(promise);
+
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("promise", (Serializable) promise);
         startActivity(intent);
