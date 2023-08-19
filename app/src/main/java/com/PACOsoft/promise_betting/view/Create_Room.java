@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -62,9 +63,14 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private String UID;
     private String[] friends;
     private String[] friends2;
+<<<<<<< HEAD
 
+=======
+>>>>>>> fe549a5bfb49ecd855c2e1dbb9fcf1a0a231dddd
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,19 +220,26 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
     //시간 검증
     public boolean time_validation(){
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime setTime = LocalDateTime.of(y, mo, d, h, m);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime setTime = LocalDateTime.of(y, mo, d, h, m);
 
-        if(now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30){
-            return true;
+            if(now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-        else{
-            return false;
-        }
+        Toast.makeText(getApplicationContext(), "현재 안드로이드의 버전에서는 지원하지 않습니다.", Toast.LENGTH_LONG);
+        return false;
     }
 
     //생성 버튼
     public void btn_create_room(View view) {
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+
         if(!time_validation()){
             Toast.makeText(getApplicationContext(), "약속은 30분 이후로만 가능합니다.", Toast.LENGTH_SHORT).show();
             return;
@@ -252,10 +265,13 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setPromiseKey(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
-        promise.setDate(textView.getText().toString());//날짜
-        promise.setTime(timeText.getText().toString());//시간
+        promise.setDate(y + " " + mo + " " + d);//날짜
+        promise.setTime(h + " " + m);//시간
         promise.setPromisePlace(location_xy);
         promise.setVote(0);
+
+        databaseReference.child("Promise").child(uid).setValue(promise);
+
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("promise", (Serializable) promise);
         startActivity(intent);
