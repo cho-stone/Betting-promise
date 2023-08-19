@@ -62,10 +62,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     private String UID;
     private String[] friends;
     private String[] friends2;
-    //private Promise promise = new Promise();
-    //private PromisePlayer player ;
-    //private ArrayList<PromisePlayer> friendsArray;
-    //PromisePlayer[] promisePlayer;
+
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
 
@@ -252,7 +249,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
 
         promise.setPromisePlayer(friendsArray);
-        promise.setPromiseCode(uid); //고유코드
+        promise.setPromiseKey(uid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
         promise.setDate(textView.getText().toString());//날짜
@@ -280,7 +277,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         do {
 
             buf[--charPos] = digits[(int) (number & mask)];
-
             number >>>= shift;
 
         } while (number != 0);

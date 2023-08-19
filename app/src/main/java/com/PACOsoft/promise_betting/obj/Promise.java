@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Promise implements Serializable {
-    private String promiseCode; //약속 고유 코드
+    private String promiseKey; //약속 고유 키
     private String promiseName;//약속 이름
     private int numOfPlayer;//약속 인원수
     private ArrayList<PromisePlayer> promisePlayers;
@@ -14,16 +14,17 @@ public class Promise implements Serializable {
     private String time;//약속 시간
     private String promisePlace;//약속 장소
     private int vote;//투표 찬성 수
+    private int bettingMoney;//총 배팅액
 
     public Promise() {
     }
 
-    public String getPromiseCode() {
-        return promiseCode;
+    public String getPromiseKey() {
+        return promiseKey;
     }
 
-    public void setPromiseCode(String promiseCode) {
-        this.promiseCode = promiseCode;
+    public void setPromiseKey(String promiseKey) {
+        this.promiseKey = promiseKey;
     }
 
     public String getPromiseName() {
@@ -76,6 +77,14 @@ public class Promise implements Serializable {
 
     public void setVote(int vote) {
         this.vote = vote;
+    }
+
+    public int getbettingMoney() {
+        return bettingMoney;
+    }
+
+    public void setbettingMoney(int bettingMoney) {
+        this.bettingMoney = bettingMoney;
     }
 
 }
