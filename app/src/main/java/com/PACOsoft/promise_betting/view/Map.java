@@ -42,7 +42,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     };
     private DrawerLayout drawerLayout;
     private View drawerView;
-    private Promise promise = new Promise();
+    private Promise promise;// = new Promise();
     private TextView people_number, room_name;
     private LinearLayout players;
     private String[] location_xy;

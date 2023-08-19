@@ -251,21 +251,22 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         }
 
 
-        Promise promise = new Promise();
+
         textView = findViewById(R.id.date_Tview);
         timeText = findViewById(R.id.time_Tview);
         et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-
-        promise.setPromisePlayer(friendsArray);
-        promise.setPromiseKey(uid); //고유코드
-        promise.setPromiseName(et_roomname.getText().toString());//방이름
-        promise.setNumOfPlayer(people);//인원수
-        promise.setDate(y + " " + mo + " " + d);//날짜
-        promise.setTime(h + " " + m);//시간
-        promise.setPromisePlace(location_xy);
-        promise.setVote(0);
+        Promise promise = new Promise(0,y + " " + mo + " " + d,people,uid,et_roomname.getText().toString(),location_xy,friendsArray,h + " " + m,0);
+//        promise.setbettingMoney(0);
+//        promise.setPromisePlayer(friendsArray);
+//        promise.setPromiseKey(uid); //고유코드
+//        promise.setPromiseName(et_roomname.getText().toString());//방이름
+//        promise.setNumOfPlayer(people);//인원수
+//        promise.setDate(y + " " + mo + " " + d);//날짜
+//        promise.setTime(h + " " + m);//시간
+//        promise.setPromisePlace(location_xy);
+//        promise.setVote(0);
 
         databaseReference.child("Promise").child(uid).setValue(promise);
 
