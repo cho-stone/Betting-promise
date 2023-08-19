@@ -12,10 +12,33 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#82966b"
+        android:textColor="@color/black"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="테스트 메뉴" />
+        android:text="참가자" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+        <LinearLayout
+            android:id="@+id/player_list_lo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/vote_btn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/vote"
+        android:textSize="18sp"
+        android:background="@drawable/round_button"
+        android:onClick="btn_vote_start"/>
 
 
 </LinearLayout>
