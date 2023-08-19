@@ -42,7 +42,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     };
     private DrawerLayout drawerLayout;
     private View drawerView;
-    private Promise promise;// = new Promise();
+    private Promise promise;
     private TextView people_number, room_name;
     private LinearLayout players;
     private String[] location_xy;
@@ -64,6 +64,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         //객체 가져오기
         promise = (Promise) getIntent().getSerializableExtra("promise");
+
+
+
+
         people_number = findViewById(R.id.tv_room_people_count);
         room_name = findViewById(R.id.tv_room_promise);
         players = findViewById(R.id.player_list_lo);

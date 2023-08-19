@@ -27,6 +27,8 @@ import com.PACOsoft.promise_betting.obj.User;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -245,7 +247,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
         int i = 0;
         for (String id : friends) {
-           // PromisePlayer player = new PromisePlayer(id,friends2[i],0,0.0,0.0,false,0 );
             PromisePlayer player = new PromisePlayer();
             player.setBettingMoney(0);
             player.setRanking(0);
@@ -264,12 +265,11 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         timeText = findViewById(R.id.time_Tview);
         et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
-        String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-       // Promise promise = new Promise(0,y + " " + mo + " " + d,people,uid,et_roomname.getText().toString(),location_xy,friendsArray,h + " " + m,0);
+        String rid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
         Promise promise = new Promise();
         promise.setbettingMoney(0);
         promise.setPromisePlayer(friendsArray);
-        promise.setPromiseKey(uid); //고유코드
+        promise.setPromiseKey(rid); //고유코드
         promise.setPromiseName(et_roomname.getText().toString());//방이름
         promise.setNumOfPlayer(people);//인원수
         promise.setDate(y + " " + mo + " " + d);//날짜
@@ -277,7 +277,38 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setPromisePlace(location_xy);
         promise.setVote(0);
 
-        databaseReference.child("Promise").child(uid).setValue(promise);
+        databaseReference.child("Promise").child(rid).setValue(promise);
+        databaseReference.child("User").child(UID).child("promiseKey").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        databaseReference.child("User").child(UID).child("promiseKey").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("Create_Room", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String pr_key = task.getResult().getValue().toString();
+                    if(pr_key.equals("")){
+                        pr_key = rid;
+                    }
+                    else{
+                        pr_key = pr_key + " " + rid;
+                    }
+                    databaseReference.child("User").child(UID).child("promiseKey").setValue(pr_key);
+                }
+            }
+        });
 
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("promise", (Serializable) promise);
