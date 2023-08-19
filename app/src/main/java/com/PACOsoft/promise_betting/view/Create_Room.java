@@ -245,7 +245,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
         int i = 0;
         for (String id : friends) {
-           // PromisePlayer player = new PromisePlayer(id,friends2[i],0,0.0,0.0,false,0 );
             PromisePlayer player = new PromisePlayer();
             player.setBettingMoney(0);
             player.setRanking(0);
@@ -265,7 +264,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         et_roomname = findViewById(R.id.et_room_name);
         UUID uuid = UUID.randomUUID();//UUID생성
         String uid = toUnsignedString(uuid.getMostSignificantBits(), 6) + toUnsignedString(uuid.getLeastSignificantBits(), 6);
-       // Promise promise = new Promise(0,y + " " + mo + " " + d,people,uid,et_roomname.getText().toString(),location_xy,friendsArray,h + " " + m,0);
         Promise promise = new Promise();
         promise.setbettingMoney(0);
         promise.setPromisePlayer(friendsArray);
