@@ -6,26 +6,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Promise implements Serializable {
-    private int bettingMoney;//총 배팅액
-    private String date;//약속 날짜
-    private int numOfPlayer;//약속 인원수
-    private String promiseKey; //약속 고유 키
-    private String promiseName;//약속 이름
-    private String promisePlace;//약속 장소
-    private ArrayList<PromisePlayer> promisePlayers;
-    private String time;//약속 시간
-    private int vote;//투표 찬성 수
-    public Promise(int bettingMoney, String date, int numOfPlayer, String promiseKey, String promiseName, String promisePlace, ArrayList<PromisePlayer> promisePlayers, String time, int vote)
-    {
-        this.bettingMoney = bettingMoney;
-        this.date = date;
-        this.numOfPlayer = numOfPlayer;
-        this.promiseKey = promiseKey;
-        this.promiseName = promiseName;
-        this.promisePlace = promisePlace;
-        this.promisePlayers = promisePlayers;
-        this.time = time;
-        this.vote = vote;
+    private int bettingMoney = 0;//총 배팅액
+    private String date = "";//약속 날짜
+    private int numOfPlayer = 0;//약속 인원수
+    private String promiseKey = ""; //약속 고유 키
+    private String promiseName = "";//약속 이름
+    private String promisePlace = "";//약속 장소
+    private ArrayList<PromisePlayer> promisePlayers = new ArrayList<>();
+    private String time = "";//약속 시간
+    private int vote = 0;//투표 찬성 수
+
+
+    public Promise() {
     }
 
     public String getPromiseKey() {
@@ -56,7 +48,9 @@ public class Promise implements Serializable {
         return promisePlayers;
     }
 
-    public void setPromisePlayer(ArrayList<PromisePlayer> promisePlayers) {this.promisePlayers = promisePlayers;}
+    public void setPromisePlayer(ArrayList<PromisePlayer> promisePlayers) {
+        this.promisePlayers = promisePlayers;
+    }
 
     public String getDate() {
         return date;
@@ -66,9 +60,13 @@ public class Promise implements Serializable {
         this.date = date;
     }
 
-    public void setTime(String time) { this.time = time; }
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-    public String getTime() { return time; }
+    public String getTime() {
+        return time;
+    }
 
     public String getPromisePlace() {
         return promisePlace;
