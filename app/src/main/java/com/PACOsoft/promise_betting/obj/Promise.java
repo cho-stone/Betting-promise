@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Promise implements Serializable {
+public class Promise {
     private int bettingMoney = 0;//총 배팅액
     private String date = "";//약속 날짜
     private int numOfPlayer = 0;//약속 인원수

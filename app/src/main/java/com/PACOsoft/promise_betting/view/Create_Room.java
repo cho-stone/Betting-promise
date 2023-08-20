@@ -278,18 +278,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setVote(0);
 
         databaseReference.child("Promise").child(rid).setValue(promise);
-        databaseReference.child("User").child(UID).child("promiseKey").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         databaseReference.child("User").child(UID).child("promiseKey").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -311,7 +299,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("rid", rid);
-        System.out.println(rid);
         startActivity(intent);
         finish();
     }

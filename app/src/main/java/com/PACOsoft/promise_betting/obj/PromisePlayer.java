@@ -2,7 +2,7 @@ package com.PACOsoft.promise_betting.obj;
 
 import java.io.Serializable;
 
-public class PromisePlayer implements Serializable {
+public class PromisePlayer {
     private boolean arrival = false;//도착여부
     private int bettingMoney = 0;//배팅 금액
     private String nickName = "";//방에 있는 사람 닉네임

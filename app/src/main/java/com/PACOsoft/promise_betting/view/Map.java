@@ -65,6 +65,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private DatabaseReference databaseReference;
     private String rid;
 
+    //콜백 인터페이스
     public interface MyCallback {
         void onCallback(Promise promise);
     }
@@ -86,47 +87,48 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
 
-        //객체 가져오기
-        rid = getIntent().getStringExtra("rid");
-        readPromise(new MyCallback() {
-            @Override
-            public void onCallback(Promise p) {
-                promise = p;
-            }
-        });
-
-
-
         people_number = findViewById(R.id.tv_room_people_count);
         room_name = findViewById(R.id.tv_room_promise);
         players = findViewById(R.id.player_list_lo);
 
-        //방설정
-        people_number.setText(String.valueOf(promise.getNumOfPlayer()));
-        room_name.setText(promise.getPromiseName());
-        location_xy = promise.getPromisePlace().split(" ");
-        for(PromisePlayer i : promise.getPromisePlayer()){
-            TextView tv = new TextView(getApplicationContext());
-            tv.setText(i.getNickName());
-            tv.setTextSize(15);
-            tv.setGravity(1);
-            players.addView(tv);
-        }
+        //rid사용해서 콜백으로 객체 가져오기
+        rid = getIntent().getStringExtra("rid");
+        readPromise(new MyCallback() {
+            @Override
+            public void onCallback(Promise p) {
+                Log.v("tt2", p.toString());
+                promise = p;
+                //방설정
+                people_number.setText(String.valueOf(promise.getNumOfPlayer()));
+                room_name.setText(promise.getPromiseName());
+                location_xy = promise.getPromisePlace().split(" ");
+                for(PromisePlayer i : promise.getPromisePlayer()){
+                    TextView tv = new TextView(getApplicationContext());
+                    tv.setText(i.getNickName());
+                    tv.setTextSize(15);
+                    tv.setGravity(1);
+                    players.addView(tv);
+                }
+            }
+        });
+
+
     }
 
+    //콜백 메소드생성
     public void readPromise(MyCallback myCallback){
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference();
-        databaseReference.child("Promise").child(rid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        databaseReference = database.getReference("Promise").child(rid);
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("Map", "Error getting data", task.getException());
-                }
-                else {
-                    Promise p = (Promise) task.getResult().getValue();
-                    myCallback.onCallback(p);
-                }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               Promise p = dataSnapshot.getValue(Promise.class);
+               myCallback.onCallback(p);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                Log.e("Map", String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
     }
