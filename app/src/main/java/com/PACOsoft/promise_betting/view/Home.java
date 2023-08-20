@@ -98,7 +98,6 @@ public class Home extends AppCompatActivity {
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
         Intent intent = new Intent(this, Search_Friend.class);
-        intent.putExtra("myId", myId);//ID 정보 intent
         intent.putExtra("UID", UID);//ID 정보 intent
         startActivity(intent);
     }
