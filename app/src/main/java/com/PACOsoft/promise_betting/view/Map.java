@@ -123,12 +123,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                Promise p = dataSnapshot.getValue(Promise.class);
-               myCallback.onCallback(p);
+               myCallback.onCallback(p);//최강 콜백!!
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                Log.e("Map", String.valueOf(databaseError.toException()));//에러문 출력
+                Log.e("Map", String.valueOf(databaseError.toException()));
             }
         });
     }
