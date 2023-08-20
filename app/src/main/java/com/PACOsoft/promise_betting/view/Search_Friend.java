@@ -37,7 +37,6 @@ public class Search_Friend extends AppCompatActivity {
     private Optional<User> anyElement;
     private Optional<User> anyElement2;
     private String temp;
-    private String myId;
     private String UID;
 
     @Override
@@ -94,8 +93,8 @@ public class Search_Friend extends AppCompatActivity {
                                 }
                             }
                             //중복된 친구가 없는 경우에만 추가 가능
-                            anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();
-                            anyElement2 = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();
+                            anyElement = users.stream().parallel().filter(u -> u.getId().equals(textView.getText().toString())).findFirst();//친구
+                            anyElement2 = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();//나
                             //DB에 동일한 ID가 존재한다면 텍스트뷰 참조 객체에서 입력된 텍스트 받아와서 DB의 id와 동일한 객체 찾음
                             String s1 = anyElement.get().getId();
                             String s2 = anyElement2.get().getFriendsId();
