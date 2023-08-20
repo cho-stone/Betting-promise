@@ -38,7 +38,6 @@ public class Home extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String TAG;
-    private String myId;
     private String UID;
     private int coin;
     private String[] promises;
@@ -50,7 +49,6 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         TAG = "Home";
         Intent intent = getIntent();
-        myId = intent.getStringExtra("myId"); //mainActivity에서 intent해준 id를 받아옴
         UID = intent.getStringExtra("UID"); //mainActivity에서 intent해준 id를 받아옴
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
@@ -98,7 +96,6 @@ public class Home extends AppCompatActivity {
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
         Intent intent = new Intent(this, Search_Friend.class);
-        intent.putExtra("myId", myId);//ID 정보 intent
         intent.putExtra("UID", UID);//ID 정보 intent
         startActivity(intent);
     }
@@ -117,7 +114,6 @@ public class Home extends AppCompatActivity {
     //Home에서 Coin으로 이동하는 버튼 구현
     public void btnCoinsClicked(View view) {
         Intent intent = new Intent(this, Coin.class);
-        intent.putExtra("myId", myId);//ID 정보 intent
         intent.putExtra("UID", UID);//ID 정보 intent
         intent.putExtra("coin", coin);//ID 정보 intent
         startActivity(intent);
@@ -126,7 +122,6 @@ public class Home extends AppCompatActivity {
     //Home에서 Create_Room으로 이동하는 버튼 구현
     public void btnCreateRoomClicked(View view) {
         Intent intent = new Intent(this, Create_Room.class);
-        intent.putExtra("myId", myId);//ID 정보 intent
         intent.putExtra("UID", UID);//ID 정보 intent
         startActivity(intent);
     }
@@ -134,7 +129,6 @@ public class Home extends AppCompatActivity {
     //Home에서 Option으로 이동하는 버튼 구현
     public void btnOptionClicked(View view) {
         Intent intent = new Intent(this, Option.class);
-        intent.putExtra("myId", myId);//ID 정보 intent
         intent.putExtra("UID", UID);//ID 정보 intent
         startActivity(intent);
     }

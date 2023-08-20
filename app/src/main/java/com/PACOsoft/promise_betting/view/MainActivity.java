@@ -18,6 +18,7 @@ package com.PACOsoft.promise_betting.view;
         import androidx.appcompat.app.AppCompatActivity;
 
         import com.PACOsoft.promise_betting.R;
+        import com.PACOsoft.promise_betting.obj.Promise;
         import com.PACOsoft.promise_betting.obj.User;
         import com.google.android.gms.auth.api.signin.GoogleSignIn;
         import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -152,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(String UID) {
         Intent intent = new Intent(getApplicationContext(), Home.class);
-        //intent.putExtra("myId", ID.getText().toString().trim());//UID 전송
         intent.putExtra("UID", UID);//UID 전송
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//기존 모든 엑티비티 종료 후 intent
         startActivity(intent);

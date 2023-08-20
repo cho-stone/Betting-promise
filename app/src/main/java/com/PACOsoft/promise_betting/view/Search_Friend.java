@@ -45,7 +45,6 @@ public class Search_Friend extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friend);
         Intent intent = getIntent();
-        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
     }
 

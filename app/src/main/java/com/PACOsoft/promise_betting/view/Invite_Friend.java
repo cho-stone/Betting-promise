@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,6 @@ public class Invite_Friend extends AppCompatActivity {
         setContentView(R.layout.activity_invite_friend);
         Intent intent = getIntent();
         TAG = "Invite_Friend";
-        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
         recyclerView = findViewById(R.id.inviteFriendsRecyclerview); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
@@ -149,9 +149,9 @@ public class Invite_Friend extends AppCompatActivity {
     }
 
     public void btv_Invite_Friend_Clicked(View v) {
-        String[] friend_arr = hashSet.toArray(new String[0]);
-        String[] friend_arr2 = hashSet2.toArray(new String[0]);
-        if(friend_arr.length == 0){
+        ArrayList<String> friend_arr = new ArrayList<>(hashSet);
+        ArrayList<String> friend_arr2 = new ArrayList<>(hashSet2);
+        if(friend_arr.size() == 0){
             Toast.makeText(getApplicationContext(), "1명 이상 선택", Toast.LENGTH_SHORT).show();
             return;
         }

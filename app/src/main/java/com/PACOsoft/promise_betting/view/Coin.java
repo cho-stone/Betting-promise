@@ -43,7 +43,6 @@ public class Coin extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_coin);
         Intent intent = getIntent();
-        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
         originCoin = intent.getIntExtra("coin", 0); //Home에서 intent해준 coin을 받아옴
         coin_tv = findViewById(R.id.et_coin);

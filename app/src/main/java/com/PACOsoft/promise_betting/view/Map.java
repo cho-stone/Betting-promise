@@ -64,13 +64,18 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String rid;
+    private String UID;
+    private User me;
 
-    //콜백 인터페이스
+    //방 콜백 인터페이스
     public interface MyCallback {
         void onCallback(Promise promise);
     }
 
-
+    //유저 콜백 인터페이스
+    public interface MyCallback2 {
+        void onCallback(User user);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +98,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         //rid사용해서 콜백으로 객체 가져오기
         rid = getIntent().getStringExtra("rid");
+        UID = getIntent().getStringExtra("UID");
         readPromise(new MyCallback() {
             @Override
             public void onCallback(Promise p) {
-                Log.v("tt2", p.toString());
                 promise = p;
                 //방설정
                 people_number.setText(String.valueOf(promise.getNumOfPlayer()));
@@ -112,10 +117,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
-
+        readUser(new MyCallback2() {
+            @Override
+            public void onCallback(User user) {
+                me = user;
+            }
+        });
     }
 
-    //콜백 메소드생성
+    //방 콜백 메소드생성
     public void readPromise(MyCallback myCallback){
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
@@ -124,6 +134,23 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                Promise p = dataSnapshot.getValue(Promise.class);
                myCallback.onCallback(p);//최강 콜백!!
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Map", String.valueOf(databaseError.toException()));
+            }
+        });
+    }
+
+    //유저 콜백 메소드생성
+    public void readUser(MyCallback2 myCallback2){
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("User").child(UID);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                myCallback2.onCallback(user);//최강 콜백!!
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

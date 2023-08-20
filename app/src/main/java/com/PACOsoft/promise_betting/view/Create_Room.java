@@ -60,30 +60,39 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextView timeText, textView, locationText, friendsText, create;
     TextInputLayout lo_roomname;
     TextInputEditText et_roomname;
-    private String TAG;
-    private String myId;
     private String UID;
-    private String[] friends;
-    private String[] friends2;
+    private ArrayList<String> friends, friends2;
 
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private User me;
+
+    //콜백 인터페이스
+    public interface MyCallback {
+        void onCallback(User user);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
         Intent intent = getIntent();
-        TAG = "Create_Room";
-        myId = intent.getStringExtra("myId"); //Home에서 intent해준 id를 받아옴
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 id를 받아옴
         locationText = findViewById(R.id.location_Tview);
         friendsText = findViewById(R.id.friends_Tview);
         lo_roomname = findViewById(R.id.lo_room_name);
         et_roomname = findViewById(R.id.et_room_name);
         create = findViewById(R.id.select_create_room);
+
+        readUser(new MyCallback() {
+            @Override
+            public void onCallback(User user) {
+                me = user;
+            }
+        });
+
 
         et_roomname.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,6 +118,23 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                     check[0] = false;
                 }
                 create_enable();
+            }
+        });
+    }
+
+    //콜백 메소드생성
+    public void readUser(MyCallback myCallback){
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("User").child(UID);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User u = dataSnapshot.getValue(User.class);
+                myCallback.onCallback(u);//최강 콜백!!
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Map", String.valueOf(databaseError.toException()));
             }
         });
     }
@@ -187,7 +213,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     //친구 초대 버튼
     public void btn_intent_invite_friend(View view) {
         Intent intent = new Intent(this, Invite_Friend.class);
-        intent.putExtra("myId", myId);//ID 정보 intent
         intent.putExtra("UID", UID);
         invite_friend_start.launch(intent);
     }
@@ -196,9 +221,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         if (result.getResultCode() == RESULT_OK) {
             Intent intent = result.getData();
             assert intent != null;
-            friends = intent.getStringArrayExtra("friends");
-            friends2 = intent.getStringArrayExtra("friends2");
-            people = friends.length;
+            friends = intent.getStringArrayListExtra("friends");
+            friends2 = intent.getStringArrayListExtra("friends2");
+            people = friends.size() + 1;//자기자신 포함
             String friends_list2 = String.join(" ", friends2);
             friendsText.setText(friends_list2);
             check[4] = true;
@@ -244,6 +269,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             return;
         }
 
+        //자신 추가후 객체에 넣기
+        friends.add(me.getId());
+        friends2.add(me.getNickName());
         ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
         int i = 0;
         for (String id : friends) {
@@ -252,7 +280,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             player.setRanking(0);
             player.setArrival(false);
             player.setPlayerID(id);
-            player.setNickName(friends2[i]);
+            player.setNickName(friends2.get(i));
             player.setX(0.0);
             player.setY(0.0);
             friendsArray.add(player);
@@ -299,6 +327,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
 
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("rid", rid);
+        intent.putExtra("UID", me.getUID());
         startActivity(intent);
         finish();
     }
