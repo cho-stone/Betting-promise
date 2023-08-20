@@ -69,16 +69,18 @@ public class Search_Friend extends AppCompatActivity {
                     users.add(snapshot.getValue(User.class));
                 }
                 TextView textView = (TextView) findViewById(R.id.et_search);//텍스트뷰 참조 객체 선언
-                if (textView.getText().toString().equals(myId)) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "자기 자신은 추가할 수 없습니다.", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else {
+
                     if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 DB에 있는지 확인
                         Toast toast = Toast.makeText(getApplicationContext(), "통과", Toast.LENGTH_SHORT);
                         toast.show();
-                        if (users.stream().parallel().anyMatch(u -> u.getId().equals(myId))) {//myId와 동일한 id가 DB에 있는지 확인
-                            Optional<User> me = users.stream().parallel().filter(u -> u.getId().equals(myId)).findFirst();//User에서 id가 myId와 동일한 객체를 필터링해서 me로 생성
 
+                        if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//UID와 동일한 id가 DB에 있는지 확인
+                            Optional<User> me = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();//User에서 id가 UID와 동일한 객체를 필터링해서 me로 생성
+                            if (textView.getText().toString().equals(me.get().getId())) {
+                                toast = Toast.makeText(getApplicationContext(), "자기 자신은 추가할 수 없습니다.", Toast.LENGTH_SHORT);
+                                toast.show();
+                                return;
+                            }
                             String[] s = me.get().getFriendsId().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -115,7 +117,7 @@ public class Search_Friend extends AppCompatActivity {
                         Toast toast = Toast.makeText(getApplicationContext(), "일치하는 ID가 없습니다.", Toast.LENGTH_SHORT);
                         toast.show();
                     }
-                }
+
             }
 
             @Override
