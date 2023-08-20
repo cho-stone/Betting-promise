@@ -297,7 +297,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                     Log.e("Create_Room", "Error getting data", task.getException());
                 }
                 else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     String pr_key = task.getResult().getValue().toString();
                     if(pr_key.equals("")){
                         pr_key = rid;
@@ -311,7 +310,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         });
 
         Intent intent = new Intent(this, Map.class);
-        intent.putExtra("promise", (Serializable) promise);
+        intent.putExtra("rid", rid);
+        System.out.println(rid);
         startActivity(intent);
         finish();
     }

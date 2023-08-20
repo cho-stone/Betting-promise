@@ -19,6 +19,15 @@ import android.widget.TextView;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
+import com.PACOsoft.promise_betting.obj.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.LocationTrackingMode;
@@ -29,6 +38,12 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.style.layers.LineExtrusionLayer;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
+
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -46,6 +61,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView people_number, room_name;
     private LinearLayout players;
     private String[] location_xy;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private String rid;
+
+    public interface MyCallback {
+        void onCallback(Promise promise);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +87,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
 
         //객체 가져오기
-        promise = (Promise) getIntent().getSerializableExtra("promise");
-
+        rid = getIntent().getStringExtra("rid");
+        readPromise(new MyCallback() {
+            @Override
+            public void onCallback(Promise p) {
+                promise = p;
+            }
+        });
 
 
 
@@ -83,6 +112,23 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             tv.setGravity(1);
             players.addView(tv);
         }
+    }
+
+    public void readPromise(MyCallback myCallback){
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        databaseReference.child("Promise").child(rid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("Map", "Error getting data", task.getException());
+                }
+                else {
+                    Promise p = (Promise) task.getResult().getValue();
+                    myCallback.onCallback(p);
+                }
+            }
+        });
     }
 
     public void room_menu(View view){
