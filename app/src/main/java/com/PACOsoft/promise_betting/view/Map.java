@@ -19,6 +19,15 @@ import android.widget.TextView;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
+import com.PACOsoft.promise_betting.obj.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.LocationTrackingMode;
@@ -29,6 +38,12 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.style.layers.LineExtrusionLayer;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
+
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -46,6 +61,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView people_number, room_name;
     private LinearLayout players;
     private String[] location_xy;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private String rid;
+
+    //콜백 인터페이스
+    public interface MyCallback {
+        void onCallback(Promise promise);
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,27 +87,50 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapView.getMapAsync(this);
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
 
-        //객체 가져오기
-        promise = (Promise) getIntent().getSerializableExtra("promise");
-
-
-
-
         people_number = findViewById(R.id.tv_room_people_count);
         room_name = findViewById(R.id.tv_room_promise);
         players = findViewById(R.id.player_list_lo);
 
-        //방설정
-        people_number.setText(String.valueOf(promise.getNumOfPlayer()));
-        room_name.setText(promise.getPromiseName());
-        location_xy = promise.getPromisePlace().split(" ");
-        for(PromisePlayer i : promise.getPromisePlayer()){
-            TextView tv = new TextView(getApplicationContext());
-            tv.setText(i.getNickName());
-            tv.setTextSize(15);
-            tv.setGravity(1);
-            players.addView(tv);
-        }
+        //rid사용해서 콜백으로 객체 가져오기
+        rid = getIntent().getStringExtra("rid");
+        readPromise(new MyCallback() {
+            @Override
+            public void onCallback(Promise p) {
+                Log.v("tt2", p.toString());
+                promise = p;
+                //방설정
+                people_number.setText(String.valueOf(promise.getNumOfPlayer()));
+                room_name.setText(promise.getPromiseName());
+                location_xy = promise.getPromisePlace().split(" ");
+                for(PromisePlayer i : promise.getPromisePlayer()){
+                    TextView tv = new TextView(getApplicationContext());
+                    tv.setText(i.getNickName());
+                    tv.setTextSize(15);
+                    tv.setGravity(1);
+                    players.addView(tv);
+                }
+            }
+        });
+
+
+    }
+
+    //콜백 메소드생성
+    public void readPromise(MyCallback myCallback){
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Promise").child(rid);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               Promise p = dataSnapshot.getValue(Promise.class);
+               myCallback.onCallback(p);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                Log.e("Map", String.valueOf(databaseError.toException()));//에러문 출력
+            }
+        });
     }
 
     public void room_menu(View view){

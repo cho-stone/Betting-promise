@@ -278,18 +278,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setVote(0);
 
         databaseReference.child("Promise").child(rid).setValue(promise);
-        databaseReference.child("User").child(UID).child("promiseKey").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         databaseReference.child("User").child(UID).child("promiseKey").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -297,7 +285,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                     Log.e("Create_Room", "Error getting data", task.getException());
                 }
                 else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     String pr_key = task.getResult().getValue().toString();
                     if(pr_key.equals("")){
                         pr_key = rid;
@@ -311,7 +298,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         });
 
         Intent intent = new Intent(this, Map.class);
-        intent.putExtra("promise", (Serializable) promise);
+        intent.putExtra("rid", rid);
         startActivity(intent);
         finish();
     }
