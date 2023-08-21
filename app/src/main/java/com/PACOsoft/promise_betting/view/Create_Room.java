@@ -60,7 +60,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextView timeText, textView, locationText, friendsText, create;
     TextInputLayout lo_roomname;
     TextInputEditText et_roomname;
-    private String UID;
+    private String UID, TAG;
     private ArrayList<String> friends, friends2;
 
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
@@ -80,6 +80,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         setContentView(R.layout.activity_create_room);
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 id를 받아옴
+        TAG = "Create_Room";
         locationText = findViewById(R.id.location_Tview);
         friendsText = findViewById(R.id.friends_Tview);
         lo_roomname = findViewById(R.id.lo_room_name);
@@ -123,7 +124,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     }
 
     //콜백 메소드생성
-    public void readUser(MyCallback myCallback){
+    public void readUser(MyCallback myCallback) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("User").child(UID);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -132,6 +133,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                 User u = dataSnapshot.getValue(User.class);
                 myCallback.onCallback(u);//최강 콜백!!
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
@@ -243,15 +245,14 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     }
 
     //시간 검증
-    public boolean time_validation(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    public boolean time_validation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime setTime = LocalDateTime.of(y, mo, d, h, m);
 
-            if(now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30){
+            if (now.isBefore(setTime) && ChronoUnit.MINUTES.between(now, setTime) >= 30) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
         }
@@ -264,7 +265,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
 
-        if(!time_validation()){
+        if (!time_validation()) {
             Toast.makeText(getApplicationContext(), "약속은 30분 이후로만 가능합니다.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -288,7 +289,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         }
 
 
-
         textView = findViewById(R.id.date_Tview);
         timeText = findViewById(R.id.time_Tview);
         et_roomname = findViewById(R.id.et_room_name);
@@ -306,24 +306,61 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setVote(0);
 
         databaseReference.child("Promise").child(rid).setValue(promise);
-        databaseReference.child("User").child(UID).child("promiseKey").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("Create_Room", "Error getting data", task.getException());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //파이어베이스 데이터베이스의 데이터를 받아오는 곳
+
+                ArrayList<User> users = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    users.add(snapshot.getValue(User.class));
                 }
-                else {
-                    String pr_key = task.getResult().getValue().toString();
-                    if(pr_key.equals("")){
-                        pr_key = rid;
+                for (String id : friends) {
+                    if (users.stream().parallel().anyMatch(u -> u.getId().equals(id))) {//myId와 동일한 id가 DB에 있는지 확인
+                        Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(id)).findFirst(); //User에서 id가 myId와 동일한 객체를 필터링
+                        String pr_key = anyElement.get().getPromiseKey();
+                        String tempUID = anyElement.get().getUID();
+                        if (pr_key.equals("")) {
+                            pr_key = rid;
+                        } else {
+                            pr_key = pr_key + " " + rid;
+                        }
+                        databaseReference.child(tempUID).child("promiseKey").setValue(pr_key);
                     }
-                    else{
-                        pr_key = pr_key + " " + rid;
-                    }
-                    databaseReference.child("User").child(UID).child("promiseKey").setValue(pr_key);
                 }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
+
+
+//        databaseReference.child("User").child(UID).child("promiseKey").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                if (!task.isSuccessful()) {
+//                    Log.e("Create_Room", "Error getting data", task.getException());
+//                }
+//                else {
+//                    String pr_key = task.getResult().getValue().toString();
+//                    if(pr_key.equals("")){
+//                        pr_key = rid;
+//                    }
+//                    else{
+//                        pr_key = pr_key + " " + rid;
+//                    }
+//                    databaseReference.child("User").child(UID).child("promiseKey").setValue(pr_key);
+//                }
+//            }
+//        });
+
 
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("rid", rid);
@@ -352,7 +389,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         } while (number != 0);
         return new String(buf, charPos, (64 - charPos));
     }
-
 
 
     final static char[] digits = {

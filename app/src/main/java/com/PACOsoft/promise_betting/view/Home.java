@@ -174,7 +174,6 @@ public class Home extends AppCompatActivity {
     }
 
     public void view_friends() {
-        newFriends = "";//newFriends 초기화
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
