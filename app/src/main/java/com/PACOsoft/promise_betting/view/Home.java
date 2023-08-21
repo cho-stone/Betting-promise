@@ -52,8 +52,8 @@ public class Home extends AppCompatActivity {
         TAG = "Home";
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //mainActivity에서 intent해준 id를 받아옴
-        reFreshData();
         view_friends();
+        reFreshData();
 
     }
 
@@ -109,6 +109,8 @@ public class Home extends AppCompatActivity {
         promiseArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -131,11 +133,19 @@ public class Home extends AppCompatActivity {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
                 Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
             }
+
+                    //약속 정보 DB에 접근해서 내 약속과 일치하는 약속들만 어렙터 연결해서 리사이클러뷰에 띄워주고 newPromises에 저장
+
+
+
+
+
+
+
         });
         //가져오기 끝
 
-        //약속 정보 DB에 접근해서 내 약속과 일치하는 약속들만 어렙터 연결해서 리사이클러뷰에 띄워주고 newPromises에 저장
-        newPromises = "";//newPromises 초기화
+//        //약속 정보 DB에 접근해서 내 약속과 일치하는 약속들만 어렙터 연결해서 리사이클러뷰에 띄워주고 newPromises에 저장
         databaseReference = database.getReference("Promise");//DB테이블 연결, 파이어베이스 콘솔에서 History에 접근
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,8 +161,6 @@ public class Home extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
-                //DB의 promise 데이터와 내 promise 데이터의 차이 확인하고 있다면 내 promise 데이터 수정 시작
-                database.getReference("User").child(UID).child("promiseKey").setValue(newPromises);
                 //수정 끝
             }
 
