@@ -214,19 +214,19 @@ public class Home extends AppCompatActivity {
                         for (String t : s) {
                             if (user.getId().equals(t)) {
                                 userArrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
-//                                if (newFriends == "" && t != null) {
-//                                    newFriends = t;
-//                                } else if (t != null) {
-//                                    newFriends += " " + t;
-//                                }
-//                                break;
+                                if (newFriends == "" && t != null) {
+                                    newFriends = t;
+                                } else if (t != null) {
+                                    newFriends += " " + t;
+                                }
+                                break;
                             }
 
                         }
                     }
                     adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
                     //DB의 promise 데이터와 내 promise 데이터의 차이 확인하고 있다면 내 promise 데이터 수정 시작
-//                    database.getReference("User").child(UID).child("friendsId").setValue(newFriends);
+                    database.getReference("User").child(UID).child("friendsId").setValue(newFriends);
                 }
             }
 
