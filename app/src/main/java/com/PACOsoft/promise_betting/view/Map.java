@@ -6,15 +6,22 @@ import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
@@ -58,7 +65,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private DrawerLayout drawerLayout;
     private View drawerView;
     private Promise promise;
-    private TextView people_number, room_name;
+    private TextView people_number, room_name, reach_location;
     private LinearLayout players;
     private String[] location_xy;
     private FirebaseDatabase database;
@@ -66,6 +73,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private String rid;
     private String UID;
     private User me;
+    private double my_lat, my_lon;
 
     //방 콜백 인터페이스
     public interface MyCallback {
@@ -95,6 +103,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         people_number = findViewById(R.id.tv_room_people_count);
         room_name = findViewById(R.id.tv_room_promise);
         players = findViewById(R.id.player_list_lo);
+        reach_location = findViewById(R.id.reach_location_btn);
 
         //rid사용해서 콜백으로 객체 가져오기
         rid = getIntent().getStringExtra("rid");
@@ -182,6 +191,25 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         circle.setOutlineWidth(5);
         circle.setOutlineColor(Color.argb(70, 0,0,0));
         circle.setMap(naverMap);
+
+        naverMap.addOnLocationChangeListener(new NaverMap.OnLocationChangeListener() {
+            @Override
+            public void onLocationChange(@NonNull Location location) {
+                Location A = new Location("point A");
+                A.setLatitude(location.getLatitude());
+                A.setLongitude(location.getLongitude());
+
+                Location B = new Location("point B");
+                B.setLatitude(y);
+                B.setLongitude(x);
+
+                double distance = A.distanceTo(B);
+                Log.v("tt", String.valueOf(distance));
+                if(distance <= 50.0){
+                    reach_location.setEnabled(true);
+                }
+            }
+        });
     }
 
     @Override

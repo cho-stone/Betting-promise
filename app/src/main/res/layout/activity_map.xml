@@ -87,6 +87,7 @@
             android:background="@color/white">
 
             <TextView
+                android:id="@+id/reach_location_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/round_button"
@@ -94,7 +95,8 @@
                 android:onClick="btn_reach_place"
                 android:text="도착"
                 android:textSize="25dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:enabled="false"/>
         </LinearLayout>
 
     </LinearLayout>
