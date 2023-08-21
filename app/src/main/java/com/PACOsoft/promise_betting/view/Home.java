@@ -231,4 +231,10 @@ public class Home extends AppCompatActivity {
         adapter = new Promise_List_Adapter(promiseArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
+
+
+    public void btn_promiseClicked(View v) {
+       TextView tv_promiseKey =  v.findViewById(R.id.tv_promiseKey);
+       Log.e(TAG,tv_promiseKey.getText().toString());
+    }
 }

@@ -42,6 +42,7 @@ public class Promise_List_Adapter extends RecyclerView.Adapter<Promise_List_Adap
     //데이터 가져와서 뷰 홀더의 레이아웃을 채움
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
 
+        holder.tv_promiseKey.setText(arrayList.get(position).getPromiseKey().toString());
         holder.tv_promiseName.setText(arrayList.get(position).getPromiseName().toString());
         holder.tv_numOfPlayer.setText(String.valueOf(arrayList.get(position).getNumOfPlayer()));//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_bettingMoney.setText(String.valueOf(arrayList.get(position).getbettingMoney()));
@@ -57,6 +58,7 @@ public class Promise_List_Adapter extends RecyclerView.Adapter<Promise_List_Adap
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
+        TextView tv_promiseKey;
         TextView tv_promiseName;
         TextView tv_numOfPlayer;
         TextView tv_bettingMoney;
@@ -64,6 +66,7 @@ public class Promise_List_Adapter extends RecyclerView.Adapter<Promise_List_Adap
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            this.tv_promiseKey = itemView.findViewById(R.id.tv_promiseKey);
             this.tv_promiseName = itemView.findViewById(R.id.tv_promiseName);
             this.tv_numOfPlayer = itemView.findViewById(R.id.tv_numOfPlayer);
             this.tv_bettingMoney = itemView.findViewById(R.id.tv_bettingMoney);

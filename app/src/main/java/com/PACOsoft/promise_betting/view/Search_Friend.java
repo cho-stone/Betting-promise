@@ -69,8 +69,7 @@ public class Search_Friend extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.et_search);//텍스트뷰 참조 객체 선언
 
                     if (users.stream().parallel().anyMatch(u -> u.getId().equals(textView.getText().toString()))) {//텍스트뷰에서 가져온 텍스트와 동일한 id가 DB에 있는지 확인
-                        Toast toast = Toast.makeText(getApplicationContext(), "통과", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast toast;
 
                         if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//UID와 동일한 id가 DB에 있는지 확인
                             Optional<User> me = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();//User에서 id가 UID와 동일한 객체를 필터링해서 me로 생성

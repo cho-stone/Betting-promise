@@ -78,8 +78,6 @@ class Search_Location : AppCompatActivity() {
                 else {
                     searchKeyword(keyword)
                 }
-
-
             }
         })
         // 삭제 버튼
@@ -88,7 +86,6 @@ class Search_Location : AppCompatActivity() {
             listItems.clear()
             locationListAdapter.notifyDataSetChanged()
         }
-
     }
 
     // 키워드 검색 함수
@@ -106,7 +103,6 @@ class Search_Location : AppCompatActivity() {
                 // 통신 성공
                 addItemsAndMarkers(response.body())
             }
-
             override fun onFailure(call: Call<ResultSearchKeyword>, t: Throwable) {
                 // 통신 실패
                 Log.w("LocalSearch", "통신 실패: ${t.message}")
@@ -132,7 +128,7 @@ class Search_Location : AppCompatActivity() {
             locationListAdapter.notifyDataSetChanged()
         } else {
             // 검색 결과 없음
-            Toast.makeText(this, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
 
