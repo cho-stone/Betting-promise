@@ -44,14 +44,31 @@ public class Coin extends Activity {
         setContentView(R.layout.activity_coin);
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
-        originCoin = intent.getIntExtra("coin", 0); //Home에서 intent해준 coin을 받아옴
         coin_tv = findViewById(R.id.et_coin);
         after_coin_tv = findViewById(R.id.tv_afterCoin);
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference();//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         user = new User();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot DataSnapshot) {
+                ArrayList<User> users = new ArrayList<>();
+                for (DataSnapshot snapshot : DataSnapshot.getChildren()) {//데이터 베이스 내의 User객체들은 전부 User타입의 배열리스트 users에 추가
+                    users.add(snapshot.getValue(User.class));
+                }
+                if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//그 중 myId와 같은 id 있는지 탐색
+                    //myId와 같은 id가 있다면 그게 내 객체이므로 그 객체를 anyElement에 저장
+                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
+                    //나의 account 불러와서 originCoin에 넣어줌
+                    originCoin = anyElement.get().getAccount();
+                    after_coin_tv.setText(String.valueOf(originCoin));
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
-        after_coin_tv.setText(String.valueOf(originCoin));
         coin_tv.addTextChangedListener(new TextWatcher() {
             int charge_coin;
 
@@ -67,6 +84,7 @@ public class Coin extends Activity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 charge_coin = 0;
                 if(0 < coin_tv.getText().length() && coin_tv.getText().length() < 11) {
                     charge_coin += Integer.valueOf(coin_tv.getText().toString());
@@ -77,7 +95,6 @@ public class Coin extends Activity {
                 }
             }
         });
-
     }
 
     //바깥영역 터치방지
@@ -104,8 +121,6 @@ public class Coin extends Activity {
         //코인 값 전달 코드
         TextInputEditText et_coin = findViewById(R.id.et_coin);
         tempcoin = Integer.valueOf(String.valueOf(et_coin.getText()));
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot DataSnapshot) {

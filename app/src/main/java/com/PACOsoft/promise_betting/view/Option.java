@@ -51,20 +51,20 @@ public class Option extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
     }
 
-    public void btnSignOut(View view) {
+    public void btnSignOut(View view) {//로그아웃
         signOut();
         Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//실행 중인 모든 엑티비티 종료
         startActivity(intent);
     }
 
-    public void btnAppClose(View view) {
+    public void btnAppClose(View view) {//앱 종료
         finishAffinity();
         System.runFinalization();
         System.exit(0);
     }
 
-    private void revokeAccess() {
+    private void revokeAccess() {//회원탈퇴
         mAuth.getCurrentUser().delete();
         FirebaseAuth.getInstance().signOut();
     }
