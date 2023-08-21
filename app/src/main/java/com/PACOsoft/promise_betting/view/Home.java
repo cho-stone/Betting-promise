@@ -41,6 +41,8 @@ public class Home extends AppCompatActivity {
     private String UID;
     private int coin;
     private String[] promises;
+    private String newPromises;
+    private String newFriends;
 
 
     @Override
@@ -50,6 +52,7 @@ public class Home extends AppCompatActivity {
         TAG = "Home";
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //mainActivity에서 intent해준 id를 받아옴
+        newFriends = "";//newFriends 초기화
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -72,14 +75,23 @@ public class Home extends AppCompatActivity {
                     coin = anyElement.get().getAccount();//내 객체에서 account값 가져옴
                     TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
                     text.setText(String.valueOf(coin));//위에서 선언한 참조 객체에 값 넘겨줌
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
+                    for (User user : users) {
                         for (String t : s) {
-                            if (user.getId().equals(t))
+                            if (user.getId().equals(t)) {
                                 userArrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+//                                if (newFriends == "" && t != null) {
+//                                    newFriends = t;
+//                                } else if (t != null) {
+//                                    newFriends += " " + t;
+//                                }
+                                break;
+                            }
                         }
                     }
                     adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+                    //DB의 promise 데이터와 내 promise 데이터의 차이 확인하고 있다면 내 promise 데이터 수정 시작
+                    //database.getReference("User").child(UID).child("friendsId").setValue(newFriends);
+                    //수정 끝
                 }
             }
 
@@ -134,6 +146,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void btn_home_friend(View view) {
+        newFriends = "";//newFriends 초기화
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -156,16 +169,26 @@ public class Home extends AppCompatActivity {
                     coin = anyElement.get().getAccount();//내 객체에서 account값 가져옴
                     TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
                     text.setText(String.valueOf(coin));//위에서 선언한 참조 객체에 값 넘겨줌
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
+                    for (User user : users) {
                         for (String t : s) {
-                            if (user.getId().equals(t))
+                            if (user.getId().equals(t)) {
                                 userArrayList.add(user);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+//                                if (newFriends == "" && t != null) {
+//                                    newFriends = t;
+//                                } else if (t != null) {
+//                                    newFriends += " " + t;
+//                                }
+                                break;
+                            }
+
                         }
                     }
                     adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+                    //DB의 promise 데이터와 내 promise 데이터의 차이 확인하고 있다면 내 promise 데이터 수정 시작
+                    //database.getReference("User").child(UID).child("friendsId").setValue(newFriends);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
@@ -177,6 +200,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void btn_home_promise(View view) {
+        //나의 유저 정보 DB에 접근해서 내 약속들 가져오기 시작
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -200,12 +224,17 @@ public class Home extends AppCompatActivity {
                     promises = me.get().getPromiseKey().split(" ");//위에서 필터링한 객체의 PromiseKey를 공백을 기준으로 스플릿 해서 배열에 저장
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
                 Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
+        //가져오기 끝
+
+        //약속 정보 DB에 접근해서 내 약속과 일치하는 약속들만 어렙터 연결해서 리사이클러뷰에 띄워주고 newPromises에 저장
+        newPromises = "";//newPromises 초기화
         databaseReference = database.getReference("Promise");//DB테이블 연결, 파이어베이스 콘솔에서 History에 접근
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -217,24 +246,38 @@ public class Home extends AppCompatActivity {
                     for (String temp : promises) {
                         if (promise.getPromiseKey().equals(temp)) {
                             promiseArrayList.add(promise);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+                            if (newPromises == "" && temp != null) {
+                                newPromises = temp;
+                            } else if (temp != null) {
+                                newPromises += " " + temp;
+                            }
+                            break;
                         }
                     }
                 }
                 adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
+                //DB의 promise 데이터와 내 promise 데이터의 차이 확인하고 있다면 내 promise 데이터 수정 시작
+                database.getReference("User").child(UID).child("promiseKey").setValue(newPromises);
+                //수정 끝
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
                 Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
             }
+
         });
         adapter = new Promise_List_Adapter(promiseArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+        //어뎁터 연결 후 리사이클러뷰에 띄우고 newPromises에 저장 끝
+
+
     }
 
 
     public void btn_promiseClicked(View v) {
-       TextView tv_promiseKey =  v.findViewById(R.id.tv_promiseKey);
-       Log.e(TAG,tv_promiseKey.getText().toString());
+        TextView tv_promiseKey = v.findViewById(R.id.tv_promiseKey);
+        Log.e(TAG, tv_promiseKey.getText().toString());
     }
 }
