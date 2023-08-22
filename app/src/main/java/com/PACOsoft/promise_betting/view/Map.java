@@ -38,6 +38,8 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import java.util.ArrayList;
+
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -60,7 +62,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private String rid;
     private String UID;
     private User me;
+    private PromisePlayer promisePlayer_me;
+    private ArrayList<PromisePlayer> promisePlayers;
     private NaverMap.OnLocationChangeListener locationListener;
+    private ValueEventListener promiseListener;
+    private ValueEventListener userListener;
 
     //방 콜백 인터페이스
     public interface MyCallback {
@@ -113,19 +119,23 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        //나를 식별하기 위해 콜백으로 user데이터를 가져옴
         readUser(new MyCallback2() {
             @Override
             public void onCallback(User user) {
                 me = user;
             }
         });
+
+        promisePlayers = promise.getPromisePlayer();
+
     }
 
     //방 콜백 메소드생성
     public void readPromise(MyCallback myCallback) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        promiseListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Promise p = dataSnapshot.getValue(Promise.class);
@@ -136,14 +146,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
             }
-        });
+        };
+        databaseReference.addValueEventListener(promiseListener);
     }
 
     //유저 콜백 메소드생성
     public void readUser(MyCallback2 myCallback2) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("User").child(UID);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -154,7 +165,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
             }
-        });
+        };
+        databaseReference.addValueEventListener(userListener);
     }
 
     public void room_menu(View view) {
@@ -192,7 +204,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 B.setLongitude(x);
 
                 double distance = A.distanceTo(B);
-                Log.v("tt", String.valueOf(distance));
+                //TODO: if문에 시간 조건도 추가하기
                 if (distance <= 50.0) {
                     reach_location.setEnabled(true);
                 }
@@ -219,6 +231,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void btn_reach_place(View view) {
+
     }
 
     public void btn_vote_start(View view){
@@ -228,6 +241,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     public void onBackPressed() {
        super.onBackPressed();
        naverMap.removeOnLocationChangeListener(locationListener);
+       databaseReference.removeEventListener(promiseListener);
+        databaseReference.removeEventListener(userListener);
        finish();
     }
 
