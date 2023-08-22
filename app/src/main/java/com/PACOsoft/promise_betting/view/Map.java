@@ -1,55 +1,42 @@
 package com.PACOsoft.promise_betting.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
 import com.PACOsoft.promise_betting.obj.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.style.layers.LineExtrusionLayer;
 import com.naver.maps.map.util.FusedLocationSource;
-
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-
 
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
@@ -73,7 +60,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private String rid;
     private String UID;
     private User me;
-    private double my_lat, my_lon;
+    private NaverMap.OnLocationChangeListener locationListener;
 
     //방 콜백 인터페이스
     public interface MyCallback {
@@ -91,7 +78,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_map);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerView = (View)findViewById(R.id.drawer);
+        drawerView = (View) findViewById(R.id.drawer);
         drawerLayout.setDrawerLockMode(drawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //네이버 지도
@@ -116,7 +103,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 people_number.setText(String.valueOf(promise.getNumOfPlayer()));
                 room_name.setText(promise.getPromiseName());
                 location_xy = promise.getPromisePlace().split(" ");
-                for(PromisePlayer i : promise.getPromisePlayer()){
+                for (PromisePlayer i : promise.getPromisePlayer()) {
                     TextView tv = new TextView(getApplicationContext());
                     tv.setText(i.getNickName());
                     tv.setTextSize(15);
@@ -135,15 +122,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     //방 콜백 메소드생성
-    public void readPromise(MyCallback myCallback){
+    public void readPromise(MyCallback myCallback) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               Promise p = dataSnapshot.getValue(Promise.class);
-               myCallback.onCallback(p);//최강 콜백!!
+                Promise p = dataSnapshot.getValue(Promise.class);
+                myCallback.onCallback(p);//최강 콜백!!
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
@@ -152,7 +140,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     //유저 콜백 메소드생성
-    public void readUser(MyCallback2 myCallback2){
+    public void readUser(MyCallback2 myCallback2) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("User").child(UID);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -161,6 +149,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 User user = dataSnapshot.getValue(User.class);
                 myCallback2.onCallback(user);//최강 콜백!!
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
@@ -168,7 +157,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
-    public void room_menu(View view){
+    public void room_menu(View view) {
         drawerLayout.openDrawer(drawerView);
     }
 
@@ -189,10 +178,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         circle.setRadius(50);
         circle.setColor(Color.argb(70, 153, 232, 174));
         circle.setOutlineWidth(5);
-        circle.setOutlineColor(Color.argb(70, 0,0,0));
+        circle.setOutlineColor(Color.argb(70, 0, 0, 0));
         circle.setMap(naverMap);
-
-        naverMap.addOnLocationChangeListener(new NaverMap.OnLocationChangeListener() {
+        locationListener = new NaverMap.OnLocationChangeListener(){
             @Override
             public void onLocationChange(@NonNull Location location) {
                 Location A = new Location("point A");
@@ -205,12 +193,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 double distance = A.distanceTo(B);
                 Log.v("tt", String.valueOf(distance));
-                if(distance <= 50.0){
+                if (distance <= 50.0) {
                     reach_location.setEnabled(true);
                 }
             }
-        });
+        };
+        naverMap.addOnLocationChangeListener(locationListener);
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -232,4 +223,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     public void btn_vote_start(View view){
     }
+
+    @Override
+    public void onBackPressed() {
+       super.onBackPressed();
+       naverMap.removeOnLocationChangeListener(locationListener);
+       finish();
+    }
+
 }
