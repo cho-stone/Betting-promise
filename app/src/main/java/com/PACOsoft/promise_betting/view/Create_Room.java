@@ -280,7 +280,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             player.setBettingMoney(0);
             player.setRanking(0);
             player.setArrival(false);
-            player.setPlayerID(id);
+            player.setPlayerUID(id);
             player.setNickName(friends2.get(i));
             player.setX(0.0);
             player.setY(0.0);
@@ -340,27 +340,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                 Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
             }
         });
-
-
-//        databaseReference.child("User").child(UID).child("promiseKey").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                if (!task.isSuccessful()) {
-//                    Log.e("Create_Room", "Error getting data", task.getException());
-//                }
-//                else {
-//                    String pr_key = task.getResult().getValue().toString();
-//                    if(pr_key.equals("")){
-//                        pr_key = rid;
-//                    }
-//                    else{
-//                        pr_key = pr_key + " " + rid;
-//                    }
-//                    databaseReference.child("User").child(UID).child("promiseKey").setValue(pr_key);
-//                }
-//            }
-//        });
-
 
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("rid", rid);
