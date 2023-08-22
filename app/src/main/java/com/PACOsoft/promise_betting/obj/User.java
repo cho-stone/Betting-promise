@@ -7,7 +7,7 @@ public class User {
     private String nickName = "";//닉네임
     private int account = 0;//계좌 잔액
     private String promiseKey = "";//약속 고유 코드 리스트
-    private String friendsId = "";//친구 아이디 리스트
+    private String friendsUID = "";//친구 아이디 리스트
 
     public User() {
     }
@@ -60,11 +60,11 @@ public class User {
         this.promiseKey = promiseKey;
     }
 
-    public String getFriendsId() {
-        return friendsId;
+    public String getFriendsUID() {
+        return friendsUID;
     }
 
-    public void setFriendsId(String friendsId) {
-        this.friendsId = friendsId;
+    public void setFriendsUID(String friendsUID) {
+        this.friendsUID = friendsUID;
     }
 }

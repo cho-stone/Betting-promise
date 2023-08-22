@@ -199,7 +199,7 @@ public class signup_page extends AppCompatActivity {
                                             user.setId(et_id.getText().toString().trim());
                                             user.setNickName(et_nick.getText().toString().trim());
                                             user.setPromiseKey("");
-                                            user.setFriendsId("");
+                                            user.setFriendsUID("");
                                             user.setUID(auth.getCurrentUser().getUid());
                                             databaseReference.child("User").child(auth.getCurrentUser().getUid()).setValue(user);
                                             finish();

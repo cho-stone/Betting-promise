@@ -68,7 +68,7 @@ public class Invite_Friend extends AppCompatActivity {
 
                 if (users.stream().parallel().anyMatch(u ->u.getUID().equals(UID))) {//myId와 동일한 id가 DB에 있는지 확인
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
-                    String[] s = anyElement.get().getFriendsId().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+                    String[] s = anyElement.get().getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
                         for (String t : s) {
@@ -107,7 +107,7 @@ public class Invite_Friend extends AppCompatActivity {
                 if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//myId와 동일한 id가 DB에 있는지 확인
                     Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
                     //User에서 id가 myId와 동일한 객체를 필터링
-                    String[] s = anyElement.get().getFriendsId().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+                    String[] s = anyElement.get().getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class); // 만들어뒀던 User 객체에 데이터를 담는다
                         for (String t : s) {

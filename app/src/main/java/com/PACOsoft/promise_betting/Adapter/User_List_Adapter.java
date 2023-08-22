@@ -43,6 +43,7 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
         Glide.with(holder.itemView)
                 .load(arrayList.get(position).getProfile())
                 .into(holder.iv_profile);//서버로부터 이미지 받아와서 item에 삽입
+        holder.tv_UID.setText(arrayList.get(position).getUID());//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_id.setText(arrayList.get(position).getId());//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_nickName.setText(arrayList.get(position).getNickName());
 
@@ -58,12 +59,14 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_profile;
+        TextView tv_UID;
         TextView tv_id;
         TextView tv_nickName;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.iv_profile = itemView.findViewById(R.id.iv_profile);
+            this.tv_UID = itemView.findViewById(R.id.tv_UID);
             this.tv_id = itemView.findViewById(R.id.tv_id);
             this.tv_nickName = itemView.findViewById(R.id.tv_nickName);
         }
