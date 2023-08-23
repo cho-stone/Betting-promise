@@ -27,74 +27,58 @@ public class Search_History extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<History> arrayList;
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference, databaseReference2;
     private String UID;
     private String[] historys;
+    private ValueEventListener getHistoryValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_history);
-
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
         recyclerView = findViewById(R.id.historyRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
         recyclerView.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
+        ArrayList<History> historyArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        getHistoryValueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); //기존 배열리스트를 초기화
-                ArrayList<User> users = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    users.add(snapshot.getValue(User.class));
-                }
-                if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//myId와 동일한 id가 DB에 있는지 확인
-                    Optional<User> me = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
-                    //User에서 id가 myId와 동일한 객체를 필터링
-                    historys = me.get().getPromiseKey().split(" ");//위에서 필터링한 객체의 PromiseKey를 공백을 기준으로 스플릿 해서 배열에 저장
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                Log.e("Search_History", String.valueOf(databaseError.toException()));//에러문 출력
-            }
-        });
-
-        databaseReference = database.getReference("History");//DB테이블 연결, 파이어베이스 콘솔에서 History에 접근
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); //기존 배열리스트를 초기화
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    History history = snapshot.getValue(History.class); // 만들어뒀던 History 객체에 데이터를 담는다
-                    for (String temp : historys) {
-                        if (history.getPromiseKey().equals(temp)) {
-                            arrayList.add(history);//담은 데이터를 어레이리스트에 넣고 리사이클러뷰로 보낼 준비함
+                historyArrayList.clear(); //기존 배열리스트를 초기화
+                User me = snapshot.getValue(User.class);
+                historys = me.getHistoryKey().split(" ");//위에서 필터링한 객체의 PromiseKey를 공백을 기준으로 스플릿 해서 배열에 저장
+                for(String history : historys){
+                    databaseReference2 =database.getReference("History").child(history);//DB테이블 연결, 파이어베이스 콘솔에서 History에 접근
+                    databaseReference2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            historyArrayList.add(snapshot.getValue(History.class));
+                            adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
                         }
-                    }
-
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
                 }
-                adapter.notifyDataSetChanged();//리스트 저장 및 새로고침
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                Log.e("Search_History", String.valueOf(databaseError.toException()));//에러문 출력
-            }
-        });
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        };
 
-        adapter = new History_List_Adapter(arrayList, this);
+        databaseReference.addValueEventListener(getHistoryValueEventListener);
+        adapter = new History_List_Adapter(historyArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        databaseReference.removeEventListener(getHistoryValueEventListener);
+        finish();
     }
 }

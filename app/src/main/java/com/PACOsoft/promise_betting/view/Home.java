@@ -42,6 +42,7 @@ public class Home extends AppCompatActivity {
     private int coin;
     public static Context context;
     public static ValueEventListener getFriendValueEventLister, getPromiseValueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,12 +178,14 @@ public class Home extends AppCompatActivity {
                             promiseArrayList.add(snapshot.getValue(Promise.class));
                             adapter.notifyDataSetChanged();
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
                     });
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }

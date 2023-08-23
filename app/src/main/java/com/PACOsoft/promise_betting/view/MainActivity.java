@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                                 user.setNickName(mAuth.getCurrentUser().getDisplayName());
                                 user.setPromiseKey("");
                                 user.setFriendsUID("");
+                                user.setHistoryKey("");
                                 user.setUID(auth.getCurrentUser().getUid());
                                 databaseReference.child(auth.getCurrentUser().getUid()).setValue(user);
                             }
