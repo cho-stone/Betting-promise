@@ -62,7 +62,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextInputEditText et_roomname;
     private String UID, TAG;
     private ArrayList<String> friends, friends2;
-
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
     private FirebaseDatabase database;

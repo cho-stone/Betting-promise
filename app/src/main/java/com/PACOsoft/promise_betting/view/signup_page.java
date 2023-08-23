@@ -200,6 +200,7 @@ public class signup_page extends AppCompatActivity {
                                             user.setNickName(et_nick.getText().toString().trim());
                                             user.setPromiseKey("");
                                             user.setFriendsUID("");
+                                            user.setHistoryKey("");
                                             user.setUID(auth.getCurrentUser().getUid());
                                             databaseReference.child("User").child(auth.getCurrentUser().getUid()).setValue(user);
                                             finish();

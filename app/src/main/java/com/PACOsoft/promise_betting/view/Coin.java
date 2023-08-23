@@ -74,17 +74,14 @@ public class Coin extends Activity {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
                 charge_coin = 0;
                 if(0 < coin_tv.getText().length() && coin_tv.getText().length() < 11) {
                     charge_coin += Integer.valueOf(coin_tv.getText().toString());
