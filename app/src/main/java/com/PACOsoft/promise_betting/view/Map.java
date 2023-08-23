@@ -67,6 +67,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private NaverMap.OnLocationChangeListener locationListener;
     private ValueEventListener promiseListener;
     private ValueEventListener userListener;
+    private int i = 0;
 
     //방 콜백 인터페이스
     public interface MyCallback {
@@ -127,8 +128,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        //나를 식별하여 promisePlayer 정보 가져오기
         promisePlayers = promise.getPromisePlayer();
-
+        for(i = 0; i < promisePlayers.size(); i++){
+            if(promisePlayers.get(i).getPlayerUID().equals(UID)){
+                promisePlayer_me = promisePlayers.get(i);
+                return;
+            }
+        }
     }
 
     //방 콜백 메소드생성
@@ -208,6 +215,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 if (distance <= 50.0) {
                     reach_location.setEnabled(true);
                 }
+
+                //내위치 저장
+                database = FirebaseDatabase.getInstance();
+                databaseReference = database.getReference("Promise").child(rid).child("promisePlayer").child(String.valueOf(i));
+                databaseReference.child("x").setValue(x);
+                databaseReference.child("y").setValue(y);
             }
         };
         naverMap.addOnLocationChangeListener(locationListener);
@@ -231,7 +244,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void btn_reach_place(View view) {
-
+        promisePlayer_me.setArrival(true);
     }
 
     public void btn_vote_start(View view){
@@ -242,7 +255,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
        super.onBackPressed();
        naverMap.removeOnLocationChangeListener(locationListener);
        databaseReference.removeEventListener(promiseListener);
-        databaseReference.removeEventListener(userListener);
+       databaseReference.removeEventListener(userListener);
        finish();
     }
 
