@@ -135,19 +135,16 @@ public class Home extends AppCompatActivity {
                             userArrayList.add(snapshot.getValue(User.class));
                             adapter.notifyDataSetChanged();
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
                     });
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-
         databaseReference.addValueEventListener(getFriendValueEventLister);
         adapter = new User_List_Adapter(userArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
