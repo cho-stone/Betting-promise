@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.PermissionChecker;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -53,10 +55,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     };
     private DrawerLayout drawerLayout;
     private View drawerView;
-    private Promise promise;
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
-    private String[] location_xy;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String rid;
@@ -64,20 +64,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private User me;
     private PromisePlayer promisePlayer_me;
     private ArrayList<PromisePlayer> promisePlayers;
-    private NaverMap.OnLocationChangeListener locationListener;
-    private ValueEventListener promiseListener;
+    //private NaverMap.OnLocationChangeListener locationListener;
+    @Nullable
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private ValueEventListener promiseSettingListener, promisePointListener;
     private ValueEventListener userListener;
     private int i = 0;
-
-    //방 콜백 인터페이스
-    public interface MyCallback {
-        void onCallback(Promise promise);
-    }
-
-    //유저 콜백 인터페이스
-    public interface MyCallback2 {
-        void onCallback(User user);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +86,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         people_number = findViewById(R.id.tv_room_people_count);
         room_name = findViewById(R.id.tv_room_promise);
@@ -102,15 +96,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         //rid사용해서 콜백으로 객체 가져오기
         rid = getIntent().getStringExtra("rid");
         UID = getIntent().getStringExtra("UID");
-        readPromise(new MyCallback() {
+
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Promise").child(rid);
+        promiseSettingListener = new ValueEventListener() {
             @Override
-            public void onCallback(Promise p) {
-                promise = p;
-                //방설정
-                people_number.setText(String.valueOf(promise.getNumOfPlayer()));
-                room_name.setText(promise.getPromiseName());
-                location_xy = promise.getPromisePlace().split(" ");
-                for (PromisePlayer i : promise.getPromisePlayer()) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Promise p = dataSnapshot.getValue(Promise.class);
+                people_number.setText(String.valueOf(p.getNumOfPlayer()));
+                room_name.setText(p.getPromiseName());
+                for (PromisePlayer i : p.getPromisePlayer()) {
                     TextView tv = new TextView(getApplicationContext());
                     tv.setText(i.getNickName());
                     tv.setTextSize(15);
@@ -118,62 +113,22 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     players.addView(tv);
                 }
             }
-        });
-
-        //나를 식별하기 위해 콜백으로 user데이터를 가져옴
-        readUser(new MyCallback2() {
-            @Override
-            public void onCallback(User user) {
-                me = user;
-            }
-        });
-
-        //나를 식별하여 promisePlayer 정보 가져오기
-        promisePlayers = promise.getPromisePlayer();
-        for(i = 0; i < promisePlayers.size(); i++){
-            if(promisePlayers.get(i).getPlayerUID().equals(UID)){
-                promisePlayer_me = promisePlayers.get(i);
-                return;
-            }
-        }
-    }
-
-    //방 콜백 메소드생성
-    public void readPromise(MyCallback myCallback) {
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("Promise").child(rid);
-        promiseListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Promise p = dataSnapshot.getValue(Promise.class);
-                myCallback.onCallback(p);//최강 콜백!!
-            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
             }
         };
-        databaseReference.addValueEventListener(promiseListener);
-    }
+        databaseReference.addListenerForSingleValueEvent(promiseSettingListener);
 
-    //유저 콜백 메소드생성
-    public void readUser(MyCallback2 myCallback2) {
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("User").child(UID);
-        userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                myCallback2.onCallback(user);//최강 콜백!!
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Map", String.valueOf(databaseError.toException()));
-            }
-        };
-        databaseReference.addValueEventListener(userListener);
+//        //나를 식별하여 promisePlayer 정보 가져오기
+//        promisePlayers = promise.getPromisePlayer();
+//        for(i = 0; i < promisePlayers.size(); i++){
+//            if(promisePlayers.get(i).getPlayerUID().equals(UID)){
+//                promisePlayer_me = promisePlayers.get(i);
+//                return;
+//            }
+//        }
     }
 
     public void room_menu(View view) {
@@ -186,44 +141,69 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         naverMap.setLocationSource(locationSource); //현재 위치 반영
         ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE);
 
-        double x = Double.valueOf(location_xy[0]);
-        double y = Double.valueOf(location_xy[1]);
-        Marker locat = new Marker();
-        locat.setPosition(new LatLng(y, x));
-        locat.setMap(naverMap);
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Promise").child(rid);
+        promisePointListener = new ValueEventListener() {
 
-        CircleOverlay circle = new CircleOverlay();
-        circle.setCenter(new LatLng(y, x));
-        circle.setRadius(50);
-        circle.setColor(Color.argb(70, 153, 232, 174));
-        circle.setOutlineWidth(5);
-        circle.setOutlineColor(Color.argb(70, 0, 0, 0));
-        circle.setMap(naverMap);
-        locationListener = new NaverMap.OnLocationChangeListener(){
+            @SuppressLint("MissingPermission")
             @Override
-            public void onLocationChange(@NonNull Location location) {
-                Location A = new Location("point A");
-                A.setLatitude(location.getLatitude());
-                A.setLongitude(location.getLongitude());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Promise p = dataSnapshot.getValue(Promise.class);
+                String[] location_xy = p.getPromisePlace().split(" ");
+                double x = Double.valueOf(location_xy[0]);
+                double y = Double.valueOf(location_xy[1]);
 
-                Location B = new Location("point B");
-                B.setLatitude(y);
-                B.setLongitude(x);
+                Marker locat = new Marker();
+                locat.setPosition(new LatLng(y, x));
+                locat.setMap(naverMap);
 
-                double distance = A.distanceTo(B);
-                //TODO: if문에 시간 조건도 추가하기
-                if (distance <= 50.0) {
-                    reach_location.setEnabled(true);
+                CircleOverlay circle = new CircleOverlay();
+                circle.setCenter(new LatLng(y, x));
+                circle.setRadius(50);
+                circle.setColor(Color.argb(70, 153, 232, 174));
+                circle.setOutlineWidth(5);
+                circle.setOutlineColor(Color.argb(70, 0, 0, 0));
+                circle.setMap(naverMap);
+
+                //실시간 위치 비교 시작
+                locationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                        Location A = new Location("point A");
+                        A.setLatitude(location.getLatitude());
+                        A.setLongitude(location.getLongitude());
+
+                        Location B = new Location("point B");
+                        B.setLatitude(y);
+                        B.setLongitude(x);
+
+                        double distance = A.distanceTo(B);
+                        //TODO: if문에 시간 조건도 추가하기
+                        Log.v("Map", String.valueOf(distance));
+                        if (distance <= 50.0) {
+                            reach_location.setEnabled(true);
+                        }
+                    }
+                };
+                if(hasPermission() && locationManager != null){
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000L, 0.5f, locationListener); // 3초마다 50cm 움직일때 갱신
                 }
 
-                //내위치 저장
-                database = FirebaseDatabase.getInstance();
-                databaseReference = database.getReference("Promise").child(rid).child("promisePlayer").child(String.valueOf(i));
-                databaseReference.child("x").setValue(x);
-                databaseReference.child("y").setValue(y);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Map", String.valueOf(databaseError.toException()));
             }
         };
-        naverMap.addOnLocationChangeListener(locationListener);
+        databaseReference.addListenerForSingleValueEvent(promisePointListener);
+    }
+
+    private boolean hasPermission() {
+        return PermissionChecker.checkSelfPermission(this, PERMISSIONS[0])
+                == PermissionChecker.PERMISSION_GRANTED
+                && PermissionChecker.checkSelfPermission(this, PERMISSIONS[1])
+                == PermissionChecker.PERMISSION_GRANTED;
     }
 
 
@@ -233,6 +213,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // request code와 권한 획득 여부 확인
         if (requestCode == PERMISSION_REQUEST_CODE) {
+
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }
@@ -244,7 +225,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void btn_reach_place(View view) {
-        promisePlayer_me.setArrival(true);
     }
 
     public void btn_vote_start(View view){
@@ -253,10 +233,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
        super.onBackPressed();
-       naverMap.removeOnLocationChangeListener(locationListener);
-       databaseReference.removeEventListener(promiseListener);
-       databaseReference.removeEventListener(userListener);
+       locationManager.removeUpdates(locationListener);
+       databaseReference.removeEventListener(promiseSettingListener);
        finish();
     }
-
 }
