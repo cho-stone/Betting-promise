@@ -9,7 +9,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,7 +16,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +23,6 @@ import android.widget.TextView;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
-import com.PACOsoft.promise_betting.obj.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,8 +36,6 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
-
-import java.util.ArrayList;
 
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
@@ -71,12 +66,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerView = (View) findViewById(R.id.drawer);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerView = findViewById(R.id.drawer);
         drawerLayout.setDrawerLockMode(drawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //네이버 지도
-        mapView = (MapView) findViewById(R.id.map_view);
+        mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         locationSource = new FusedLocationSource(this, PERMISSION_REQUEST_CODE);
@@ -97,6 +92,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Promise p = dataSnapshot.getValue(Promise.class);
+                assert p != null;
                 people_number.setText(String.valueOf(p.getNumOfPlayer()));
                 room_name.setText(p.getPromiseName());
                 for (PromisePlayer i : p.getPromisePlayer()) {
@@ -115,7 +111,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         };
         databaseReference.addListenerForSingleValueEvent(promiseSettingListener);
 
-//        //나를 식별하여 promisePlayer 정보 가져오기
+//        나를 식별하여 promisePlayer 정보 가져오기
 //        promisePlayers = promise.getPromisePlayer();
 //        for(i = 0; i < promisePlayers.size(); i++){
 //            if(promisePlayers.get(i).getPlayerUID().equals(UID)){
@@ -144,9 +140,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Promise p = dataSnapshot.getValue(Promise.class);
+                assert p != null;
                 String[] location_xy = p.getPromisePlace().split(" ");
-                double x = Double.valueOf(location_xy[0]);
-                double y = Double.valueOf(location_xy[1]);
+                double x = Double.parseDouble(location_xy[0]);
+                double y = Double.parseDouble(location_xy[1]);
 
                 Marker locat = new Marker();
                 locat.setPosition(new LatLng(y, x));
@@ -229,7 +226,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
        super.onBackPressed();
-       locationManager.removeUpdates(locationListener);
+        assert locationManager != null;
+        locationManager.removeUpdates(locationListener);
        finish();
     }
 }
