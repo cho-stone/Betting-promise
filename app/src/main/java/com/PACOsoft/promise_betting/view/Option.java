@@ -45,6 +45,8 @@ public class Option extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID");
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("User").child(UID);
     }
 
     private void signOut() {
@@ -52,8 +54,10 @@ public class Option extends AppCompatActivity {
     }
 
     public void btnSignOut(View view) {//로그아웃
-        signOut();
         Intent intent = new Intent(this, MainActivity.class);
+        databaseReference.removeEventListener(((Home)Home.context).getFriendValueEventLister);
+        databaseReference.removeEventListener(((Home)Home.context).getPromiseValueEventListener);
+        signOut();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//실행 중인 모든 엑티비티 종료
         startActivity(intent);
     }
