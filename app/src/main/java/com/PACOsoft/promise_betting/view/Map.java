@@ -61,16 +61,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private DatabaseReference databaseReference;
     private String rid;
     private String UID;
-    private User me;
-    private PromisePlayer promisePlayer_me;
-    private ArrayList<PromisePlayer> promisePlayers;
-    //private NaverMap.OnLocationChangeListener locationListener;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
     private ValueEventListener promiseSettingListener, promisePointListener;
-    private ValueEventListener userListener;
-    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +87,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         players = findViewById(R.id.player_list_lo);
         reach_location = findViewById(R.id.reach_location_btn);
 
-        //rid사용해서 콜백으로 객체 가져오기
         rid = getIntent().getStringExtra("rid");
         UID = getIntent().getStringExtra("UID");
 
+        //방세팅
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
         promiseSettingListener = new ValueEventListener() {
@@ -141,6 +135,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         naverMap.setLocationSource(locationSource); //현재 위치 반영
         ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE);
 
+        //지도에 도착 마커와 범위 찍기
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
         promisePointListener = new ValueEventListener() {
@@ -199,6 +194,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference.addListenerForSingleValueEvent(promisePointListener);
     }
 
+    //locationManager 퍼미션
     private boolean hasPermission() {
         return PermissionChecker.checkSelfPermission(this, PERMISSIONS[0])
                 == PermissionChecker.PERMISSION_GRANTED
@@ -207,7 +203,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
 
-
+    //트래킹을 위한 퍼미션
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -234,7 +230,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     public void onBackPressed() {
        super.onBackPressed();
        locationManager.removeUpdates(locationListener);
-       databaseReference.removeEventListener(promiseSettingListener);
        finish();
     }
 }
