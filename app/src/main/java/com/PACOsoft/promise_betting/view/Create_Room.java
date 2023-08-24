@@ -222,8 +222,9 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         if (result.getResultCode() == RESULT_OK) {
             Intent intent = result.getData();
             assert intent != null;
-            friends = intent.getStringArrayListExtra("friends");
-            friends2 = intent.getStringArrayListExtra("friends2");
+            friends = intent.getStringArrayListExtra("ArrUID");
+            friends2 = intent.getStringArrayListExtra("ArrNickName");
+            friends2 = intent.getStringArrayListExtra("ArrID");
             people = friends.size() + 1;//자기자신 포함
             String friends_list2 = String.join(" ", friends2);
             friendsText.setText(friends_list2);

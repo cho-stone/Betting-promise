@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Optional;
 
 public class Invite_Friend extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -37,9 +34,9 @@ public class Invite_Friend extends AppCompatActivity {
     private String UID, TAG;
     private String[] friends;
     private ValueEventListener getInviteFriendListValueEventLister, getInviteFriendListValueEventLister2, getInviteFriendListValueEventLister3, getInviteFriendListValueEventLister4;
-    private HashSet<String> hashSet = new HashSet<>();//중복 방지 위해 해쉬셋 이용, UID 저장용
-    private HashSet<String> hashSet2 = new HashSet<>();//중복 방지 위해 해쉬셋 이용, nickname 저장용
-    private HashSet<String> hashSet3 = new HashSet<>();//중복 방지 위해 해쉬셋 이용, id 저장용
+    private HashSet<String> hashSetUID = new HashSet<>();//중복 방지 위해 해쉬셋 이용, UID 저장용
+    private HashSet<String> hashSetNickName = new HashSet<>();//중복 방지 위해 해쉬셋 이용, nickname 저장용
+    private HashSet<String> hashSetID = new HashSet<>();//중복 방지 위해 해쉬셋 이용, id 저장용
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,27 +97,29 @@ public class Invite_Friend extends AppCompatActivity {
         TextView tv_id = v.findViewById(R.id.tv_id);
         if (bgcolor == Color.LTGRAY) {
             v.setBackgroundColor(Color.WHITE);
-            hashSet.remove(String.valueOf(tv_UID.getText()));
-            hashSet2.remove(String.valueOf(tv_nickName.getText()));
-            hashSet3.remove(String.valueOf(tv_id.getText()));
+            hashSetUID.remove(String.valueOf(tv_UID.getText()));
+            hashSetNickName.remove(String.valueOf(tv_nickName.getText()));
+            hashSetID.remove(String.valueOf(tv_id.getText()));
         } else {
             v.setBackgroundColor(Color.LTGRAY);
-            hashSet.add(String.valueOf(tv_UID.getText()));
-            hashSet2.add(String.valueOf(tv_nickName.getText()));
-            hashSet3.add(String.valueOf(tv_id.getText()));
+            hashSetUID.add(String.valueOf(tv_UID.getText()));
+            hashSetNickName.add(String.valueOf(tv_nickName.getText()));
+            hashSetID.add(String.valueOf(tv_id.getText()));
         }
     }
 
     public void btv_Invite_Friend_Clicked(View v) {
-        ArrayList<String> friend_arr = new ArrayList<>(hashSet);
-        ArrayList<String> friend_arr2 = new ArrayList<>(hashSet2);
-        if (friend_arr.size() == 0) {
+        ArrayList<String> ArrUID = new ArrayList<>(hashSetUID);
+        ArrayList<String> ArrNickName = new ArrayList<>(hashSetNickName);
+        ArrayList<String> ArrID = new ArrayList<>(hashSetID);
+        if (ArrUID.size() == 0) {
             Toast.makeText(getApplicationContext(), "1명 이상 선택", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("friends", friend_arr);
-        resultIntent.putExtra("friends2", friend_arr2);
+        resultIntent.putExtra("ArrUID", ArrUID);
+        resultIntent.putExtra("ArrNickName", ArrNickName);
+        resultIntent.putExtra("ArrID", ArrID);
         setResult(RESULT_OK, resultIntent);
         finish();
     }
