@@ -5,8 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -20,15 +18,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.PACOsoft.promise_betting.Adapter.User_List_Adapter;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
 import com.PACOsoft.promise_betting.obj.User;
 import com.PACOsoft.promise_betting.util.Date_Picker;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.util.Time_Picker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -37,18 +32,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import org.jetbrains.annotations.Contract;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -61,7 +49,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     TextInputLayout lo_roomname;
     TextInputEditText et_roomname;
     private String UID, TAG;
-    private ArrayList<String> friends, friends2;
+    private ArrayList<String> friendsUID, friendsNick, friendsID;
     private boolean[] check = {false, false, false, false, false}; //0: 방이름, 1: 날짜, 2: 시간, 3: 위치, 4: 친구초대
     private int y, mo, d, h, m; // 시간 받는 값
     private FirebaseDatabase database;
@@ -222,12 +210,12 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         if (result.getResultCode() == RESULT_OK) {
             Intent intent = result.getData();
             assert intent != null;
-            friends = intent.getStringArrayListExtra("ArrUID");
-            friends2 = intent.getStringArrayListExtra("ArrNickName");
-            friends2 = intent.getStringArrayListExtra("ArrID");
-            people = friends.size() + 1;//자기자신 포함
-            String friends_list2 = String.join(" ", friends2);
-            friendsText.setText(friends_list2);
+            friendsUID = intent.getStringArrayListExtra("ArrUID");
+            friendsNick = intent.getStringArrayListExtra("ArrNickName");
+            friendsID = intent.getStringArrayListExtra("ArrID");
+            people = friendsUID.size() + 1;//자기자신 포함
+            String friends_list = String.join(" ", friendsNick);
+            friendsText.setText(friends_list);
             check[4] = true;
             create_enable();
         }
@@ -271,17 +259,17 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         }
 
         //자신 추가후 객체에 넣기
-        friends.add(me.getUID());
-        friends2.add(me.getNickName());
+        friendsUID.add(me.getUID());
+        friendsNick.add(me.getNickName());
         ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
         int i = 0;
-        for (String id : friends) {
+        for (String id : friendsUID) {
             PromisePlayer player = new PromisePlayer();
             player.setBettingMoney(0);
             player.setRanking(0);
             player.setArrival(false);
             player.setPlayerUID(id);
-            player.setNickName(friends2.get(i));
+            player.setNickName(friendsNick.get(i));
             player.setX(0.0);
             player.setY(0.0);
             friendsArray.add(player);
@@ -306,41 +294,34 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         promise.setVote(0);
 
         databaseReference.child("Promise").child(rid).setValue(promise);
-
-
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-
-                ArrayList<User> users = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    users.add(snapshot.getValue(User.class));
-                }
-                for (String id : friends) {
-                    if (users.stream().parallel().anyMatch(u -> u.getId().equals(id))) {//myId와 동일한 id가 DB에 있는지 확인
-                        Optional<User> anyElement = users.stream().parallel().filter(u -> u.getId().equals(id)).findFirst(); //User에서 id가 myId와 동일한 객체를 필터링
-                        String pr_key = anyElement.get().getPromiseKey();
-                        String tempUID = anyElement.get().getUID();
-                        if (pr_key.equals("")) {
-                            pr_key = rid;
-                        } else {
-                            pr_key = pr_key + " " + rid;
-                        }
-                        databaseReference.child(tempUID).child("promiseKey").setValue(pr_key);
+        for (String friendUID : friendsUID) {
+            databaseReference = database.getReference("User").child(friendUID).child("promiseKey");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String pr_key = dataSnapshot.getValue(String.class);
+                    Log.v("Create1", pr_key);
+                    if (pr_key.equals("")) {
+                        pr_key = rid;
+                        Log.v("Create2", pr_key);
+                    } else {
+                        pr_key = pr_key + " " + rid;
+                        Log.v("Create3", pr_key);
                     }
+                    Log.v("Create4", pr_key);
+                    Log.v("currUID", friendUID);
+                    DatabaseReference mDatabase;
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("User").child(friendUID).child("promiseKey").setValue(pr_key);
                 }
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
-            }
-        });
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
+                    Log.e(TAG, String.valueOf(databaseError.toException()));//에러문 출력
+                }
+            });
+        }
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("rid", rid);
         intent.putExtra("UID", me.getUID());
@@ -354,6 +335,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
     }
 
     //UUID 짧게 변환
+    @NonNull
+    @Contract("_, _ -> new")
     public static String toUnsignedString(long i, int shift) {
         char[] buf = new char[64];
         int charPos = 64;
