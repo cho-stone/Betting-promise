@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
@@ -88,6 +89,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         rid = getIntent().getStringExtra("rid");
         UID = getIntent().getStringExtra("UID");
+        num = -1;
 
         //방세팅
         database = FirebaseDatabase.getInstance();
@@ -154,7 +156,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 //객체에서 내 PromisePlayer 객체 찾기
                 ArrayList<PromisePlayer> promisePlayers;
                 promisePlayers = p.getPromisePlayer();
-                num = 0;
+                num = -1;
                 for(int i = 0; i < promisePlayers.size(); i++){
                     if(promisePlayers.get(i).getPlayerUID().equals(UID)){
                         promisePlayer_me = promisePlayers.get(i);
@@ -162,9 +164,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
 
-//                맵 완성시 풀어주기
+//                TODO: 맵 완성시 풀어주기
 //                DatabaseReference mDatabase;
 //                mDatabase = FirebaseDatabase.getInstance().getReference();
+
                 //실시간 위치 비교 시작
                 locationListener = new LocationListener() {
                     @Override
@@ -188,7 +191,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
 
                         if(promisePlayer_me != null){
-                            //맵 완성시 풀어주기 x y에 현재 내위치 값을 저장함
+                            //TODO :맵 완성시 풀어주기 x y에 현재 내위치 값을 저장함
                             //mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
                             //mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
                         }
@@ -236,7 +239,28 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void btn_reach_place(View view) {
+        if(num == -1){
+            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT);
+            return;
+        }
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        databaseReference = database.getReference("Promise").child(rid).child("promisePlayer").child(String.valueOf(num));
+        promiseSettingListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                PromisePlayer promisePlayer = dataSnapshot.getValue(PromisePlayer.class);
+                promisePlayer.setArrival(true);
+                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("arrival").setValue(true);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Map", String.valueOf(databaseError.toException()));
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(promiseSettingListener);
     }
 
     public void btn_vote_start(View view){
