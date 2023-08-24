@@ -125,7 +125,12 @@ public class Home extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userArrayList.add(snapshot.getValue(User.class));
-                adapter.notifyDataSetChanged();
+                if(!snapshot.getValue(User.class).getId().equals(""))
+                    adapter.notifyDataSetChanged();
+                else{
+                    userArrayList.clear();
+                    adapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -156,7 +161,6 @@ public class Home extends AppCompatActivity {
     }
 
     public void view_promise() {
-
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -170,7 +174,12 @@ public class Home extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 promiseArrayList.add(snapshot.getValue(Promise.class));
-                adapter.notifyDataSetChanged();
+                if(!snapshot.getValue(Promise.class).getPromiseKey().equals(""))
+                    adapter.notifyDataSetChanged();
+                else{
+                    promiseArrayList.clear();
+                    adapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
