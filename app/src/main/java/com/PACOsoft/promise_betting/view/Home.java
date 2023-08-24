@@ -41,7 +41,7 @@ public class Home extends AppCompatActivity {
     private String TAG, UID;
     private int coin;
     public static Context context;
-    public static ValueEventListener getFriendValueEventLister, getPromiseValueEventListener;
+    public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class Home extends AppCompatActivity {
         view_promise();
     }
 
-    public void btn_promiseClicked(View v) {
+    public void btn_promiseClicked(@NonNull View v) {
         TextView tv_promiseKey = v.findViewById(R.id.tv_promiseKey);
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("UID", UID);//ID 정보 intent
@@ -117,7 +117,17 @@ public class Home extends AppCompatActivity {
         ArrayList<User> userArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        getFriendValueEventLister = new ValueEventListener() {
+        ValueEventListener getFriendListValueEventLister2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userArrayList.add(snapshot.getValue(User.class));
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        getFriendListValueEventLister = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userArrayList.clear(); //기존 배열리스트를 초기화
@@ -128,24 +138,15 @@ public class Home extends AppCompatActivity {
                 text.setText(String.valueOf(coin));//위에서 선언한 참조 객체에 값 넘겨줌
                 for (String friend : friends) {
                     databaseReference2 = database.getReference("User").child(friend);
-                    databaseReference2.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Log.e(TAG, snapshot.getValue(User.class).getNickName());
-                            userArrayList.add(snapshot.getValue(User.class));
-                            adapter.notifyDataSetChanged();
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
+                    databaseReference2.addListenerForSingleValueEvent(getFriendListValueEventLister2);
+                    databaseReference2.removeEventListener(getFriendListValueEventLister2);
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addValueEventListener(getFriendValueEventLister);
+        databaseReference.addValueEventListener(getFriendListValueEventLister);
         adapter = new User_List_Adapter(userArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
@@ -158,7 +159,17 @@ public class Home extends AppCompatActivity {
         ArrayList<Promise> promiseArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        getPromiseValueEventListener = new ValueEventListener() {
+        ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                promiseArrayList.add(snapshot.getValue(Promise.class));
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        getPromiseListValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 promiseArrayList.clear(); //기존 배열리스트를 초기화
@@ -169,17 +180,8 @@ public class Home extends AppCompatActivity {
                 text.setText(String.valueOf(coin));//위에서 선언한 참조 객체에 값 넘겨줌
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
-                    databaseReference2.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            promiseArrayList.add(snapshot.getValue(Promise.class));
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
+                    databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
+                    databaseReference2.removeEventListener(getPromiseListValueEventListener2);
                 }
             }
 
@@ -187,7 +189,7 @@ public class Home extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addValueEventListener(getPromiseValueEventListener);
+        databaseReference.addValueEventListener(getPromiseListValueEventListener);
         adapter = new Promise_List_Adapter(promiseArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }

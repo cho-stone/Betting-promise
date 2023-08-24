@@ -55,8 +55,8 @@ public class Option extends AppCompatActivity {
 
     public void btnSignOut(View view) {//로그아웃
         Intent intent = new Intent(this, MainActivity.class);
-        databaseReference.removeEventListener(((Home)Home.context).getFriendValueEventLister);
-        databaseReference.removeEventListener(((Home)Home.context).getPromiseValueEventListener);
+        databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);
+        //databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);
         signOut();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//실행 중인 모든 엑티비티 종료
         startActivity(intent);
