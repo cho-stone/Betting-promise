@@ -301,16 +301,13 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String pr_key = dataSnapshot.getValue(String.class);
-                    Log.v("Create1", pr_key);
+
                     if (pr_key.equals("")) {
                         pr_key = rid;
-                        Log.v("Create2", pr_key);
                     } else {
                         pr_key = pr_key + " " + rid;
-                        Log.v("Create3", pr_key);
                     }
-                    Log.v("Create4", pr_key);
-                    Log.v("currUID", friendUID);
+
                     DatabaseReference mDatabase;
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     mDatabase.child("User").child(friendUID).child("promiseKey").setValue(pr_key);
