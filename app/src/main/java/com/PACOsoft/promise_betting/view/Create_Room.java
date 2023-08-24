@@ -271,7 +271,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         }
 
         //자신 추가후 객체에 넣기
-        friends.add(me.getId());
+        friends.add(me.getUID());
         friends2.add(me.getNickName());
         ArrayList<PromisePlayer> friendsArray = new ArrayList<PromisePlayer>();
         int i = 0;
