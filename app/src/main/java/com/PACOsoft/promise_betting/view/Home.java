@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.StateSet;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.History;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.User;
+import com.PACOsoft.promise_betting.util.ProgressDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +46,7 @@ public class Home extends AppCompatActivity {
     public static Context context;
     public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener;
     public boolean isFriendView;
+    private com.PACOsoft.promise_betting.util.ProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,25 @@ public class Home extends AppCompatActivity {
         TAG = "Home";
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //mainActivity에서 intent해준 id를 받아옴
+        //로딩창 객체 생성
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.setCancelable(false); // 로딩창 주변 클릭 시 종료 막기
+        //로딩창을 투명하게 하는 코드
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
+        //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
+        customProgressDialog.show();
         view_friends();
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                customProgressDialog.dismiss();
+            }
+        }, 2000);// 1초 정도 딜레이를 준 후 시작
     }
+
 
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
