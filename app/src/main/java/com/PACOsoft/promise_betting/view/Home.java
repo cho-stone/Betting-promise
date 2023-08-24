@@ -42,11 +42,13 @@ public class Home extends AppCompatActivity {
     private int coin;
     public static Context context;
     public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener;
+    public boolean isFriendView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        isFriendView = true;
         context = this;
         TAG = "Home";
         Intent intent = getIntent();
@@ -117,7 +119,9 @@ public class Home extends AppCompatActivity {
         ArrayList<User> userArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        ValueEventListener getFriendListValueEventLister2 = new ValueEventListener() {
+        if(isFriendView == false) databaseReference.removeEventListener(getPromiseListValueEventListener);
+        isFriendView = true;
+            ValueEventListener getFriendListValueEventLister2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userArrayList.add(snapshot.getValue(User.class));
@@ -152,6 +156,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void view_promise() {
+
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
         layoutManager = new LinearLayoutManager(this);//콘텍스트 자동입력
@@ -159,6 +164,8 @@ public class Home extends AppCompatActivity {
         ArrayList<Promise> promiseArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        if(isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
+        isFriendView = false;
         ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
