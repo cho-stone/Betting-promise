@@ -37,6 +37,8 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import java.util.ArrayList;
+
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -60,6 +62,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private ValueEventListener promiseSettingListener, promisePointListener;
+    private PromisePlayer promisePlayer_me;
+    private int num;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,15 +114,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
         databaseReference.addListenerForSingleValueEvent(promiseSettingListener);
-
-//        나를 식별하여 promisePlayer 정보 가져오기
-//        promisePlayers = promise.getPromisePlayer();
-//        for(i = 0; i < promisePlayers.size(); i++){
-//            if(promisePlayers.get(i).getPlayerUID().equals(UID)){
-//                promisePlayer_me = promisePlayers.get(i);
-//                return;
-//            }
-//        }
     }
 
     public void room_menu(View view) {
@@ -157,6 +152,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 circle.setOutlineColor(Color.argb(70, 0, 0, 0));
                 circle.setMap(naverMap);
 
+                //객체에서 내 PromisePlayer 객체 찾기
+                ArrayList<PromisePlayer> promisePlayers;
+                promisePlayers = p.getPromisePlayer();
+                num = 0;
+                for(int i = 0; i < promisePlayers.size(); i++){
+                    if(promisePlayers.get(i).getPlayerUID().equals(UID)){
+                        promisePlayer_me = promisePlayers.get(i);
+                        num = i;
+                    }
+                }
+
+//                맵 완성시 풀어주기
+//                DatabaseReference mDatabase;
+//                mDatabase = FirebaseDatabase.getInstance().getReference();
                 //실시간 위치 비교 시작
                 locationListener = new LocationListener() {
                     @Override
@@ -175,10 +184,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         if (distance <= 50.0) {
                             reach_location.setEnabled(true);
                         }
+
+                        if(promisePlayer_me != null){
+                            //맵 완성시 풀어주기 x y에 현재 내위치 값을 저장함
+                            //mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
+                            //mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
+                        }
                     }
                 };
                 if(hasPermission() && locationManager != null){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000L, 0.5f, locationListener); // 3초마다 50cm 움직일때 갱신
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000L, 0.1f, locationListener); // 3초마다 50cm 움직일때 갱신
                 }
 
             }
@@ -226,8 +241,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
        super.onBackPressed();
-        assert locationManager != null;
-        locationManager.removeUpdates(locationListener);
+       assert locationManager != null;
+       locationManager.removeUpdates(locationListener);
        finish();
     }
 }
