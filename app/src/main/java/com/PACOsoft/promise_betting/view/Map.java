@@ -127,7 +127,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE);
 
         //지도에 도착 마커와 범위 찍기
-        database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
         promisePointListener = new ValueEventListener() {
 
@@ -228,11 +227,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 
+    //플로팅 버튼 트래킹 모드 재활성화
     public void target_select(View view){
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
     }
 
     public void btn_reach_place(View view) {
+
     }
 
     public void btn_vote_start(View view){
