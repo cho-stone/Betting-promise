@@ -198,7 +198,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 };
                 if(hasPermission() && locationManager != null){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 0.5f, locationListener); // 5초마다 50cm 움직일때 갱신 TODO 연구좀 더 해보기
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 0.5f, locationListener); // 10초마다 50cm 움직일때 갱신 TODO 연구좀 더 해보기
                 }
 
             }
