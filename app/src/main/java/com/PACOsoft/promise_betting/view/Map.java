@@ -39,6 +39,8 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
@@ -147,7 +149,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 CircleOverlay circle = new CircleOverlay();
                 circle.setCenter(new LatLng(y, x));
-                circle.setRadius(50);
+                circle.setRadius(160); //TODO: 50m
                 circle.setColor(Color.argb(70, 153, 232, 174));
                 circle.setOutlineWidth(5);
                 circle.setOutlineColor(Color.argb(70, 0, 0, 0));
@@ -181,9 +183,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         B.setLongitude(x);
 
                         double distance = A.distanceTo(B);
-                        //TODO: if문에 시간 조건도 추가하기
+                        //TODO: if문에 시간 조건도 추가하기, 이미 도착했으면 else로 보내기
                         //Log.v("Map", String.valueOf(distance));
-                        if (distance <= 50.0) {
+                        if (distance <= 165.0) { //TODO: 50m
                             reach_location.setEnabled(true);
                         }
                         else{
@@ -198,7 +200,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 };
                 if(hasPermission() && locationManager != null){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000L, 0.1f, locationListener); // 3초마다 50cm 움직일때 갱신
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000L, 0.1f, locationListener); // 2초마다 50cm 움직일때 갱신
                 }
 
             }
@@ -234,7 +236,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     //플로팅 버튼 트래킹 모드 재활성화
-    public void target_select(View view){
+    public void select_target(View view){
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
     }
 
@@ -243,16 +245,32 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT);
             return;
         }
+
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference = database.getReference("Promise").child(rid).child("promisePlayer").child(String.valueOf(num));
+        databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
         promiseSettingListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                PromisePlayer promisePlayer = dataSnapshot.getValue(PromisePlayer.class);
-                promisePlayer.setArrival(true);
+                Log.v("map", "호");
+                List<HashMap<String, Object>> promisePlayers = (List<HashMap<String, Object>>) dataSnapshot.getValue();
+
+                //도착하면 arrival true로 바꿔주기
+                promisePlayers.get(num).put("arrival", true);
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("arrival").setValue(true);
+                Toast.makeText(getApplicationContext(), "도착!", Toast.LENGTH_SHORT);
+
+                //랭킹 정해주기
+                int max = 0;
+                for(HashMap<String, Object> hm : promisePlayers){
+                    int curr = ((Long) hm.get("ranking")).intValue();
+                    if(curr > max){
+                        max = curr;
+                    }
+                }
+                max += 1;
+                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("ranking").setValue(max);
             }
 
             @Override

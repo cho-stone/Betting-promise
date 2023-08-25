@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
-                android:onClick="target_select"
+                android:onClick="select_target"
                 android:src="@drawable/target_icon"/>
         </com.naver.maps.map.MapView>
 
