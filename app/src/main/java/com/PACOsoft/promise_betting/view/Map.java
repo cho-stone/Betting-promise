@@ -219,6 +219,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapOnMyFriendListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.v("tt", "호출2");
                 if(num == -1){
                     return;
                 }
@@ -233,10 +234,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         continue;
                     }
                     else{
-                        double x = (Double) players.get(i).get("x");
-                        double y = (Double) players.get(i).get("y");
-                        mark.setPosition(new LatLng(y, x));
-                        mark.setMap(naverMap);
+                        //TODO 마커 배열에 넣기
+//                        double x = (Double) players.get(i).get("x");
+//                        double y = (Double) players.get(i).get("y");
+//                        mark.setPosition(new LatLng(y, x));
+//                        mark.setMap(naverMap);
                     }
                 }
             }
@@ -291,6 +293,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<HashMap<String, Object>> promisePlayers = (List<HashMap<String, Object>>) dataSnapshot.getValue();
+                Log.v("tt", "호출1");
 
                 //도착하면 arrival true로 바꿔주기
                 promisePlayers.get(num).put("arrival", true);
