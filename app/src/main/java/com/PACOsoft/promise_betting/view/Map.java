@@ -57,14 +57,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private View drawerView;
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase database, database2;
+    private DatabaseReference databaseReference, databaseReference2;
     private String rid;
     private String UID;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseSettingListener, promisePointListener;
+    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, mapOnMyFriendListener;
     private PromisePlayer promisePlayer_me;
     private int num;
 
@@ -149,7 +149,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 CircleOverlay circle = new CircleOverlay();
                 circle.setCenter(new LatLng(y, x));
-                circle.setRadius(160); //TODO: 50m
+                circle.setRadius(50);
                 circle.setColor(Color.argb(70, 153, 232, 174));
                 circle.setOutlineWidth(5);
                 circle.setOutlineColor(Color.argb(70, 0, 0, 0));
@@ -166,9 +166,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
 
-//                TODO: 맵 완성시 풀어주기
-//                DatabaseReference mDatabase;
-//                mDatabase = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference mDatabase;
+                mDatabase = FirebaseDatabase.getInstance().getReference();
 
                 //실시간 위치 비교 시작
                 locationListener = new LocationListener() {
@@ -184,8 +183,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                         double distance = A.distanceTo(B);
                         //TODO: if문에 시간 조건도 추가하기, 이미 도착했으면 else로 보내기
-                        //Log.v("Map", String.valueOf(distance));
-                        if (distance <= 165.0) { //TODO: 50m
+                        Log.v("Map", String.valueOf(distance));
+                        if (distance <= 50.0) {
                             reach_location.setEnabled(true);
                         }
                         else{
@@ -193,14 +192,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
 
                         if(promisePlayer_me != null){
-                            //TODO :맵 완성시 풀어주기 x y에 현재 내위치 값을 저장함
-                            //mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
-                            //mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
+                            mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
+                            mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
                         }
                     }
                 };
                 if(hasPermission() && locationManager != null){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000L, 0.1f, locationListener); // 2초마다 50cm 움직일때 갱신
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 0.5f, locationListener); // 5초마다 50cm 움직일때 갱신 TODO 연구좀 더 해보기
                 }
 
             }
@@ -211,6 +209,44 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
         databaseReference.addListenerForSingleValueEvent(promisePointListener);
+        mapOnFriendMark();
+    }
+
+    //친구위치 맵에 찍어주기
+    public void mapOnFriendMark(){
+        database2 = FirebaseDatabase.getInstance();
+        databaseReference2 = database2.getReference("Promise").child(rid).child("promisePlayer");
+        mapOnMyFriendListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(num == -1){
+                    return;
+                }
+                List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
+                Marker mark = new Marker();
+
+                for(int i = 0; i < players.size(); i++){
+                    if(players.get(i).get("playerUID").equals(UID)){
+                        continue;
+                    }
+                    else if(players.get(i).get("x") instanceof Long && players.get(i).get("y") instanceof Long){
+                        continue;
+                    }
+                    else{
+                        double x = (Double) players.get(i).get("x");
+                        double y = (Double) players.get(i).get("y");
+                        mark.setPosition(new LatLng(y, x));
+                        mark.setMap(naverMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Map", String.valueOf(error.toException()));
+            }
+        };
+        databaseReference2.addValueEventListener(mapOnMyFriendListener);
     }
 
     //locationManager 퍼미션
@@ -240,6 +276,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
     }
 
+    //도착했을 때
     public void btn_reach_place(View view) {
         if(num == -1){
             Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT);
@@ -250,10 +287,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
-        promiseSettingListener = new ValueEventListener() {
+        promiseArrivalListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.v("map", "호");
                 List<HashMap<String, Object>> promisePlayers = (List<HashMap<String, Object>>) dataSnapshot.getValue();
 
                 //도착하면 arrival true로 바꿔주기
@@ -278,16 +314,18 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 Log.e("Map", String.valueOf(databaseError.toException()));
             }
         };
-        databaseReference.addListenerForSingleValueEvent(promiseSettingListener);
+        databaseReference.addListenerForSingleValueEvent(promiseArrivalListener);
     }
 
     public void btn_vote_start(View view){
+
     }
 
     @Override
     public void onBackPressed() {
        super.onBackPressed();
        assert locationManager != null;
+       databaseReference2.removeEventListener(mapOnMyFriendListener);
        locationManager.removeUpdates(locationListener);
        finish();
     }
