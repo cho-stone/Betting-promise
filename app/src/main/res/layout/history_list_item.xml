@@ -22,8 +22,9 @@
             android:layout_height="80dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="오늘 만나는 방입니다." />
+            android:text="방 제목입니다." />
 
+        <!-- 내 등수 이미지-->
         <ImageView
             android:id="@+id/iv_prizeIcon"
             android:layout_width="85dp"
