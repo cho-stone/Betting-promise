@@ -54,23 +54,23 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/id_vote_for"
             android:layout_width="wrap_content"
             android:layout_height="53dp"
             android:layout_weight="5"
             android:background="#00000000"
             android:gravity="center"
-            android:onClick="btn_vote_for"
             android:text="찬성"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
         <Button
+            android:id="@+id/id_vote_against"
             android:layout_width="wrap_content"
             android:layout_height="53dp"
             android:layout_weight="5"
             android:background="#00000000"
             android:gravity="center"
-            android:onClick="btn_vote_against"
             android:text="반대"
             android:textColor="@color/black"
             android:textSize="15sp" />

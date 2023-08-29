@@ -19,6 +19,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,10 +50,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-
-
-
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     private MapView mapView;
@@ -78,9 +75,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
-
-
     private AdView mAdView;
+    private Vote_Promise votePromise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +128,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     players.addView(tv);
                 }
                 if(p.getVote() != 0){
-
+                    votePromise = new Vote_Promise(Map.this);
+                    votePromise.show();
                 }
-
             }
 
             @Override
@@ -367,6 +363,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int vote = snapshot.getValue(Integer.class);
                 mDatabase.child("Promise").child(rid).child("vote").setValue(1);
+                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("voteState").setValue(1);
                 databaseReference2.removeEventListener(mapOnMyFriendListener);
                 locationManager.removeUpdates(locationListener);
                 finish();

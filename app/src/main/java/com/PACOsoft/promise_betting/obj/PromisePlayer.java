@@ -10,6 +10,7 @@ public class PromisePlayer {
     private int ranking = 0; //이 사람의 랭킹
     private double x = 0.0;//현재 이 사람이 위치한 x
     private double y = 0.0;//현재 이 사람이 위치한 y
+    private int voteState = 0;//현재 이 사람의 투표 현황 0 : 초기상태, 1 : 찬성, -1 : 반대
 
     public PromisePlayer() {
     }
@@ -68,5 +69,13 @@ public class PromisePlayer {
 
     public int getRanking() {
         return ranking;
+    }
+
+    public void setVoteState(int voteState) {
+        this.voteState = voteState;
+    }
+
+    public int getVoteState() {
+        return voteState;
     }
 }
