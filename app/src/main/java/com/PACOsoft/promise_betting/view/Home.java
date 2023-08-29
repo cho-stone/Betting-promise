@@ -23,6 +23,9 @@ import com.PACOsoft.promise_betting.obj.History;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.User;
 import com.PACOsoft.promise_betting.util.ProgressDialog;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+
 
 public class Home extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -52,6 +57,12 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        //광고 로드 전 초기화 해주는 코드
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
         isFriendView = true;
         context = this;
         TAG = "Home";
@@ -65,6 +76,7 @@ public class Home extends AppCompatActivity {
         //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
         //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
         customProgressDialog.show();
+
         view_friends();
         new Handler().postDelayed(new Runnable()
         {

@@ -26,6 +26,11 @@ import android.widget.Toast;
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.AdRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +48,9 @@ import com.naver.maps.map.util.FusedLocationSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+
+
 
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
@@ -71,11 +79,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private int num;
     private ArrayList<Marker> marks;
 
+
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         marks = new ArrayList<>();
+
+
+        //광고 뷰 추가
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerView = findViewById(R.id.drawer);
