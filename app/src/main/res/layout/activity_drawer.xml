@@ -35,7 +35,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/vote"
+        android:text="@string/vote_start"
         android:textSize="18sp"
         android:background="@drawable/round_button"
         android:onClick="btn_vote_start"/>

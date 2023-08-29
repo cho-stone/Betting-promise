@@ -2,6 +2,7 @@ package com.PACOsoft.promise_betting.view;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
@@ -9,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -64,14 +66,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, mapOnMyFriendListener;
+    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener;
     private PromisePlayer promisePlayer_me;
     private int num;
+    private ArrayList<Marker> marks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        marks = new ArrayList<>();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerView = findViewById(R.id.drawer);
@@ -110,6 +114,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     tv.setGravity(1);
                     players.addView(tv);
                 }
+                if(p.getVote() != 0){
+
+                }
+
             }
 
             @Override
@@ -182,9 +190,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         B.setLongitude(x);
 
                         double distance = A.distanceTo(B);
-                        //TODO: if문에 시간 조건도 추가하기, 이미 도착했으면 else로 보내기
+                        //TODO: if문에 시간 조건도 추가하기
                         Log.v("Map", String.valueOf(distance));
-                        if (distance <= 50.0) {
+                        if ((distance <= 50.0) && !promisePlayer_me.getArrival()) {
                             reach_location.setEnabled(true);
                         }
                         else{
@@ -198,7 +206,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 };
                 if(hasPermission() && locationManager != null){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 0.5f, locationListener); // 10초마다 50cm 움직일때 갱신 TODO 연구좀 더 해보기
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
                 }
 
             }
@@ -219,26 +227,32 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapOnMyFriendListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.v("tt", "호출2");
                 if(num == -1){
                     return;
                 }
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
-                Marker mark = new Marker();
+                Marker temp = new Marker();
+
+                if(marks.size() != 0){
+                    for(Marker m : marks){
+                        m.setMap(null);
+                    }
+                }
+                marks.clear();
 
                 for(int i = 0; i < players.size(); i++){
-                    if(players.get(i).get("playerUID").equals(UID)){
+                    if(players.get(i).get("playerUID").equals(UID)) {
                         continue;
                     }
                     else if(players.get(i).get("x") instanceof Long && players.get(i).get("y") instanceof Long){
                         continue;
                     }
                     else{
-                        //TODO 마커 배열에 넣기
-//                        double x = (Double) players.get(i).get("x");
-//                        double y = (Double) players.get(i).get("y");
-//                        mark.setPosition(new LatLng(y, x));
-//                        mark.setMap(naverMap);
+                        double x = (Double) players.get(i).get("x");
+                        double y = (Double) players.get(i).get("y");
+                        temp.setPosition(new LatLng(y, x));
+                        temp.setMap(naverMap);
+                        marks.add(temp);
                     }
                 }
             }
@@ -281,9 +295,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     //도착했을 때
     public void btn_reach_place(View view) {
         if(num == -1){
-            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요", Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if(promisePlayer_me.getArrival()){
+            Toast.makeText(getApplicationContext(), "이미 도착 하였습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -293,12 +313,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<HashMap<String, Object>> promisePlayers = (List<HashMap<String, Object>>) dataSnapshot.getValue();
-                Log.v("tt", "호출1");
 
                 //도착하면 arrival true로 바꿔주기
-                promisePlayers.get(num).put("arrival", true);
+                promisePlayer_me.setArrival(true);
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("arrival").setValue(true);
-                Toast.makeText(getApplicationContext(), "도착!", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "도착!", Toast.LENGTH_SHORT).show();
 
                 //랭킹 정해주기
                 int max = 0;
@@ -320,8 +339,57 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference.addListenerForSingleValueEvent(promiseArrivalListener);
     }
 
-    public void btn_vote_start(View view){
+    //투표 시작 함수
+    private void start_vote(){
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        databaseReference = database.getReference("Promise").child(rid).child("vote");
+        promiseVoteListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int vote = snapshot.getValue(Integer.class);
+                mDatabase.child("Promise").child(rid).child("vote").setValue(1);
+                databaseReference2.removeEventListener(mapOnMyFriendListener);
+                locationManager.removeUpdates(locationListener);
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(promiseVoteListener);
+    }
+
+    //투표 버튼 누르면 생기는 주의 다이얼로그
+    public void show_alert_dial(){
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(Map.this);
+        //alert의 title과 Messege 세팅
+        myAlertBuilder.setTitle("주의");
+        myAlertBuilder.setMessage("정말로 방 삭제 투표를 시작 할까요?" + "\n" + "시작 후엔 투표가 끝이 날 때까지 방의 기능을 이용할 수 없습니다.");
+        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+        myAlertBuilder.setPositiveButton("시작",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog,int which){
+                start_vote();
+            }
+        });
+        myAlertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        myAlertBuilder.show();
+    }
+
+    //투표 시작 버튼이 눌리면
+    public void btn_vote_start(View view){
+        if(num == -1){
+            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        show_alert_dial();
     }
 
     @Override

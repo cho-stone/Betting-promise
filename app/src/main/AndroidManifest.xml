@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.PACOsoft.promise_betting">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!--현재 내 위치 가져 오기 위함-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 현재 내 위치 가져 오기 위함 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -18,6 +18,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".view.Vote_Promise"
+            android:exported="false" />
+        <activity
             android:name=".view.Create_Room"
             android:exported="false" />
         <activity
@@ -25,10 +28,10 @@
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".view.Search_History"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".view.Search_Friend"
-            android:exported="false"/>
+            android:exported="false" />
         <activity android:name=".view.signup_page" />
         <activity
             android:name=".view.Invite_Friend"
@@ -47,28 +50,29 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.Search_Location"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".view.Test_Signin"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".view.Test_Signin2"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".view.Test_Signin3"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".view.Test_Signin4"
-            android:exported="true"/>
+            android:exported="true" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="rjaqcdyuc1" />
     </application>
+
 </manifest>

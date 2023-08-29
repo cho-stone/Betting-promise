@@ -26,13 +26,11 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!--방내부-->
-    <string name="vote">투표하기</string>
+    <string name="vote_start">투표하기</string>
+    <string name="vote">투표</string>
+    <string name="cancle_promise">방 삭제를 진행 합니다.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
-
-
 
 
 </resources>
