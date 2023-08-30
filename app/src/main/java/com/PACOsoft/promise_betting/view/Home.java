@@ -14,6 +14,7 @@ import android.util.Log;
 import android.util.StateSet;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.Adapter.History_List_Adapter;
 import com.PACOsoft.promise_betting.Adapter.Promise_List_Adapter;
@@ -66,6 +67,7 @@ public class Home extends AppCompatActivity {
         isFriendView = true;
         context = this;
         TAG = "Home";
+        coin = -1;
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //mainActivity에서 intent해준 id를 받아옴
         //로딩창 객체 생성
@@ -116,6 +118,14 @@ public class Home extends AppCompatActivity {
 
     //Home에서 Create_Room으로 이동하는 버튼 구현
     public void btnCreateRoomClicked(View view) {
+        if(coin == -1){
+            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(coin < 100){
+            Toast.makeText(getApplicationContext(), "방 생성 시 최소 100코인이 필요합니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(this, Create_Room.class);
         intent.putExtra("UID", UID);//ID 정보 intent
         startActivity(intent);

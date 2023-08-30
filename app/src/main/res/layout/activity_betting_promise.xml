@@ -90,7 +90,7 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:text="00000000"
+                android:text="로딩중..."
                 android:textColor="@color/black" />
         </LinearLayout>
 

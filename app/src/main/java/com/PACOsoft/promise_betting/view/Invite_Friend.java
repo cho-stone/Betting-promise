@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Invite_Friend extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -37,6 +38,9 @@ public class Invite_Friend extends AppCompatActivity {
     private HashSet<String> hashSetUID = new HashSet<>();//중복 방지 위해 해쉬셋 이용, UID 저장용
     private HashSet<String> hashSetNickName = new HashSet<>();//중복 방지 위해 해쉬셋 이용, nickname 저장용
     private HashSet<String> hashSetID = new HashSet<>();//중복 방지 위해 해쉬셋 이용, id 저장용
+    private ArrayList<String> listUID = new ArrayList<>();
+    private ArrayList<String> listNickName = new ArrayList<>();
+    private ArrayList<String> listID = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,29 +101,32 @@ public class Invite_Friend extends AppCompatActivity {
         TextView tv_id = v.findViewById(R.id.tv_id);
         if (bgcolor == Color.LTGRAY) {
             v.setBackgroundColor(Color.WHITE);
-            hashSetUID.remove(String.valueOf(tv_UID.getText()));
-            hashSetNickName.remove(String.valueOf(tv_nickName.getText()));
-            hashSetID.remove(String.valueOf(tv_id.getText()));
+            listUID.remove(String.valueOf(tv_UID.getText()));
+            listNickName.remove(String.valueOf(tv_nickName.getText()));
+            listID.remove(String.valueOf(tv_id.getText()));
+//            hashSetUID.remove(String.valueOf(tv_UID.getText()));
+//            hashSetNickName.remove(String.valueOf(tv_nickName.getText()));
+//            hashSetID.remove(String.valueOf(tv_id.getText()));
         } else {
             v.setBackgroundColor(Color.LTGRAY);
-            hashSetUID.add(String.valueOf(tv_UID.getText()));
-            hashSetNickName.add(String.valueOf(tv_nickName.getText()));
-            hashSetID.add(String.valueOf(tv_id.getText()));
+            listUID.add(String.valueOf(tv_UID.getText()));
+            listNickName.add(String.valueOf(tv_nickName.getText()));
+            listID.add(String.valueOf(tv_id.getText()));
+//            hashSetUID.add(String.valueOf(tv_UID.getText()));
+//            hashSetNickName.add(String.valueOf(tv_nickName.getText()));
+//            hashSetID.add(String.valueOf(tv_id.getText()));
         }
     }
 
     public void btv_Invite_Friend_Clicked(View v) {
-        ArrayList<String> ArrUID = new ArrayList<>(hashSetUID);
-        ArrayList<String> ArrNickName = new ArrayList<>(hashSetNickName);
-        ArrayList<String> ArrID = new ArrayList<>(hashSetID);
-        if (ArrUID.size() == 0) {
+        if (listUID.size() == 0) {
             Toast.makeText(getApplicationContext(), "1명 이상 선택", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("ArrUID", ArrUID);
-        resultIntent.putExtra("ArrNickName", ArrNickName);
-        resultIntent.putExtra("ArrID", ArrID);
+        resultIntent.putExtra("ArrUID", listUID);
+        resultIntent.putExtra("ArrNickName", listNickName);
+        resultIntent.putExtra("ArrID", listID);
         setResult(RESULT_OK, resultIntent);
         finish();
     }

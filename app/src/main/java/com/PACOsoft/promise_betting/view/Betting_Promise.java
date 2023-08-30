@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -19,24 +20,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Betting_Promise extends Dialog {
     private TextInputEditText et_betting_coin;
     private TextView tv_betting_max;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
-    private ValueEventListener bettingCoinListener;
+    private FirebaseDatabase database, database2;
+    private DatabaseReference databaseReference, databaseReference2;
+    private ValueEventListener bettingCoinListener, userCoinListener;
+    private ArrayList<String> usersUID;
+    private int min, j;
 
-    public Betting_Promise(@NonNull Context context, String rid, int num) {
+    public Betting_Promise(@NonNull Context context, String rid) {
         super(context);
         setContentView(R.layout.activity_betting_promise);
 
         et_betting_coin = findViewById(R.id.et_betting);
         tv_betting_max = findViewById(R.id.tv_betting_coin);
+        usersUID = new ArrayList<>();
 
-        //TODO: 방에서 유저 UID를 가져오고 유저 코인을 가져 온후 가장 작은 코인을 max에 넣기
+        //방에서 유저 UID를 가져옴
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
         bettingCoinListener = new ValueEventListener() {
@@ -44,14 +49,50 @@ public class Betting_Promise extends Dialog {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
 
-                for(int i = 0; i < players.size(); i++){
+                for(int z = 0; z < players.size(); z++){
+                    String s = (String) players.get(z).get("playerUID");
+                    usersUID.add(s);
+                }
 
+                //유저들의 UID로 min코인 찾기
+                min = 0;
+                j = 0;
+                database2 = FirebaseDatabase.getInstance();
+                for(int i = 0; i < players.size(); i++){
+                    databaseReference2 = database2.getReference("User").child(usersUID.get(i)).child("account");
+                    userCoinListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int coin = snapshot.getValue(Integer.class);
+                            if(min == 0 && coin >= 100){
+                                min = coin;
+                            }
+                            else if(min > coin && coin >= 100) {
+                                min = coin;
+                            }
+
+                            //max값 세팅
+                            if(j == players.size()-1 && min == 0){
+                                tv_betting_max.setText("배팅 불가");
+                            }
+                            else if(j == players.size()-1){
+                                tv_betting_max.setText(String.valueOf(min));
+                            }
+                            j++;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("Map", String.valueOf(error.toException()));
+                        }
+                    };
+                    databaseReference2.addListenerForSingleValueEvent(userCoinListener);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("Map", String.valueOf(error.toException()));
             }
         };
         databaseReference.addListenerForSingleValueEvent(bettingCoinListener);
