@@ -115,6 +115,10 @@ public class Coin extends Activity {
     }
 
     public void btn_coin_charge(View view) {
+        if(coin_tv.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "코인을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //코인 값 전달 코드
         TextInputEditText et_coin = findViewById(R.id.et_coin);
         tempcoin = Integer.valueOf(String.valueOf(et_coin.getText()));

@@ -29,8 +29,11 @@
     <string name="vote_start">투표하기</string>
     <string name="vote">투표</string>
     <string name="cancle_promise">방 삭제를 진행 합니다.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="betting">배팅</string>
+    <string name="betting_txt1">배팅을 시작 합니다.</string>
+    <string name="betting_txt2">최대 금액 선에서 배팅을 진행해 주세요.</string>
+    <string name="betting_txt3">0원을 배팅하면 옵저버 상태로 전환됩니다.</string>
+    <string name="betting_max">최대 배팅 금액</string>
 
 
 </resources>

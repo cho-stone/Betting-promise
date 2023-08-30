@@ -77,6 +77,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private ArrayList<Marker> marks;
     private AdView mAdView;
     private Vote_Promise votePromise;
+    private Betting_Promise bettingPromise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +185,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     if(promisePlayers.get(i).getPlayerUID().equals(UID)){
                         promisePlayer_me = promisePlayers.get(i);
                         num = i;
+                        break;
                     }
+                }
+
+                //개인 배팅머니가 0이면 팝업창 띄우기
+                if(promisePlayer_me.getBettingMoney() == 0){
+                    bettingPromise = new Betting_Promise(Map.this, rid, num);
+                    bettingPromise.show();
                 }
 
                 DatabaseReference mDatabase;
