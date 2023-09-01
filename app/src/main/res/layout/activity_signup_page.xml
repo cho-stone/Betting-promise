@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.signup_page">
+    tools:context=".view.signup_page"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="닉네임"
-                android:maxLength="10">
+                android:maxLength="10"
+                android:textColor="@color/dark_60">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="아이디"
-                android:maxLength="30">
+                android:maxLength="30"
+                android:textColor="@color/dark_60">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -77,7 +80,8 @@
                 android:layout_height="60dp"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
-                android:maxLength="20">
+                android:maxLength="20"
+                android:textColor="@color/dark_60">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -97,7 +101,8 @@
                 android:layout_height="60dp"
                 android:hint="비밀번호 확인"
                 android:inputType="textPassword"
-                android:maxLength="20">
+                android:maxLength="20"
+                android:textColor="@color/dark_60">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
