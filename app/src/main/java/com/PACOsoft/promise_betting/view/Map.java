@@ -191,7 +191,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 // 방의 배팅머니가 0이면 팝업창 띄우기
                 if(p.getbettingMoney() == 0){
-                    bettingPromise = new Betting_Promise(Map.this, rid);
+                    bettingPromise = new Betting_Promise(Map.this, rid, UID);
                     bettingPromise.show();
                 }
 
@@ -226,7 +226,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
                     }
                 };
-                if(hasPermission() && locationManager != null){
+                //퍼미션여부, 로케이션매니저가 담겼는지, 배팅이 완료되었는지, 관전자가 아닌지
+                if(hasPermission() && locationManager != null && p.getbettingMoney() != 0 && promisePlayer_me.getBettingMoney() >= 100){
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
                 }
 
@@ -240,6 +241,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference.addListenerForSingleValueEvent(promisePointListener);
         mapOnFriendMark();
     }
+
+//    @SuppressLint("MissingPermission")
+//    public void voteComplete(){
+//        if(hasPermission() && locationManager != null && promisePlayer_me.getBettingMoney() >= 100){
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
+//        }
+//    }
 
     //친구위치 맵에 찍어주기
     public void mapOnFriendMark(){
@@ -417,6 +425,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
        super.onBackPressed();
+       if(locationManager == null && databaseReference2 == null){
+           Toast.makeText(getApplicationContext(), "지금은 맵을 종료할 수 없습니다.", Toast.LENGTH_SHORT).show();
+           return;
+       }
        assert locationManager != null;
        databaseReference2.removeEventListener(mapOnMyFriendListener);
        locationManager.removeUpdates(locationListener);

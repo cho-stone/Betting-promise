@@ -32,8 +32,10 @@
     <string name="betting">배팅</string>
     <string name="betting_txt1">배팅을 시작 합니다.</string>
     <string name="betting_txt2">최대 금액 선에서 배팅을 진행해 주세요.</string>
-    <string name="betting_txt3">0원을 배팅하면 관전 상태로 전환됩니다.</string>
+    <string name="betting_txt3">1코인을 배팅하면 관전 상태로 전환됩니다.</string>
+    <string name="betting_txt4">0코인을 배팅하면 방이 삭제됩니다.</string>
     <string name="betting_max">최대 배팅 금액</string>
+    <string name="curr_betting">배팅 현황</string>
 
 
 </resources>
