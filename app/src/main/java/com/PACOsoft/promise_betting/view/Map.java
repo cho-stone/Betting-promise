@@ -187,7 +187,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
                 if(p.getVote() != 0){
-                    votePromise = new Vote_Promise(Map.this, rid, UID);
+                    votePromise = new Vote_Promise(Map.this);
                     votePromise.show();
                 }
 
