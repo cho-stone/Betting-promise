@@ -147,6 +147,10 @@ public class Home extends AppCompatActivity {
     }
 
     public void btn_promiseClicked(@NonNull View v) {
+
+
+
+
         TextView tv_promiseKey = v.findViewById(R.id.tv_promiseKey);
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("UID", UID);//ID 정보 intent
