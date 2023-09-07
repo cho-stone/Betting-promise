@@ -33,14 +33,15 @@ public class Betting_Promise extends Dialog {
     private TextInputEditText et_betting_coin;
     private TextView tv_betting_max, tv_curr_betting;
     private FirebaseDatabase database, database2;
-    private DatabaseReference databaseReference, databaseReference2, mDatabase; //mDatabase는 set전용
-    private ValueEventListener bettingCoinListener, userCoinListener, removePromiseListener;
+    private DatabaseReference databaseReference, databaseReference2, mDatabase; //mDatabase는 setValue전용
+    private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener;
     private ArrayList<String> usersUID;
     private Button btn_betting;
     private int min, j, me_num;
     private boolean isBetting;
     private Map map;
     private String rid;
+    private Home home;
     //TODO: 현재 배팅 현황 보여주기(상시 리스너), 배팅이 끝난 후 총 배팅액 Promise객체에 할당해주기 + 실시간 dimiss해주기, 텍스트에 0입력시 방 삭제
 
     public Betting_Promise(@NonNull Context context, String r, String UID) {
@@ -125,6 +126,7 @@ public class Betting_Promise extends Dialog {
             }
         };
         databaseReference.addListenerForSingleValueEvent(bettingCoinListener);
+        startCurrVoteListener();
 
         btn_betting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +141,14 @@ public class Betting_Promise extends Dialog {
                 }
 
                 if(et_betting_coin.getText().toString().equals("0")){
-                    show_alert_dial();
+                    /* 방 삭제 로직
+                    0코인 배팅 시 show_alert_dial_0coin 로그를 띄움
+                    확인 시 vote 값을 -1로 변경 후
+                    show_alert_dial_removePromise를 띄워 모든 사용자에게 알림
+                    확인 클릭 시 자신의 User객체에서 해당 방을 삭제함
+                    ->방장이 끝까지 남아서 다른 사람이 다 나갈때 나갈수있음 -> 방삭제
+                     */
+                    show_alert_dial_0coin();
                     return;
                 }
                 else if(et_betting_coin.getText().toString().equals("1")){
@@ -155,7 +164,6 @@ public class Betting_Promise extends Dialog {
                     return;
                 }
 
-
                 int bettingM = Integer.parseInt(et_betting_coin.getText().toString());
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(bettingM);
                 isBetting = true;
@@ -164,32 +172,13 @@ public class Betting_Promise extends Dialog {
         });
     }
 
-    public void show_alert_dial(){
-        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(map);
-        //alert의 title과 Messege 세팅
-        myAlertBuilder.setTitle("주의");
-        myAlertBuilder.setMessage("정말로 0코인을 배팅 하시겠습니까?");
-        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
-        myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog,int which){
-                dismiss();
-                removePromise();
-                map.onBackPressed();
-            }
-        });
-        myAlertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {}
-        });
-        myAlertBuilder.show();
-    }
-
-    //TODO:0원 배팅 시 해야 할 작업
-    public void removePromise(){
-        databaseReference = database.getReference("Promise").child(rid).child("vote");
-        removePromiseListener = new ValueEventListener() {
+    //현재 배팅 상황을 실시간으로 중계
+    public void startCurrVoteListener(){
+        databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
+        currVoteListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
 
             }
 
@@ -198,7 +187,40 @@ public class Betting_Promise extends Dialog {
 
             }
         };
-        databaseReference.addListenerForSingleValueEvent(removePromiseListener);
+        databaseReference.addValueEventListener(currVoteListener);
+    }
+
+    //TODO: 실시간 리스너에 달아주기
+    public void show_alert_dial_removePromise(){
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(map);
+        //alert의 title과 Messege 세팅
+        myAlertBuilder.setTitle("알림");
+        myAlertBuilder.setMessage("불참여 인원이 있어 방이 삭제 되었습니다.");
+        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+        myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog,int which){
+
+            }
+        });
+        myAlertBuilder.show();
+    }
+
+    public void show_alert_dial_0coin(){
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(map);
+        //alert의 title과 Messege 세팅
+        myAlertBuilder.setTitle("주의");
+        myAlertBuilder.setMessage("정말로 0코인을 배팅 하시겠습니까?");
+        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+        myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog,int which){
+                mDatabase.child("Promise").child(rid).child("vote").setValue(-1);
+            }
+        });
+        myAlertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+        myAlertBuilder.show();
     }
 
     //바깥영역 터치방지
@@ -215,6 +237,5 @@ public class Betting_Promise extends Dialog {
     public void onBackPressed() {
         dismiss();
         map.onBackPressed();
-        return;
     }
 }
