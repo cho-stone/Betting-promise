@@ -128,10 +128,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     tv.setGravity(1);
                     players.addView(tv);
                 }
-                if(p.getVote() != 0){
-                    votePromise = new Vote_Promise(Map.this);
-                    votePromise.show();
-                }
             }
 
             @Override
@@ -187,6 +183,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         num = i;
                         break;
                     }
+                }
+
+                //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
+                if(p.getVote() != 0){
+                    votePromise = new Vote_Promise(Map.this, rid, UID);
+                    votePromise.show();
                 }
 
                 // 방의 배팅머니가 0이면 팝업창 띄우기
