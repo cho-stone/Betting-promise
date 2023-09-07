@@ -129,7 +129,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     players.addView(tv);
                 }
                 if(p.getVote() != 0){
-                    votePromise = new Vote_Promise(Map.this);
+                    votePromise = new Vote_Promise(Map.this, rid, UID);
                     votePromise.show();
                 }
             }
