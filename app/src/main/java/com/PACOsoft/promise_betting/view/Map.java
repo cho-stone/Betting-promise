@@ -46,6 +46,7 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,11 +130,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     players.addView(tv);
                 }
 
-                if(p.getVote() != 0){
-                    votePromise = new Vote_Promise(Map.this, rid, UID);
-                    votePromise.show();
-                }
-
             }
 
             @Override
@@ -193,7 +189,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
                 if(p.getVote() != 0){
-                    votePromise = new Vote_Promise(Map.this);
+                    votePromise = new Vote_Promise(Map.this, rid, UID, num);
                     votePromise.show();
                 }
 
@@ -250,12 +246,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         mapOnFriendMark();
     }
 
-//    @SuppressLint("MissingPermission")
-//    public void voteComplete(){
-//        if(hasPermission() && locationManager != null && promisePlayer_me.getBettingMoney() >= 100){
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
-//        }
-//    }
+    @SuppressLint("MissingPermission")
+    public void voteComplete(){
+        if(hasPermission() && locationManager != null && promisePlayer_me.getBettingMoney() >= 100){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
+        }
+    }
 
     //친구위치 맵에 찍어주기
     public void mapOnFriendMark(){

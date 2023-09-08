@@ -37,17 +37,18 @@ public class Betting_Promise extends Dialog {
     private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener;
     private ArrayList<String> usersUID;
     private Button btn_betting;
-    private int min, j, me_num;
-    private boolean isBetting;
+    private int min, j, me_num, currBettingNum, allBettingMoney;
+    private boolean isBetting, isAllBetting;
     private Map map;
     private String rid;
-    private Home home;
-    //TODO: 현재 배팅 현황 보여주기(상시 리스너), 배팅이 끝난 후 총 배팅액 Promise객체에 할당해주기 + 실시간 dimiss해주기, 텍스트에 0입력시 방 삭제
+    //TODO: 텍스트에 0입력시 방 삭제
 
     public Betting_Promise(@NonNull Context context, String r, String UID) {
         super(context);
         map = (Map)context; // context 캐스팅
         rid = r;
+        isAllBetting = true;
+        allBettingMoney = 0;
         setContentView(R.layout.activity_betting_promise);
 
         et_betting_coin = findViewById(R.id.et_betting);
@@ -132,6 +133,12 @@ public class Betting_Promise extends Dialog {
             @Override
             public void onClick(View view) {
                 if(et_betting_coin.getText().toString().equals("") || tv_betting_max.getText().toString().equals("로딩중...")){
+                    Toast.makeText(map, "잠시 후에 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(currBettingNum != me_num){
+                    Toast.makeText(map, "아직 자신의 배팅 순서가 아닙니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -179,7 +186,32 @@ public class Betting_Promise extends Dialog {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
-
+                int bMoney;
+                //배팅을 아직 안한사람 닉네임 띄우기
+                for(int i = 0; i < players.size(); i++) {
+                    bMoney = ((Long) players.get(i).get("bettingMoney")).intValue();
+                    if(bMoney == 0) {
+                        tv_curr_betting.setText(players.get(i).get("nickName").toString() + "님이 배팅중 입니다.");
+                        currBettingNum = i;
+                        isAllBetting = false;
+                        break;
+                    }
+                    else{
+                        isAllBetting = true;
+                    }
+                }
+                //배팅이 완료되면
+                if(isAllBetting){
+                    for(int i = 0; i < players.size(); i++){
+                        //관전자 제외
+                        if(((Long) players.get(i).get("bettingMoney")).intValue() != 1){
+                            allBettingMoney += ((Long) players.get(i).get("bettingMoney")).intValue();
+                        }
+                    }
+                    mDatabase.child("Promise").child(rid).child("bettingMoney").setValue(allBettingMoney);
+                    map.voteComplete();
+                    dismiss();
+                }
             }
 
             @Override
