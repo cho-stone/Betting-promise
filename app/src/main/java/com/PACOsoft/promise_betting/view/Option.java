@@ -14,8 +14,10 @@ import android.widget.Button;
 
 import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.view.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.PACOsoft.promise_betting.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -37,6 +40,9 @@ public class Option extends AppCompatActivity {
     private String UID;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private Intent deleteIntent;
+
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,31 +76,48 @@ public class Option extends AppCompatActivity {
     }
 
     private void revokeAccess() {//회원탈퇴
-        mAuth.getCurrentUser().delete();
-        FirebaseAuth.getInstance().signOut();
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("success", "User account deleted.");
+                            deleteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            System.out.println("error: 4");
+                            startActivity(deleteIntent);
+                        }
+                        else
+                        {
+                            Log.d("success", "FAIL");
+                        }
+                    }
+                });
+        System.out.println("error: 8");
     }
 
     private void removeDB(){
-        database = FirebaseDatabase.getInstance();
+        //database = FirebaseDatabase.getInstance();
         database.getReference("User").child(UID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.v("removeDB", "성공");
+                System.out.println("error: 성공");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 System.out.println("error: "+e.getMessage());
+                System.out.println("error: 실패");
             }
         });
+        System.out.println("error: dbdb");
     }
 
     public void btn_revoke(View view) {
+        //removeDB(); 동기화 문제로 인해서 회원 탈퇴과 DB에서의 삭제를 동시에 진행 불가능 그래서 DB는 그대로 두기로 함
+        deleteIntent = new Intent(this, MainActivity.class);
         revokeAccess();
-        removeDB();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        System.out.println("error: 1");
     }
 
 }
