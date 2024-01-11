@@ -65,14 +65,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private View drawerView;
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
-    private FirebaseDatabase database, database2;
-    private DatabaseReference databaseReference, databaseReference2;
+    private FirebaseDatabase database, database2, database3;
+    private DatabaseReference databaseReference, databaseReference2,databaseReference3;
     private String rid;
     private String UID;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener;
+    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener;
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
@@ -187,11 +187,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
 
-                //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
-                if(p.getVote() != 0){
-                    votePromise = new Vote_Promise(Map.this, rid, UID, num);
-                    votePromise.show();
-                }
+//                //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
+//                if(p.getVote() != 0){
+//                    votePromise = new Vote_Promise(Map.this, rid, UID, num);
+//                    votePromise.show();
+//                }
+//                else
+//                {
+//                    System.out.println("nonono");
+//                }
 
                 // 방의 배팅머니가 0이면 팝업창 띄우기
                 if(p.getbettingMoney() == 0){
@@ -244,6 +248,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         };
         databaseReference.addListenerForSingleValueEvent(promisePointListener);
         mapOnFriendMark();
+        VoteStart();
     }
 
     @SuppressLint("MissingPermission")
@@ -297,6 +302,37 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         };
         databaseReference2.addValueEventListener(mapOnMyFriendListener);
     }
+
+
+    //투표 시작했는지 파악하는 리스너
+    public void VoteStart(){
+        database3 = FirebaseDatabase.getInstance();
+        databaseReference3 = database3.getReference("Promise").child(rid).child("vote");
+        voteStartListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
+
+                int voteNum = snapshot.getValue(Integer.class);
+                if( voteNum != 0){
+                    votePromise = new Vote_Promise(Map.this, rid, UID, num);
+                    votePromise.show();
+                }
+                else
+                {
+                    System.out.println("nonono");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        databaseReference3.addValueEventListener(voteStartListener);
+    }
+
+
 
     //locationManager 퍼미션
     private boolean hasPermission() {
