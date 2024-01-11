@@ -240,13 +240,11 @@ public class Betting_Promise extends Dialog {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
-                numOfP = players.size();
                 for(int i = 0; i < players.size(); i++) {
                     int bm = (int) players.get(i).get("bettingMoney");
                     if(bm != -1) {
                         isAllOut = false;
                         break;
-
                     }
                 }
             }
@@ -301,7 +299,7 @@ public class Betting_Promise extends Dialog {
                 }
 
                 isLastPlayer();
-                if(!isAllOut && me_num ==  ) {
+                if(!isAllOut && me_num ==  (numOfP - 1)) {
                     Toast.makeText(map, "아직 방에 남아 있는 인원이 있습니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
