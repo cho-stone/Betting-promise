@@ -34,7 +34,7 @@ public class Vote_Promise extends Dialog {
     private Button btn_for, btn_against;
     private TextView vote_progress;
 
-    public Vote_Promise(@NonNull Context context, String rid, String UID) {
+    public Vote_Promise(@NonNull Context context, String rid, String UID, int num) {
         super(context);
         setContentView(R.layout.activity_vote_promise);
 

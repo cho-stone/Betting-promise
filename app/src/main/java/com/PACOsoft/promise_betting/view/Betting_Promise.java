@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,21 +35,23 @@ public class Betting_Promise extends Dialog {
     private TextView tv_betting_max, tv_curr_betting;
     private FirebaseDatabase database, database2;
     private DatabaseReference databaseReference, databaseReference2, mDatabase; //mDatabase는 setValue전용
-    private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener;
+    private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener, removePromiseInUser, subPromisePlayer;
     private ArrayList<String> usersUID;
     private Button btn_betting;
-    private int min, j, me_num, currBettingNum, allBettingMoney;
-    private boolean isBetting, isAllBetting;
+    private int min, j, me_num, currBettingNum, allBettingMoney, numOfP;
+    private boolean isBetting, isAllBetting, isAllOut;
     private Map map;
-    private String rid;
-    //TODO: 텍스트에 0입력시 방 삭제
+    private String rid, UID;
 
-    public Betting_Promise(@NonNull Context context, String r, String UID) {
+    public Betting_Promise(@NonNull Context context, String r, String U) {
         super(context);
         map = (Map)context; // context 캐스팅
         rid = r;
+        UID = U;
         isAllBetting = true;
+        isAllOut = true;
         allBettingMoney = 0;
+        me_num = -1;
         setContentView(R.layout.activity_betting_promise);
 
         et_betting_coin = findViewById(R.id.et_betting);
@@ -150,11 +153,11 @@ public class Betting_Promise extends Dialog {
                 if(et_betting_coin.getText().toString().equals("0")){
                     /* 방 삭제 로직
                     0코인 배팅 시 show_alert_dial_0coin 로그를 띄움
-                    확인 시 vote 값을 -1로 변경 후
+                    실시간 리스너에서 배팅값이 -1 이면 방삭제 진행
                     show_alert_dial_removePromise를 띄워 모든 사용자에게 알림
                     확인 클릭 시 자신의 User객체에서 해당 방을 삭제함
                     ->방장이 끝까지 남아서 다른 사람이 다 나갈때 나갈수있음 -> 방삭제
-                     */
+                    */
                     show_alert_dial_0coin();
                     return;
                 }
@@ -187,9 +190,15 @@ public class Betting_Promise extends Dialog {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 int bMoney;
-                //배팅을 아직 안한사람 닉네임 띄우기
+                //배팅을 아직 안한사람 닉네임 띄우기와 동시에 배팅머니가 -1 이면 방 삭제 창 띄우기
                 for(int i = 0; i < players.size(); i++) {
                     bMoney = ((Long) players.get(i).get("bettingMoney")).intValue();
+
+                    if(bMoney == -1){
+                        show_alert_dial_removePromise();
+                        break;
+                    }
+
                     if(bMoney == 0) {
                         tv_curr_betting.setText(players.get(i).get("nickName").toString() + "님이 배팅중 입니다.");
                         currBettingNum = i;
@@ -211,19 +220,74 @@ public class Betting_Promise extends Dialog {
                     mDatabase.child("Promise").child(rid).child("bettingMoney").setValue(allBettingMoney);
                     map.voteComplete();
                     dismiss();
+                    databaseReference.removeEventListener(currVoteListener);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("Map", String.valueOf(error.toException()));
             }
         };
         databaseReference.addValueEventListener(currVoteListener);
     }
 
-    //TODO: 실시간 리스너에 달아주기
-    public void show_alert_dial_removePromise(){
+    //마지막으로 남아있는게 방장인지 판별 -> 배팅머니가 모두 -1인지
+    public void isLastPlayer() {
+        isAllOut = true;
+        databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
+        subPromisePlayer = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
+                numOfP = players.size();
+                for(int i = 0; i < players.size(); i++) {
+                    int bm = (int) players.get(i).get("bettingMoney");
+                    if(bm != -1) {
+                        isAllOut = false;
+                        break;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Map", String.valueOf(error.toException()));
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(subPromisePlayer);
+    }
+
+    //유저 객체에서 프로미스 rid삭제
+    public void startRemovePromiseInUser() {
+        databaseReference = database.getReference("User").child(UID).child("promiseKey");
+        removePromiseInUser = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String promises = snapshot.getValue(String.class);
+                String[] myPromises = promises.split(" ");
+                ArrayList<String> myPromiseList = new ArrayList<String>(Arrays.asList(myPromises));
+
+                //프로미스 리스트에서 rid와 같으면 프로미스 제거
+                for(int i = 0; i < myPromiseList.size(); i++){
+                    if(myPromiseList.get(i).equals(rid)){
+                        myPromiseList.remove(i);
+                    }
+                }
+                String promiseResult = String.join(" ", myPromiseList);
+                mDatabase.child("User").child(UID).child("promiseKey").setValue(promiseResult);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Map", String.valueOf(error.toException()));
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(removePromiseInUser);
+    }
+
+    public void show_alert_dial_removePromise() {
         AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(map);
         //alert의 title과 Messege 세팅
         myAlertBuilder.setTitle("알림");
@@ -231,7 +295,23 @@ public class Betting_Promise extends Dialog {
         // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
         myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog,int which){
+                if(me_num == -1) {
+                    Toast.makeText(map, "잠시 후에 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                isLastPlayer();
+                if(!isAllOut && me_num ==  ) {
+                    Toast.makeText(map, "아직 방에 남아 있는 인원이 있습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //배팅머니를 -1로 만들어주기 (-1이 되면 퇴장처리)
+                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(-1);
+                startRemovePromiseInUser(); // 유저 객체에서 프로미스 지워주기
+                //홈으로 돌아가기
+                databaseReference.removeEventListener(currVoteListener);
+                map.onBackPressed();
             }
         });
         myAlertBuilder.show();
@@ -245,7 +325,7 @@ public class Betting_Promise extends Dialog {
         // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
         myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog,int which){
-                mDatabase.child("Promise").child(rid).child("vote").setValue(-1);
+                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(-1);
             }
         });
         myAlertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -268,6 +348,7 @@ public class Betting_Promise extends Dialog {
     @Override
     public void onBackPressed() {
         dismiss();
+        databaseReference.removeEventListener(currVoteListener);
         map.onBackPressed();
     }
 }
