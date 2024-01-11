@@ -187,16 +187,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
 
-//                //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
-//                if(p.getVote() != 0){
-//                    votePromise = new Vote_Promise(Map.this, rid, UID, num);
-//                    votePromise.show();
-//                }
-//                else
-//                {
-//                    System.out.println("nonono");
-//                }
-
                 // 방의 배팅머니가 0이면 팝업창 띄우기
                 if(p.getbettingMoney() == 0){
                     bettingPromise = new Betting_Promise(Map.this, rid, UID);
@@ -317,10 +307,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 if( voteNum != 0){
                     votePromise = new Vote_Promise(Map.this, rid, UID, num);
                     votePromise.show();
-                }
-                else
-                {
-                    System.out.println("nonono");
                 }
             }
 
