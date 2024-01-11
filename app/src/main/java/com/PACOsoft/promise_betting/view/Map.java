@@ -471,7 +471,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
        }
        assert locationManager != null;
        databaseReference2.removeEventListener(mapOnMyFriendListener);
+       databaseReference3.removeEventListener(voteStartListener);
        locationManager.removeUpdates(locationListener);
+
        finish();
     }
 }
