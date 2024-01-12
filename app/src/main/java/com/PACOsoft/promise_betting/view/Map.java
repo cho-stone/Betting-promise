@@ -442,12 +442,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     //투표 시작 버튼이 눌리면
-    public void btn_vote_start(View view){
+    public void btn_delete_room(View view){
         if(num == -1){
             Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
-        show_alert_dial();
+        //show_alert_dial();
     }
 
     @Override

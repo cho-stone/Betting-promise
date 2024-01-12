@@ -30,15 +30,13 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/vote_btn"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/vote_start"
+        android:text="@string/delete_room"
         android:textSize="18sp"
         android:background="@drawable/round_button"
-        android:onClick="btn_vote_start"/>
-
+        android:onClick="btn_delete_room"/>
 
 </LinearLayout>
