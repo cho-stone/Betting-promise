@@ -323,6 +323,7 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("rid", rid);
         intent.putExtra("UID", me.getUID());
+        intent.putExtra("Nop", String.valueOf(people));
         startActivity(intent);
         finish();
     }
