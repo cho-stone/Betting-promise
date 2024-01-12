@@ -270,8 +270,8 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
             player.setArrival(false);
             player.setPlayerUID(id);
             player.setNickName(friendsNick.get(i));
-            player.setX(0.0);
-            player.setY(0.0);
+            player.setX(0.10001);
+            player.setY(0.10001);
             player.setVoteState(0);
             friendsArray.add(player);
             i++;
