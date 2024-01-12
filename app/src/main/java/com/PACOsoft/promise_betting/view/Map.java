@@ -240,7 +240,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         };
         databaseReference.addListenerForSingleValueEvent(promisePointListener);
         mapOnFriendMark();
-        VoteStart();
     }
 
     @SuppressLint("MissingPermission")
@@ -260,6 +259,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 if(num == -1){
                     return;
                 }
+                VoteStart(); //num이 정해진 시점에 VoteStart를 실행해서 num을 -1을 넘기지 않게 방지함
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 Marker temp = new Marker();
 
