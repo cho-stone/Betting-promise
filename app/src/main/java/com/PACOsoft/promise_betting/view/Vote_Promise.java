@@ -46,6 +46,13 @@ public class Vote_Promise extends Dialog {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Promise promise = snapshot.getValue(Promise.class);
+                int numOfVoter=0;
+                for(int i=0;i<promise.getNumOfPlayer();i++)
+                {
+                    if(promise.getPromisePlayer().get(i).getVoteState() !=0) numOfVoter++;
+                }
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("Promise").child(rid).child("vote").setValue(numOfVoter);
                 String vote = String.valueOf(promise.getVote());
                 String player = String.valueOf(promise.getNumOfPlayer());
                 String tempSTR = vote+" / "+player;
@@ -57,8 +64,6 @@ public class Vote_Promise extends Dialog {
             }
         };
         databaseReference.addValueEventListener(checkVoteValueEventListener);
-
-
 
 
 
