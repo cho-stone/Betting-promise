@@ -69,6 +69,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private DatabaseReference databaseReference, databaseReference2,databaseReference3;
     private String rid;
     private String UID;
+    private String Nop;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -110,6 +111,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         rid = getIntent().getStringExtra("rid");
         UID = getIntent().getStringExtra("UID");
+        Nop = getIntent().getStringExtra("Nop");
         num = -1;
 
         //방세팅
@@ -120,7 +122,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Promise p = dataSnapshot.getValue(Promise.class);
                 assert p != null;
-                people_number.setText(String.valueOf(p.getNumOfPlayer()));
+                people_number.setText(String.valueOf(p.getNumOfPlayer()));  //TODO: 총 방 인원수 가져오기 해야함 -> 방 삭제에 필요 (베팅 프로미스, 보트 프로미스로 넘겨주기)
                 room_name.setText(p.getPromiseName());
                 for (PromisePlayer i : p.getPromisePlayer()) {
                     TextView tv = new TextView(getApplicationContext());

@@ -38,7 +38,7 @@ public class Betting_Promise extends Dialog {
     private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener, removePromiseInUser, subPromisePlayer;
     private ArrayList<String> usersUID;
     private Button btn_betting;
-    private int min, j, me_num, currBettingNum, allBettingMoney, numOfP;
+    private int min, j, me_num, currBettingNum, allBettingMoney, numOfP; //TODO: numOfP 채워주기, 마지막 남은 인원이 1이면 방장임
     private boolean isBetting, isAllBetting, isAllOut;
     private Map map;
     private String rid, UID;

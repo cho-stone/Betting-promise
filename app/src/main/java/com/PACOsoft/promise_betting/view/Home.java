@@ -152,9 +152,11 @@ public class Home extends AppCompatActivity {
 
 
         TextView tv_promiseKey = v.findViewById(R.id.tv_promiseKey);
+        TextView tv_promiseNumOfPlayer = v.findViewById(R.id.tv_numOfPlayer);
         Intent intent = new Intent(this, Map.class);
         intent.putExtra("UID", UID);//ID 정보 intent
         intent.putExtra("rid", tv_promiseKey.getText().toString());
+        intent.putExtra("Nop", tv_promiseNumOfPlayer.getText().toString());
         startActivity(intent);
     }
 
