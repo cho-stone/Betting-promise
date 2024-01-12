@@ -191,7 +191,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                 // 방의 배팅머니가 0이면 팝업창 띄우기
                 if(p.getbettingMoney() == 0){
-                    bettingPromise = new Betting_Promise(Map.this, rid, UID);
+                    bettingPromise = new Betting_Promise(Map.this, rid, UID, Nop);
                     bettingPromise.show();
                 }
 

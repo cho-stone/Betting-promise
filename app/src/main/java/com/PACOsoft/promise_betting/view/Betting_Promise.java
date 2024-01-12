@@ -43,11 +43,12 @@ public class Betting_Promise extends Dialog {
     private Map map;
     private String rid, UID;
 
-    public Betting_Promise(@NonNull Context context, String r, String U) {
+    public Betting_Promise(@NonNull Context context, String r, String U, String N) {
         super(context);
         map = (Map)context; // context 캐스팅
         rid = r;
         UID = U;
+        numOfP = Integer.parseInt(N);
         isAllBetting = true;
         isAllOut = true;
         allBettingMoney = 0;
