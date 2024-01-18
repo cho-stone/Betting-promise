@@ -45,6 +45,8 @@ public class Home extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Promise> promiseArrayList;
+    private ArrayList<String> refreshFriendsArrayList,refreshPromisessArrayList;
+    private ArrayList<Boolean> unExistFriendsArrayList,unExistPromisesArrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference, databaseReference2;
     private String TAG, UID;
@@ -52,6 +54,7 @@ public class Home extends AppCompatActivity {
     public static Context context;
     public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener;
     public boolean isFriendView;
+
     private com.PACOsoft.promise_betting.util.ProgressDialog customProgressDialog;
 
     @Override
@@ -78,7 +81,28 @@ public class Home extends AppCompatActivity {
         //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
         //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
         customProgressDialog.show();
-
+        refreshFriendsArrayList = new ArrayList<String>();
+        unExistFriendsArrayList = new ArrayList<Boolean>();
+        refreshPromisessArrayList = new ArrayList<String>();
+        unExistPromisesArrayList = new ArrayList<Boolean>();
+        refresh_friends1();
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                refresh_friends2();
+            }
+        }, 2000);// 2초 딜레이를 준 후 시작
+        refresh_promise1();
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                refresh_promise2();
+            }
+        }, 2000);// 2초 딜레이를 준 후 시작
         view_friends();
         new Handler().postDelayed(new Runnable()
         {
@@ -87,9 +111,8 @@ public class Home extends AppCompatActivity {
             {
                 customProgressDialog.dismiss();
             }
-        }, 2000);// 1초 정도 딜레이를 준 후 시작
+        }, 2000);// 2초 딜레이를 준 후 시작
     }
-
 
     //Home에서 SearchFriend로 이동하는 버튼 구현
     public void btnSearchFriendClicked(View view) {
@@ -142,9 +165,7 @@ public class Home extends AppCompatActivity {
         view_friends();
     }
 
-    public void btn_home_promise(View view) {
-        view_promise();
-    }
+    public void btn_home_promise(View view) {view_promise();}
 
     public void btn_promiseClicked(@NonNull View v) {
         TextView tv_promiseKey = v.findViewById(R.id.tv_promiseKey);
@@ -170,13 +191,9 @@ public class Home extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.getValue(User.class) == null){
-
                     return;
                 }
-
                 userArrayList.add(snapshot.getValue(User.class));
-
-
                 if(!snapshot.getValue(User.class).getId().equals(""))
                     adapter.notifyDataSetChanged();
                 else{
@@ -211,7 +228,6 @@ public class Home extends AppCompatActivity {
         adapter = new User_List_Adapter(userArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
-
     public void view_promise() {
         recyclerView = findViewById(R.id.homeRecyclerView); // 아이디 연결
         recyclerView.setHasFixedSize(true);//리사이클러뷰 성능 강화
@@ -225,6 +241,9 @@ public class Home extends AppCompatActivity {
         ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue(Promise.class) == null){
+                    return;
+                }
                 promiseArrayList.add(snapshot.getValue(Promise.class));
                 if(!snapshot.getValue(Promise.class).getPromiseKey().equals(""))
                     adapter.notifyDataSetChanged();
@@ -252,7 +271,6 @@ public class Home extends AppCompatActivity {
                     databaseReference2.removeEventListener(getPromiseListValueEventListener2);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -261,4 +279,146 @@ public class Home extends AppCompatActivity {
         adapter = new Promise_List_Adapter(promiseArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
+    public void refresh_friends1() {
+        unExistFriendsArrayList.clear();
+        refreshFriendsArrayList.clear();
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        if(isFriendView == false) databaseReference.removeEventListener(getPromiseListValueEventListener);
+        isFriendView = true;
+        ValueEventListener getFriendListValueEventLister2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue(User.class) == null){
+                    unExistFriendsArrayList.add(true);
+                    return;
+                }
+                else unExistFriendsArrayList.add(false);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        getFriendListValueEventLister = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User me = snapshot.getValue(User.class);
+                String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+                for(int i=0;i<friends.length;i++) {
+                    String friend = friends[i];
+                    refreshFriendsArrayList.add(friend);
+                    databaseReference2 = database.getReference("User").child(friend);
+                    databaseReference2.addListenerForSingleValueEvent(getFriendListValueEventLister2);
+                    databaseReference2.removeEventListener(getFriendListValueEventLister2);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(getFriendListValueEventLister);
+    }
+    public void refresh_friends2() {
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        if(isFriendView == false) databaseReference.removeEventListener(getPromiseListValueEventListener);
+        isFriendView = true;
+
+        getFriendListValueEventLister = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(int i=0;i<unExistFriendsArrayList.size();i++)
+                {
+                    if(unExistFriendsArrayList.get(i)==true){
+                        refreshFriendsArrayList.remove(i);
+                    }
+                }
+                String newMyFriendsString="";
+                for(String str : refreshFriendsArrayList)
+                {
+                    newMyFriendsString+=str;
+                    newMyFriendsString+=" ";
+                }
+                databaseReference.child("friendsUID").setValue(newMyFriendsString);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(getFriendListValueEventLister);
+    }
+    public void refresh_promise1() {
+        unExistPromisesArrayList.clear();
+        refreshPromisessArrayList.clear();
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        if(isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
+        isFriendView = false;
+        ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e("err", "2");
+                if(snapshot.getValue(User.class) == null){
+                    unExistPromisesArrayList.add(true);
+                    return;
+                }
+                else
+                {
+                    unExistPromisesArrayList.add(false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        getPromiseListValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User me = snapshot.getValue(User.class);
+                String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+                for (String promise : promises) {
+                    Log.e("err", "1");
+                    refreshPromisessArrayList.add(promise);
+                    databaseReference2 = database.getReference("Promise").child(promise);
+                    databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
+                    databaseReference2.removeEventListener(getPromiseListValueEventListener2);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(getPromiseListValueEventListener);
+    }
+    public void refresh_promise2() {
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        if(isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
+        isFriendView = false;
+        getPromiseListValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e("err", "3");
+                for(int i=0;i<unExistPromisesArrayList.size();i++)
+                {
+                    if(unExistPromisesArrayList.get(i)==true){
+                        refreshPromisessArrayList.remove(i);
+                    }
+                }
+                String newMyPromisesString="";
+                for(String str : refreshPromisessArrayList)
+                {
+                    newMyPromisesString+=str;
+                    newMyPromisesString+=" ";
+                }
+                databaseReference.child("promiseKey").setValue(newMyPromisesString);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(getPromiseListValueEventListener);
+    }
+
 }
