@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
+    private TextView tv_google;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         init();
         signInButton = findViewById(R.id.btn_google_sign_in);
+
         signInButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 googlesignIn();

@@ -22,8 +22,9 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/createAcc"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="24sp"></TextView>
+            android:textColor="@android:color/black"
+            android:textSize="28sp"
+            android:fontFamily="@font/kingsejong"></TextView>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lo_nickname"
@@ -123,10 +124,12 @@
                 android:gravity="center"
                 android:onClick="btn_signup"
                 android:text="@string/reg"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:fontFamily="@font/kingsejong"
+                android:textSize="20sp"/>
 
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="85dp"
                 android:layout_height="100dp"></TextView>
 
             <TextView
@@ -137,7 +140,9 @@
                 android:gravity="center"
                 android:onClick="btn_signup_close"
                 android:text="@string/close"
-                android:textColor="@color/white"></TextView>
+                android:textColor="@color/white"
+                android:fontFamily="@font/kingsejong"
+                android:textSize="20sp"></TextView>
         </LinearLayout>
 
     </LinearLayout>

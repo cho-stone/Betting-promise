@@ -212,7 +212,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                         double distance = A.distanceTo(B);
                         //TODO: if문에 시간 조건도 추가하기
-                        Log.v("Map", String.valueOf(distance));
                         if ((distance <= 50.0) && !promisePlayer_me.getArrival()) {
                             reach_location.setEnabled(true);
                         }

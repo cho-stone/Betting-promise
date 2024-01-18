@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/background_color">
 
         <!--포인트 출력 텍스트뷰-->
         <TextView
@@ -22,29 +23,58 @@
             android:gravity="center"
             android:text="0"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="18sp"
+            android:fontFamily="@font/kingsejong"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="50dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:background="@color/light_dark"/>
 
         <!--포인트 충전소 이동 이미지 버튼-->
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:onClick="btnCoinsClicked"
             android:scaleType="fitCenter"
-            android:src="@drawable/coins_icon" />
+            android:src="@drawable/coin_icon"
+            android:background="@color/background_color"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="50dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:background="@color/light_dark"/>
 
         <!--약속 생성 이미지 버튼-->
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:onClick="btnCreateRoomClicked"
             android:scaleType="fitCenter"
-            android:src="@drawable/plus_icon" />
+            android:src="@drawable/room_create_icon"
+            android:background="@color/background_color"/>
+
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="50dp"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:background="@color/light_dark"/>
 
         <!--친구 찾기 이미지 버튼-->
         <ImageButton

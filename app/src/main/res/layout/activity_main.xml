@@ -20,9 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="@string/loginT"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="24sp"></TextView>
+            android:text="약속배팅!"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:fontFamily="@font/kingsejong"></TextView>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -65,7 +66,8 @@
             android:onClick="login"
             android:text="@string/loginBT"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -129,7 +131,8 @@
                 android:gravity="center"
                 android:text="@string/forgotPW"
                 android:textSize="17sp"
-                android:textColor="@color/light_dark"/>
+                android:textColor="@color/dark_60"
+                android:fontFamily="@font/kingsejong"/>
 
             <TextView
                 android:id="@+id/btn_reg"
@@ -141,7 +144,8 @@
                 android:onClick="reg"
                 android:text="@string/createAcc"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                android:fontFamily="@font/kingsejong"/>
 
         </LinearLayout>
 
