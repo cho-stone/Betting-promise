@@ -66,14 +66,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
     private FirebaseDatabase database, database2, database3;
-    private DatabaseReference databaseReference, databaseReference2,databaseReference3;
+    private DatabaseReference databaseReference, databaseReference2,databaseReference3, databaseReference4;
     private String rid;
     private String UID;
     private String Nop;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener;
+    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener, PointReceiveListener;
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
@@ -81,10 +81,21 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private Vote_Promise votePromise;
     private Betting_Promise bettingPromise;
 
+    private int myRanking;
+
+    private int myReceivePoint;
+
+    public static int allBettingMoney = 0; // 배팅금액 총합
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        myRanking = 0;
+        myReceivePoint = 0;
+
+
         marks = new ArrayList<>();
 
 
@@ -177,6 +188,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 circle.setOutlineColor(Color.argb(70, 0, 0, 0));
                 circle.setMap(naverMap);
 
+                Map.allBettingMoney = p.getbettingMoney(); //매번 총배팅금액 가져와서 전역변수에 넣어줌
+
                 //객체에서 내 PromisePlayer 객체 찾기
                 ArrayList<PromisePlayer> promisePlayers;
                 promisePlayers = p.getPromisePlayer();
@@ -258,7 +271,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 if(num == -1){
                     return;
                 }
-                VoteStart(); //num이 정해진 시점에 VoteStart를 실행해서 num을 -1을 넘기지 않게 방지함
+                //VoteStart(); //num이 정해진 시점에 VoteStart를 실행해서 num을 -1을 넘기지 않게 방지함
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 Marker temp = new Marker();
 
@@ -294,7 +307,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference2.addValueEventListener(mapOnMyFriendListener);
     }
 
-
+/*
     //투표 시작했는지 파악하는 리스너
     public void VoteStart(){
         database3 = FirebaseDatabase.getInstance();
@@ -319,7 +332,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference3.addValueEventListener(voteStartListener);
     }
 
-
+*/
 
     //locationManager 퍼미션
     private boolean hasPermission() {
@@ -376,15 +389,51 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 Toast.makeText(getApplicationContext(), "도착!", Toast.LENGTH_SHORT).show();
 
                 //랭킹 정해주기
-                int max = 0;
+                myRanking = 0;
                 for(HashMap<String, Object> hm : promisePlayers){
                     int curr = ((Long) hm.get("ranking")).intValue();
-                    if(curr > max){
-                        max = curr;
+                    if(curr > myRanking){
+                        myRanking = curr;
                     }
                 }
-                max += 1;
-                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("ranking").setValue(max);
+                myRanking += 1;
+                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("ranking").setValue(myRanking);
+                //랭킹에 따라서 포인트 지급 1등은 총 배팅 금액의 3/6 2등은 2/6 3등은 1/6을 지급 받음
+                myReceivePoint = 0;
+                if(myRanking == 1)//1등
+                {
+                    myReceivePoint = (Map.allBettingMoney/2);
+                }
+                else if(myRanking == 2)//2등
+                {
+                    myReceivePoint = (Map.allBettingMoney/3);
+                }
+                else if(myRanking == 3)//3등
+                {
+                    myReceivePoint = (Map.allBettingMoney/6);
+                }
+                Toast.makeText(getApplicationContext(), String.valueOf(myReceivePoint), Toast.LENGTH_SHORT).show();
+                DatabaseReference mDatabase2;
+                mDatabase2 = FirebaseDatabase.getInstance().getReference();
+                databaseReference4 = database.getReference("User").child(UID).child("account");
+                PointReceiveListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int myBeforePoint = dataSnapshot.getValue(Integer.class);
+
+                        //기존 내 포인트에 새로 얻은 포인트를 합산 후 DB에 저장
+                        myBeforePoint += myReceivePoint;
+                        mDatabase2.child("User").child(UID).child("account").setValue(myBeforePoint);
+                        Toast.makeText(getApplicationContext(), "포인트 획득 완료!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Map", String.valueOf(databaseError.toException()));
+                    }
+                };
+                databaseReference4.addListenerForSingleValueEvent(PointReceiveListener);
             }
 
             @Override
@@ -394,7 +443,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         };
         databaseReference.addListenerForSingleValueEvent(promiseArrivalListener);
     }
-
+/*
     //투표 시작 함수
     private void start_vote(){
         DatabaseReference mDatabase;
@@ -463,4 +512,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
        finish();
     }
+    */
+
 }

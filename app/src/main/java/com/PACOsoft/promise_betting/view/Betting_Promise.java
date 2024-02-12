@@ -38,7 +38,7 @@ public class Betting_Promise extends Dialog {
     private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener, removePromiseInUser, subPromisePlayer;
     private ArrayList<String> usersUID;
     private Button btn_betting;
-    private int min, j, me_num, currBettingNum, allBettingMoney, numOfP; //TODO: numOfP 채워주기, 마지막 남은 인원이 1이면 방장임
+    private int min, j, me_num, currBettingNum, numOfP; //TODO: numOfP 채워주기, 마지막 남은 인원이 1이면 방장임
     private boolean isBetting, isAllBetting, isAllOut;
     private Map map;
     private String rid, UID;
@@ -51,7 +51,7 @@ public class Betting_Promise extends Dialog {
         numOfP = Integer.parseInt(N);
         isAllBetting = true;
         isAllOut = true;
-        allBettingMoney = 0;
+        //allBettingMoney = 0;
         me_num = -1;
         setContentView(R.layout.activity_betting_promise);
 
@@ -215,10 +215,10 @@ public class Betting_Promise extends Dialog {
                     for(int i = 0; i < players.size(); i++){
                         //관전자 제외
                         if(((Long) players.get(i).get("bettingMoney")).intValue() != 1){
-                            allBettingMoney += ((Long) players.get(i).get("bettingMoney")).intValue();
+                            Map.allBettingMoney += ((Long) players.get(i).get("bettingMoney")).intValue();
                         }
                     }
-                    mDatabase.child("Promise").child(rid).child("bettingMoney").setValue(allBettingMoney);
+                    mDatabase.child("Promise").child(rid).child("bettingMoney").setValue(Map.allBettingMoney);
                     map.voteComplete();
                     dismiss();
                     databaseReference.removeEventListener(currVoteListener);
