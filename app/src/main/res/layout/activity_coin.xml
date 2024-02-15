@@ -14,10 +14,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:background="@color/cardview_dark_background"
+            android:background="@color/color_toolbar"
             android:gravity="center"
+            android:fontFamily="@font/kingsejong"
             android:text="@string/coin_page"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -39,6 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="충전금액"
+                android:fontFamily="@font/kingsejong"
                 android:inputType="number"
                 android:textColor="@color/black"
                 android:maxLength="9">
@@ -57,6 +59,7 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="@string/after_charge"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/black" />
 
             <TextView
@@ -93,6 +96,7 @@
             android:background="#00000000"
             android:gravity="center"
             android:onClick="btn_coin_charge"
+            android:fontFamily="@font/kingsejong"
             android:text="충전"
             android:textColor="@color/black"
             android:textSize="15sp" />
@@ -104,6 +108,7 @@
             android:background="#00000000"
             android:gravity="center"
             android:onClick="btn_coin_page_close"
+            android:fontFamily="@font/kingsejong"
             android:text="닫기"
             android:textColor="@color/black"
             android:textSize="15sp" />

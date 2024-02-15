@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center"
+            android:fontFamily="@font/kingsejong"
             android:text="@string/create_room"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="24sp" />
@@ -56,6 +58,7 @@
                 android:gravity="center"
                 android:onClick="btn_date_set"
                 android:text="@string/select_date"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
 
             <TextView
@@ -86,6 +89,7 @@
                 android:gravity="center"
                 android:onClick="btn_time_set"
                 android:text="@string/select_time"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white"/>
 
             <TextView
@@ -115,6 +119,7 @@
                 android:gravity="center"
                 android:onClick="intent_btn_search_local"
                 android:text="@string/select_location"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
 
             <TextView
@@ -145,6 +150,7 @@
                 android:gravity="center"
                 android:onClick="btn_intent_invite_friend"
                 android:text="@string/join_friend"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
 
             <TextView
@@ -176,6 +182,7 @@
                 android:gravity="center"
                 android:onClick="btn_create_room"
                 android:text="@string/create"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white"
                 android:enabled="false"/>
 
@@ -191,6 +198,7 @@
                 android:gravity="center"
                 android:onClick="create_room_close"
                 android:text="@string/close"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
         </LinearLayout>
 
