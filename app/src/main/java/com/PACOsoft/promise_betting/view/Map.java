@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,8 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
 import java.sql.SQLOutput;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,14 +69,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
     private FirebaseDatabase database, database2, database3;
-    private DatabaseReference databaseReference, databaseReference2,databaseReference3, databaseReference4;
+    private DatabaseReference databaseReference,databaseReference1, databaseReference2,databaseReference3, databaseReference4;
     private String rid;
     private String UID;
     private String Nop;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener, PointReceiveListener;
+    private ValueEventListener promiseDeleteListener,promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener, PointReceiveListener;
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
@@ -100,13 +103,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
 
         //광고 뷰 추가
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        drawerView = findViewById(R.id.drawer);
-        drawerLayout.setDrawerLockMode(drawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
+//
+//        drawerLayout = findViewById(R.id.drawer_layout);
+//        drawerView = findViewById(R.id.drawer);
+//        drawerLayout.setDrawerLockMode(drawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //네이버 지도
         mapView = findViewById(R.id.map_view);
@@ -124,6 +127,46 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         UID = getIntent().getStringExtra("UID");
         Nop = getIntent().getStringExtra("Nop");
         num = -1;
+
+        //약속 종료된 방인지 체크(약속 시간 이후 15분 경과 시 방 삭제 필요)
+        database = FirebaseDatabase.getInstance();
+        databaseReference1 = database.getReference("Promise").child(rid);
+        promiseDeleteListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Promise p = dataSnapshot.getValue(Promise.class);
+                assert p != null;
+                int pYear,pMonth,pDay,pHour,pMinute;
+                String dateArr[];
+                String timeArr[];
+                String date = p.getDate();
+                String time = p.getTime();
+                dateArr = date.split(" ");
+                timeArr = time.split(" ");
+                pYear = Integer.parseInt(dateArr[0]);
+                pMonth = Integer.parseInt(dateArr[1]);
+                pDay = Integer.parseInt(dateArr[2]);
+                pHour = Integer.parseInt(timeArr[0]);
+                pMinute = Integer.parseInt(timeArr[1]);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDateTime now = LocalDateTime.now();
+                    LocalDateTime setTime = LocalDateTime.of(pYear, pMonth, pDay, pHour, pMinute);
+                    System.out.println("delete1~!");
+                    System.out.println(ChronoUnit.MINUTES.between(now, setTime));
+                    if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
+                        System.out.println("delete2~!");
+                        database.getReference("Promise").child(rid).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Map", String.valueOf(databaseError.toException()));
+            }
+        };
+        databaseReference1.addListenerForSingleValueEvent(promiseDeleteListener);
+
 
         //방세팅
         database = FirebaseDatabase.getInstance();

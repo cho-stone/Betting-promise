@@ -38,8 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Optional;
 
-
-
 public class Home extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -62,11 +60,11 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //광고 로드 전 초기화 해주는 코드
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
         isFriendView = true;
         context = this;
         TAG = "Home";
@@ -358,7 +356,6 @@ public class Home extends AppCompatActivity {
         ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e("err", "2");
                 if(snapshot.getValue(User.class) == null){
                     unExistPromisesArrayList.add(true);
                     return;
@@ -378,7 +375,6 @@ public class Home extends AppCompatActivity {
                 User me = snapshot.getValue(User.class);
                 String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 for (String promise : promises) {
-                    Log.e("err", "1");
                     refreshPromisessArrayList.add(promise);
                     databaseReference2 = database.getReference("Promise").child(promise);
                     databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
@@ -399,7 +395,6 @@ public class Home extends AppCompatActivity {
         getPromiseListValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e("err", "3");
                 for(int i=0;i<unExistPromisesArrayList.size();i++)
                 {
                     if(unExistPromisesArrayList.get(i)==true){
