@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:onClick="btn_UserClicked"
     android:background="@drawable/clickable_layout"
-
     android:orientation="vertical"
     android:layout_margin="10dp">
 

@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -96,31 +98,21 @@ public class Invite_Friend extends AppCompatActivity {
     }
 
     public void btn_UserClicked(@NonNull View v) {
-//        ColorDrawable color = (ColorDrawable) v.getBackground();
-        int bgcolor = 0;
-
-        Drawable draw = (Drawable) v.getBackground();
-        Log.e("ee", String.valueOf(draw));
+        Drawable draw = v.getBackground();
 
         TextView tv_UID = v.findViewById(R.id.tv_UID);
         TextView tv_nickName = v.findViewById(R.id.tv_nickName);
         TextView tv_id = v.findViewById(R.id.tv_id);
-        if (bgcolor == Color.LTGRAY) {
-            v.setBackgroundColor(Color.WHITE);
+        if (draw.getColorFilter() != null) {
+            draw.setColorFilter(null);
             listUID.remove(String.valueOf(tv_UID.getText()));
             listNickName.remove(String.valueOf(tv_nickName.getText()));
             listID.remove(String.valueOf(tv_id.getText()));
-//            hashSetUID.remove(String.valueOf(tv_UID.getText()));
-//            hashSetNickName.remove(String.valueOf(tv_nickName.getText()));
-//            hashSetID.remove(String.valueOf(tv_id.getText()));
         } else {
-            v.setBackgroundColor(Color.LTGRAY);
+            draw.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
             listUID.add(String.valueOf(tv_UID.getText()));
             listNickName.add(String.valueOf(tv_nickName.getText()));
             listID.add(String.valueOf(tv_id.getText()));
-//            hashSetUID.add(String.valueOf(tv_UID.getText()));
-//            hashSetNickName.add(String.valueOf(tv_nickName.getText()));
-//            hashSetID.add(String.valueOf(tv_id.getText()));
         }
     }
 
