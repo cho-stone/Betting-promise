@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,8 +96,12 @@ public class Invite_Friend extends AppCompatActivity {
     }
 
     public void btn_UserClicked(@NonNull View v) {
-        ColorDrawable color = (ColorDrawable) v.getBackground();
-        int bgcolor = color.getColor();
+//        ColorDrawable color = (ColorDrawable) v.getBackground();
+        int bgcolor = 0;
+
+        Drawable draw = (Drawable) v.getBackground();
+        Log.e("ee", String.valueOf(draw));
+
         TextView tv_UID = v.findViewById(R.id.tv_UID);
         TextView tv_nickName = v.findViewById(R.id.tv_nickName);
         TextView tv_id = v.findViewById(R.id.tv_id);

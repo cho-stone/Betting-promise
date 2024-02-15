@@ -13,5 +13,8 @@
     <color name="light_dark">#668e918f</color>
     <color name="dark_60">#99000000</color>
     <color name="background_color">#D5D5D5</color>
+    <color name="color_stroke">#98C593</color>
+    <color name="color_clickable_menu">#E7E7E7</color>
+    <color name="color_toolbar">#BCE9B7</color>
 </resources>
 

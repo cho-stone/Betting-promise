@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:onClick="btn_UserClicked"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@drawable/clickable_layout"
+
+    android:orientation="vertical"
+    android:layout_margin="10dp">
 
     <View
         android:layout_width="match_parent"
@@ -43,14 +45,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="아이디" />
+                android:text="아이디"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tv_nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="배광호" />
+                android:text="배광호"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
     </LinearLayout>
