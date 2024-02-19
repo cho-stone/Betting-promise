@@ -291,6 +291,7 @@ public class Betting_Promise extends Dialog {
         //alert의 title과 Messege 세팅
         myAlertBuilder.setTitle("알림");
         myAlertBuilder.setMessage("불참여 인원이 있어 방이 삭제 되었습니다.");
+        databaseReference.removeEventListener(currVoteListener);
         // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
         myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog,int which){
