@@ -309,8 +309,7 @@ public class Betting_Promise extends Dialog {
                 if(isAllOut && me_num ==  (numOfP - 1)) {
                     database = FirebaseDatabase.getInstance();
                     database.getReference("Promise").child(rid).removeValue();
-                    databaseReference.removeEventListener(currVoteListener);
-                    map.onBackPressed();
+                    onBackPressed();
                     return;
                 }
 
@@ -318,8 +317,7 @@ public class Betting_Promise extends Dialog {
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(-1);
                 startRemovePromiseInUser(); // 유저 객체에서 프로미스 지워주기
                 //홈으로 돌아가기
-                databaseReference.removeEventListener(currVoteListener);
-                map.onBackPressed();
+                onBackPressed();
             }
         });
         myAlertBuilder.show();
