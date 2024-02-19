@@ -242,7 +242,7 @@ public class Betting_Promise extends Dialog {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 for(int i = 0; i < players.size(); i++) {
-                    int bm = (int) players.get(i).get("bettingMoney");
+                    int bm = Integer.parseInt(players.get(i).get("bettingMoney").toString());
                     if(bm != -1) {
                         isAllOut = false;
                         break;
