@@ -42,7 +42,7 @@
             android:text="0"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <!--스크롤 뷰와 상단 리니어 레이아웃 경계선-->
