@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.History;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
 import com.google.android.gms.ads.AdView;
@@ -69,14 +70,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
     private FirebaseDatabase database, database2, database3;
-    private DatabaseReference databaseReference,databaseReference1, databaseReference2,databaseReference3, databaseReference4;
+    private DatabaseReference databaseReference,databaseReference1, databaseReference2,databaseReference3, databaseReference4, databaseReference5,databaseReference6;
     private String rid;
     private String UID;
     private String Nop;
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseDeleteListener,promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener, PointReceiveListener;
+    private ValueEventListener promiseDeleteListener,promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener, PointReceiveListener,addHistoryListener;
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
@@ -88,6 +89,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     private int myReceivePoint;
 
+    private int pYear,pMonth,pDay,pHour,pMinute,NumOfPlayers;
+    private String NameOfPromise;
     public static int allBettingMoney = 0; // 배팅금액 총합
 
     @Override
@@ -136,7 +139,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Promise p = dataSnapshot.getValue(Promise.class);
                 assert p != null;
-                int pYear,pMonth,pDay,pHour,pMinute;
+
                 String dateArr[];
                 String timeArr[];
                 String date = p.getDate();
@@ -173,6 +176,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Promise p = dataSnapshot.getValue(Promise.class);
                 assert p != null;
+                NumOfPlayers = p.getNumOfPlayer();
+                NameOfPromise = p.getPromiseName();
                 people_number.setText(String.valueOf(p.getNumOfPlayer()));  //TODO: 총 방 인원수 가져오기 해야함 -> 방 삭제에 필요 (베팅 프로미스, 보트 프로미스로 넘겨주기)
                 room_name.setText(p.getPromiseName());
                 for (PromisePlayer i : p.getPromisePlayer()) {
@@ -443,6 +448,22 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 if(myRanking == 1)//1등
                 {
                     myReceivePoint = (Map.allBettingMoney/2);
+                    History history = new History();
+                    String date="";
+                    date += String.valueOf(pYear);
+                    date += ".";
+                    date += String.valueOf(pMonth);
+                    date += ".";
+                    date += String.valueOf(pHour);
+                    date += ":";
+                    date += String.valueOf(pMinute);
+                    history.setDate(date);
+                    history.setNumOfPlayer(NumOfPlayers);
+                    history.setPrizeMoney(Map.allBettingMoney);
+                    history.setPromiseKey(rid);
+                    history.setPromiseName(NameOfPromise);
+                    databaseReference5 = database.getReference("History").child(rid);
+                    databaseReference5.setValue(history);
                 }
                 else if(myRanking == 2)//2등
                 {
@@ -456,6 +477,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 DatabaseReference mDatabase2;
                 mDatabase2 = FirebaseDatabase.getInstance().getReference();
                 databaseReference4 = database.getReference("User").child(UID).child("account");
+
                 PointReceiveListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -474,6 +496,27 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 };
                 databaseReference4.addListenerForSingleValueEvent(PointReceiveListener);
+                databaseReference5 = database.getReference("User").child(UID).child("historyKey");
+                addHistoryListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String myHistory = dataSnapshot.getValue(String.class);
+
+                        //기존 내 히스토리에 새 히스토리 추가
+                        if(myHistory!="")
+                        myHistory += " ";
+                        myHistory += rid;
+                        mDatabase2.child("User").child(UID).child("historyKey").setValue(myHistory);
+                        Toast.makeText(getApplicationContext(), "히스토리 생성 완료!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Map", String.valueOf(databaseError.toException()));
+                    }
+                };
+                databaseReference5.addListenerForSingleValueEvent(addHistoryListener);
             }
 
             @Override
@@ -482,6 +525,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
         databaseReference.addListenerForSingleValueEvent(promiseArrivalListener);
+
     }
 /*
     //투표 시작 함수

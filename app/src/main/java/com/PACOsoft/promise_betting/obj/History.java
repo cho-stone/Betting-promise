@@ -4,9 +4,7 @@ public class History {
     private String promiseName = "";//약속 이름
     private String promiseKey = "";//약속 고유 번호
     private int numOfPlayer = 0;//약속 인원수
-    private int prize = 0;//등수
     private int PrizeMoney = 0;//내가 받는 금액
-    private int numOfPrize = 0;//이긴 사람 수
     private String date = "";//약속 날짜+시간
 
     public History() {
@@ -36,28 +34,12 @@ public class History {
         this.numOfPlayer = numOfPlayer;
     }
 
-    public int getPrize() {
-        return prize;
-    }
-
-    public void setPrize(int prize) {
-        this.prize = prize;
-    }
-
     public int getPrizeMoney() {
         return PrizeMoney;
     }
 
     public void setPrizeMoney(int prizeMoney) {
         PrizeMoney = prizeMoney;
-    }
-
-    public int getNumOfPrize() {
-        return numOfPrize;
-    }
-
-    public void setNumOfPrize(int numOfPrize) {
-        this.numOfPrize = numOfPrize;
     }
 
     public String getDate() {
