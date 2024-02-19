@@ -291,6 +291,7 @@ public class Betting_Promise extends Dialog {
         //alert의 title과 Messege 세팅
         myAlertBuilder.setTitle("알림");
         myAlertBuilder.setMessage("불참여 인원이 있어 방이 삭제 되었습니다.");
+        databaseReference.removeEventListener(currVoteListener);
         // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
         myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog,int which){
@@ -308,8 +309,7 @@ public class Betting_Promise extends Dialog {
                 if(isAllOut && me_num ==  (numOfP - 1)) {
                     database = FirebaseDatabase.getInstance();
                     database.getReference("Promise").child(rid).removeValue();
-                    databaseReference.removeEventListener(currVoteListener);
-                    map.onBackPressed();
+                    onBackPressed();
                     return;
                 }
 
@@ -317,8 +317,7 @@ public class Betting_Promise extends Dialog {
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(-1);
                 startRemovePromiseInUser(); // 유저 객체에서 프로미스 지워주기
                 //홈으로 돌아가기
-                databaseReference.removeEventListener(currVoteListener);
-                map.onBackPressed();
+                onBackPressed();
             }
         });
         myAlertBuilder.show();
