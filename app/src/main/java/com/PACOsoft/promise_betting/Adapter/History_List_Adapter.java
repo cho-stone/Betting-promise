@@ -41,7 +41,7 @@ public class History_List_Adapter extends RecyclerView.Adapter<History_List_Adap
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.tv_promiseName.setText(arrayList.get(position).getPromiseName());//서버로부터 텍스트 받아와서 item에 삽입
         if (arrayList.get(position).getPrizeMoney() >= 0) {//약속 상금
-            holder.tv_prizeMoney.setText("총 배팅액 : " + String.valueOf(arrayList.get(position).getPrizeMoney()));
+            holder.tv_prizeMoney.setText(String.valueOf(arrayList.get(position).getPrizeMoney()));
         }
         holder.tv_data.setText(arrayList.get(position).getDate());
     }
