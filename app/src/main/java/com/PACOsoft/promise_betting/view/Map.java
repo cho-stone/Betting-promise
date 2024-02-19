@@ -504,7 +504,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                         //기존 내 히스토리에 새 히스토리 추가
                         if(myHistory!="")
-                        myHistory += " ";
+                        { myHistory += " ";}
                         myHistory += rid;
                         mDatabase2.child("User").child(UID).child("historyKey").setValue(myHistory);
                         Toast.makeText(getApplicationContext(), "히스토리 생성 완료!", Toast.LENGTH_SHORT).show();
