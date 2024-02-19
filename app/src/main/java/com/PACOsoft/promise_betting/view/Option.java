@@ -13,7 +13,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.User;
 import com.PACOsoft.promise_betting.view.MainActivity;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,8 +35,11 @@ import androidx.core.app.ActivityCompat;
 import com.PACOsoft.promise_betting.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class Option extends AppCompatActivity {
@@ -41,7 +48,7 @@ public class Option extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private Intent deleteIntent;
-
+    public static ValueEventListener getMyInfoListener;
     private FirebaseUser user;
 
     @Override
@@ -53,12 +60,33 @@ public class Option extends AppCompatActivity {
         UID = intent.getStringExtra("UID");
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("User").child(UID);
+        getMyInfoListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User me = snapshot.getValue(User.class);
+                TextView id = (TextView) findViewById(R.id.op_tv_id);
+                id.setText(me.getId());
+                TextView nickname = (TextView) findViewById(R.id.op_tv_nickName);
+                nickname.setText(me.getNickName());
+                ImageView profile = (ImageView) findViewById(R.id.iv_op_profile);
+                Glide.with(profile)
+                        .load(me.getProfile()).into(profile);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(getMyInfoListener);
     }
 
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
     }
+    public void btnChangeProfile(View view) {//프로필 이미지 변경
+        System.out.println("good~!@");
 
+
+    }
     public void btnSignOut(View view) {//로그아웃
         Intent intent = new Intent(this, MainActivity.class);
         boolean isFriendView = ((Home)Home.context).isFriendView;
