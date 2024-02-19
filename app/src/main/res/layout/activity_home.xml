@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="end"
         android:orientation="horizontal"
-        android:background="@color/color_toolbar">
+        android:background="@color/color_toolbar2">
 
         <!--포인트 출력 텍스트뷰-->
         <TextView
@@ -45,7 +45,7 @@
             android:onClick="btnCoinsClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/coin_icon"
-            android:background="@color/color_toolbar"
+            android:background="@color/color_toolbar2"
             android:contentDescription="코인 충전"/>
 
 
@@ -60,7 +60,7 @@
             android:onClick="btnCreateRoomClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/room_create_icon"
-            android:background="@color/color_toolbar"
+            android:background="@color/color_toolbar2"
             android:contentDescription="방 생성"/>
 
 
@@ -76,7 +76,7 @@
             android:onClick="btnSearchFriendClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/add_friend_icon"
-            android:background="@color/color_toolbar"
+            android:background="@color/color_toolbar2"
             android:contentDescription="친구 찾기"/>
 
 
@@ -92,7 +92,7 @@
             android:onClick="btnSearchHistoryClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/ranking_icon"
-            android:background="@color/color_toolbar"/>
+            android:background="@color/color_toolbar2"/>
 
         <!--설정 이미지 버튼-->
         <ImageButton
@@ -104,7 +104,7 @@
             android:onClick="btnOptionClicked"
             android:scaleType="fitCenter"
             android:src="@drawable/setting_icon"
-            android:background="@color/color_toolbar"
+            android:background="@color/color_toolbar2"
             android:contentDescription="설정"/>
 
     </LinearLayout>
@@ -121,7 +121,8 @@
         android:id="@+id/homeRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/layoutBottomButtons"
@@ -135,30 +136,24 @@
             android:layout_height="1dip"
             android:layout_marginLeft="4dip"
             android:layout_marginRight="4dip"
-            android:background="?android:attr/dividerVertical" />
+            android:background="@color/light_dark"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:background="@color/white">
             <!--친구 목록 보기 버튼-->
             <Button
                 android:id="@+id/btnCall"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
                 android:text="친구"
                 android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"
                 android:onClick="btn_home_friend"
-                />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="?android:attr/dividerVertical" />
+                android:background="@color/white"/>
             <!--약속 목록 보기 버튼-->
             <Button
                 android:id="@+id/btnMessage"
@@ -166,10 +161,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
                 android:text="약속"
+                android:fontFamily="@font/kingsejong"
                 android:textColor="@color/black"
-                android:onClick="btn_home_promise"/>
+                android:onClick="btn_home_promise"
+                android:background="@color/white"/>
             <!-- @android:string/cancel -->
 
         </LinearLayout>

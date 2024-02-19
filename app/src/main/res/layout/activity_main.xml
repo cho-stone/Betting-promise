@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/color_toolbar2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,6 +13,10 @@
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingRight="16dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/main_ui"
+
         tools:context=".view.Test_Signin3">
 
         <TextView
@@ -22,8 +26,8 @@
             android:gravity="center"
             android:text="약속배팅!"
             android:textColor="@android:color/black"
-            android:textSize="30sp"
-            android:fontFamily="@font/kingsejong"></TextView>
+            android:textSize="25sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -34,7 +38,8 @@
                 android:id="@+id/inputLoginId"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="아이디"
+                android:hint="이메일"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/dark_60">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -143,7 +148,7 @@
                 android:gravity="center"
                 android:onClick="reg"
                 android:text="@string/createAcc"
-                android:textColor="@android:color/holo_blue_dark"
+                android:textColor="@color/loginBP"
                 android:textSize="17sp"
                 android:fontFamily="@font/kingsejong"/>
 
