@@ -305,6 +305,14 @@ public class Betting_Promise extends Dialog {
                     return;
                 }
 
+                if(isAllOut && me_num ==  (numOfP - 1)) {
+                    database = FirebaseDatabase.getInstance();
+                    database.getReference("Promise").child(rid).removeValue();
+                    databaseReference.removeEventListener(currVoteListener);
+                    map.onBackPressed();
+                    return;
+                }
+
                 //배팅머니를 -1로 만들어주기 (-1이 되면 퇴장처리)
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(-1);
                 startRemovePromiseInUser(); // 유저 객체에서 프로미스 지워주기

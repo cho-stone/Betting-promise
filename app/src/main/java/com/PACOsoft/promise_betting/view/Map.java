@@ -151,10 +151,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     LocalDateTime now = LocalDateTime.now();
                     LocalDateTime setTime = LocalDateTime.of(pYear, pMonth, pDay, pHour, pMinute);
-                    System.out.println("delete1~!");
-                    System.out.println(ChronoUnit.MINUTES.between(now, setTime));
                     if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
-                        System.out.println("delete2~!");
                         database.getReference("Promise").child(rid).removeValue();
                     }
                 }
