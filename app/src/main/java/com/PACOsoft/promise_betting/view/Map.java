@@ -537,7 +537,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
         //show_alert_dial();
     }
-
+*/
     @Override
     public void onBackPressed() {
        super.onBackPressed();
@@ -552,6 +552,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
        finish();
     }
-    */
+
 
 }
