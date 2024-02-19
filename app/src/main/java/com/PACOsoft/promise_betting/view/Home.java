@@ -9,10 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
 import android.util.StateSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +42,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -49,9 +53,15 @@ public class Home extends AppCompatActivity {
     private DatabaseReference databaseReference, databaseReference2;
     private String TAG, UID;
     private int coin;
+    private String me_nickname;
     public static Context context;
     public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener;
     public boolean isFriendView;
+
+    //플로팅 버튼
+    private Animation fab_open, fab_close;
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5;
 
     private com.PACOsoft.promise_betting.util.ProgressDialog customProgressDialog;
 
@@ -71,6 +81,24 @@ public class Home extends AppCompatActivity {
         coin = -1;
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //mainActivity에서 intent해준 id를 받아옴
+
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) findViewById(R.id.fab3);
+        fab4 = (FloatingActionButton) findViewById(R.id.fab4);
+        fab5 = (FloatingActionButton) findViewById(R.id.fab5);
+
+        fab.setOnClickListener(this);
+        fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
+        fab3.setOnClickListener(this);
+        fab4.setOnClickListener(this);
+        fab5.setOnClickListener(this);
+
         //로딩창 객체 생성
         customProgressDialog = new ProgressDialog(this);
         customProgressDialog.setCancelable(false); // 로딩창 주변 클릭 시 종료 막기
@@ -209,9 +237,17 @@ public class Home extends AppCompatActivity {
                 userArrayList.clear(); //기존 배열리스트를 초기화
                 User me = snapshot.getValue(User.class);
                 String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+
                 coin = me.getAccount();//내 객체에서 account값 가져옴
+
                 TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
-                text.setText(String.valueOf(coin));//위에서 선언한 참조 객체에 값 넘겨줌
+                text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
+
+                me_nickname = me.getNickName();
+
+                TextView text2 = (TextView) findViewById(R.id.tv_home_nick_name);
+                text2.setText(me_nickname + "님 환영합니다!");
+
                 for (String friend : friends) {
                     databaseReference2 = database.getReference("User").child(friend);
                     databaseReference2.addListenerForSingleValueEvent(getFriendListValueEventLister2);
@@ -261,8 +297,10 @@ public class Home extends AppCompatActivity {
                 User me = snapshot.getValue(User.class);
                 String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 coin = me.getAccount();//내 객체에서 account값 가져옴
+
                 TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
-                text.setText(String.valueOf(coin));//위에서 선언한 참조 객체에 값 넘겨줌
+                text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
+
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
                     databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
@@ -423,4 +461,57 @@ public class Home extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(getPromiseListValueEventListener);
     }
 
+
+
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.fab) {
+            anim();
+        } else if (id == R.id.fab1) {
+            btnOptionClicked(v);
+            anim();
+        } else if (id == R.id.fab2) {
+            btnSearchHistoryClicked(v);
+            anim();
+        } else if (id == R.id.fab3) {
+            btnSearchFriendClicked(v);
+            anim();
+        } else if (id == R.id.fab4) {
+            btnCreateRoomClicked(v);
+            anim();
+        } else if (id == R.id.fab5) {
+            btnCoinsClicked(v);
+            anim();
+        }
+    }
+
+    private void anim() {
+        if (isFabOpen) {
+            fab1.startAnimation(fab_close);
+            fab2.startAnimation(fab_close);
+            fab3.startAnimation(fab_close);
+            fab4.startAnimation(fab_close);
+            fab5.startAnimation(fab_close);
+            fab1.setClickable(false);
+            fab2.setClickable(false);
+            fab3.setClickable(false);
+            fab4.setClickable(false);
+            fab5.setClickable(false);
+            isFabOpen = false;
+        } else {
+            fab1.startAnimation(fab_open);
+            fab2.startAnimation(fab_open);
+            fab3.startAnimation(fab_open);
+            fab4.startAnimation(fab_open);
+            fab5.startAnimation(fab_open);
+            fab1.setClickable(true);
+            fab2.setClickable(true);
+            fab3.setClickable(true);
+            fab4.setClickable(true);
+            fab5.setClickable(true);
+            isFabOpen = true;
+        }
+    }
 }

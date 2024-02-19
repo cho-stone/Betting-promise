@@ -11,7 +11,7 @@
     <string name="reg">가입</string>
     <string name="close">닫기</string>
     <!--코인페이지-->
-    <string name="coin_page">코인 충전소</string>
+    <string name="coin_page">코인 충전</string>
     <string name="go_coin_charge">충전하기</string>
     <string name="after_charge">코인 충전 후</string>
     <!--방생성페이지-->

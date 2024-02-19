@@ -1,9 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/color_toolbar</item>
         <item name="colorPrimaryVariant">@color/color_toolbar</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@color/black</item>
     </style>
 
     <style name="ThemeOverlay.MyApplication.FullscreenContainer" parent="">
