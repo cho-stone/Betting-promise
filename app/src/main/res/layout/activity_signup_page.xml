@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.signup_page"
-    android:background="@color/white">
+    android:background="@color/color_toolbar2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,9 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/main_ui">
 
         <TextView
             android:layout_width="match_parent"
@@ -40,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:hint="닉네임"
+                android:inputType="text"
                 android:maxLength="10"
                 android:textColor="@color/dark_60">
 
@@ -59,7 +62,8 @@
                 android:id="@+id/et_id"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:hint="아이디"
+                android:inputType="textEmailAddress"
+                android:hint="이메일"
                 android:maxLength="30"
                 android:textColor="@color/dark_60">
 
