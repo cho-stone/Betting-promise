@@ -333,10 +333,12 @@ public class Home extends AppCompatActivity {
                     }
                 }
                 String newMyFriendsString="";
-                for(String str : refreshFriendsArrayList)
-                {
+                for(int i=0;i<refreshFriendsArrayList.size();i++)
+                {   String str = refreshFriendsArrayList.get(i);
                     newMyFriendsString+=str;
-                    newMyFriendsString+=" ";
+                    if(i!=(refreshFriendsArrayList.size()-1)) {
+                        newMyFriendsString += " ";
+                    }
                 }
                 databaseReference.child("friendsUID").setValue(newMyFriendsString);
             }
@@ -402,10 +404,15 @@ public class Home extends AppCompatActivity {
                     }
                 }
                 String newMyPromisesString="";
-                for(String str : refreshPromisessArrayList)
+                for(int i=0;i<refreshPromisessArrayList.size();i++)
                 {
+                    String str = refreshPromisessArrayList.get(i);
                     newMyPromisesString+=str;
-                    newMyPromisesString+=" ";
+                    if(i!=(refreshPromisessArrayList.size()-1))
+                    {
+                        newMyPromisesString+=" ";
+                    }
+
                 }
                 databaseReference.child("promiseKey").setValue(newMyPromisesString);
             }
