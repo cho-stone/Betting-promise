@@ -2,12 +2,15 @@ package com.PACOsoft.promise_betting.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
@@ -16,6 +19,8 @@ import android.util.StateSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +43,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tomergoldst.tooltips.ToolTip;
+import com.tomergoldst.tooltips.ToolTipsManager;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Home extends AppCompatActivity implements View.OnClickListener {
+public class Home extends AppCompatActivity implements View.OnClickListener, ToolTipsManager.TipListener {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -62,6 +69,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5;
+
+    private Button friend_show_button, room_show_button;
+    ToolTipsManager toolTipsManager;
+    ImageView showCoinImage;
+    ConstraintLayout homeRootLayout;
+    String current_coin;
+    Boolean isCoinShow;
 
     private com.PACOsoft.promise_betting.util.ProgressDialog customProgressDialog;
 
@@ -99,11 +113,24 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         fab4.setOnClickListener(this);
         fab5.setOnClickListener(this);
 
+        friend_show_button = findViewById(R.id.btnCall);
+        room_show_button = findViewById(R.id.btnMessage);
+
+        friend_show_button.setBackground(getDrawable(R.drawable.round_button));
+        room_show_button.setBackground(null);
+
+        //코인 툴팁
+        toolTipsManager = new ToolTipsManager(this);
+        showCoinImage = findViewById(R.id.coin_show_image);
+        homeRootLayout = findViewById(R.id.home_root_layout);
+        current_coin = "0";
+        isCoinShow = false;
+
         //로딩창 객체 생성
         customProgressDialog = new ProgressDialog(this);
         customProgressDialog.setCancelable(false); // 로딩창 주변 클릭 시 종료 막기
         //로딩창을 투명하게 하는 코드
-        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
         //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
         customProgressDialog.show();
@@ -189,9 +216,15 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
     public void btn_home_friend(View view) {
         view_friends();
+        friend_show_button.setBackground(getDrawable(R.drawable.round_button));
+        room_show_button.setBackground(null);
     }
 
-    public void btn_home_promise(View view) {view_promise();}
+    public void btn_home_promise(View view) {
+        view_promise();
+        room_show_button.setBackground(getDrawable(R.drawable.round_button));
+        friend_show_button.setBackground(null);
+    }
 
     public void btn_promiseClicked(@NonNull View v) {
         TextView tv_promiseKey = v.findViewById(R.id.tv_promiseKey);
@@ -240,8 +273,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
                 coin = me.getAccount();//내 객체에서 account값 가져옴
 
-                TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
-                text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
+                //TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
+                //text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
+                current_coin = String.valueOf(coin) + "포인트";
 
                 me_nickname = me.getNickName();
 
@@ -298,8 +332,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 coin = me.getAccount();//내 객체에서 account값 가져옴
 
-                TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
-                text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
+                //TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
+                //text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
+                current_coin = String.valueOf(coin) + "포인트";
 
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
@@ -513,5 +548,25 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             fab5.setClickable(true);
             isFabOpen = true;
         }
+    }
+
+    @Override
+    public void onTipDismissed(View view, int anchorViewId, boolean byUser) {
+        isCoinShow = false;
+    }
+
+    public void btn_show_coin(View view) {
+        if(!isCoinShow){
+            ToolTip.Builder builder = new ToolTip.Builder(this, showCoinImage, homeRootLayout, current_coin, ToolTip.POSITION_BELOW);
+            builder.setAlign(ToolTip.ALIGN_RIGHT);
+            builder.setBackgroundColor(Color.BLACK);
+            builder.setGravity(ToolTip.GRAVITY_CENTER);
+            toolTipsManager.show(builder.build());
+            isCoinShow = true;
+        } else{
+            isCoinShow = false;
+            toolTipsManager.dismissAll();
+        }
+
     }
 }

@@ -6,52 +6,56 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.Home"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/home_root_layout">
 
 
     <!--상단 리니어레이아웃-->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/color_toolbar2"
-        android:gravity="start"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        android:weightSum="10">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!--포인트 출력 텍스트뷰-->
         <TextView
             android:id="@+id/tv_home_nick_name"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:fontFamily="@font/kingsejong"
             android:gravity="center"
             android:text="로딩중..."
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+        <ImageView
+            android:id="@+id/coin_show_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/home_show_coin_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="btn_show_coin">
+
+        </ImageView>
+
+        <!--
         <TextView
             android:id="@+id/tv_point"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_weight="3"
+            android:layout_weight="0"
             android:fontFamily="@font/kingsejong"
             android:gravity="center"
             android:text="0"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <!--스크롤 뷰와 상단 리니어 레이아웃 경계선-->
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="@color/light_dark"
-        app:layout_constraintBottom_toTopOf="@+id/homeRecyclerView" />
+            android:textSize="18sp" /> -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeRecyclerView"
@@ -158,11 +162,6 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
-        <!--스크롤 뷰와 하단 리니어 레이아웃 경계선-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/light_dark"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -179,11 +178,10 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/kingsejong"
                 android:onClick="btn_home_friend"
-                android:background="@color/white"/>
+                android:backgroundTint="@color/white"/>
             <!--약속 목록 보기 버튼-->
             <Button
                 android:id="@+id/btnMessage"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -191,7 +189,7 @@
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/black"
                 android:onClick="btn_home_promise"
-                android:background="@color/white"/>
+                android:backgroundTint="@color/white"/>
             <!-- @android:string/cancel -->
 
         </LinearLayout>
