@@ -40,6 +40,9 @@
             android:name=".view.Option"
             android:exported="false" />
         <activity
+            android:name=".view.Select_Profile"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
             android:name=".view.Map"
             android:exported="false" />
         <activity

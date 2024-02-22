@@ -82,11 +82,13 @@ public class Option extends AppCompatActivity {
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
     }
-    public void btnChangeProfile(View view) {//프로필 이미지 변경
-        System.out.println("good~!@");
-
-
+    public void btnChangeProfile(View view) {//프로필 이미지 변경으로 이동
+            Intent intent = new Intent(this, Select_Profile.class);
+            intent.putExtra("UID", UID);//ID 정보 intent
+            startActivity(intent);
     }
+
+
     public void btnSignOut(View view) {//로그아웃
         Intent intent = new Intent(this, MainActivity.class);
         boolean isFriendView = ((Home)Home.context).isFriendView;
@@ -111,7 +113,6 @@ public class Option extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d("success", "User account deleted.");
                             deleteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            System.out.println("error: 4");
                             startActivity(deleteIntent);
                         }
                         else
@@ -120,7 +121,6 @@ public class Option extends AppCompatActivity {
                         }
                     }
                 });
-        System.out.println("error: 8");
     }
 
     private void removeDB(){
@@ -138,14 +138,12 @@ public class Option extends AppCompatActivity {
                 System.out.println("error: 실패");
             }
         });
-        System.out.println("error: dbdb");
     }
 
     public void btn_revoke(View view) {
         //removeDB(); 동기화 문제로 인해서 회원 탈퇴과 DB에서의 삭제를 동시에 진행 불가능 그래서 DB는 그대로 두기로 함
         deleteIntent = new Intent(this, MainActivity.class);
         revokeAccess();
-        System.out.println("error: 1");
     }
 
 }
