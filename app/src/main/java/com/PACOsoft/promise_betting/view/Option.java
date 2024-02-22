@@ -76,7 +76,8 @@ public class Option extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addListenerForSingleValueEvent(getMyInfoListener);
+        //databaseReference.addListenerForSingleValueEvent(getMyInfoListener);
+        databaseReference.addValueEventListener(getMyInfoListener);
     }
 
     private void signOut() {
@@ -145,5 +146,10 @@ public class Option extends AppCompatActivity {
         deleteIntent = new Intent(this, MainActivity.class);
         revokeAccess();
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        databaseReference.removeEventListener(getMyInfoListener);
+        finish();
+    }
 }

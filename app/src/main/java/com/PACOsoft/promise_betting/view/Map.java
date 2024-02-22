@@ -104,16 +104,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         marks = new ArrayList<>();
 
-
-        //광고 뷰 추가
-//        mAdView = findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
-//
-//        drawerLayout = findViewById(R.id.drawer_layout);
-//        drawerView = findViewById(R.id.drawer);
-//        drawerLayout.setDrawerLockMode(drawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         //네이버 지도
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
@@ -187,9 +177,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     tv.setGravity(1);
                     players.addView(tv);
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Map", String.valueOf(databaseError.toException()));
@@ -352,33 +340,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference2.addValueEventListener(mapOnMyFriendListener);
     }
 
-/*
-    //투표 시작했는지 파악하는 리스너
-    public void VoteStart(){
-        database3 = FirebaseDatabase.getInstance();
-        databaseReference3 = database3.getReference("Promise").child(rid).child("vote");
-        voteStartListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //TODO: 현재 화면 보고 있는 사람도 팝업 띄워주기
-
-                int voteNum = snapshot.getValue(Integer.class);
-                if( voteNum != 0){
-                    votePromise = new Vote_Promise(Map.this, rid, UID, num);
-                    votePromise.show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        databaseReference3.addValueEventListener(voteStartListener);
-    }
-
-*/
-
     //locationManager 퍼미션
     private boolean hasPermission() {
         return PermissionChecker.checkSelfPermission(this, PERMISSIONS[0])
@@ -386,7 +347,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 && PermissionChecker.checkSelfPermission(this, PERMISSIONS[1])
                 == PermissionChecker.PERMISSION_GRANTED;
     }
-
 
     //트래킹을 위한 퍼미션
     @Override
@@ -527,61 +487,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference.addListenerForSingleValueEvent(promiseArrivalListener);
 
     }
-/*
-    //투표 시작 함수
-    private void start_vote(){
-        DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        databaseReference = database.getReference("Promise").child(rid).child("vote");
-        promiseVoteListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int vote = snapshot.getValue(Integer.class);
-                mDatabase.child("Promise").child(rid).child("vote").setValue(1);
-                mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("voteState").setValue(1);
-                databaseReference2.removeEventListener(mapOnMyFriendListener);
-                locationManager.removeUpdates(locationListener);
-                finish();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(promiseVoteListener);
-    }
-
-    //투표 버튼 누르면 생기는 주의 다이얼로그
-    public void show_alert_dial(){
-        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(Map.this);
-        //alert의 title과 Messege 세팅
-        myAlertBuilder.setTitle("주의");
-        myAlertBuilder.setMessage("정말로 방 삭제 투표를 시작 할까요?" + "\n" + "시작 후엔 투표가 끝이 날 때까지 방의 기능을 이용할 수 없습니다.");
-        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
-        myAlertBuilder.setPositiveButton("시작",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog,int which){
-                start_vote();
-            }
-        });
-        myAlertBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        myAlertBuilder.show();
-    }
-
-    //투표 시작 버튼이 눌리면
-    public void btn_delete_room(View view){
-        if(num == -1){
-            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        //show_alert_dial();
-    }
-*/
     @Override
     public void onBackPressed() {
        super.onBackPressed();
@@ -591,9 +496,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
        }
        assert locationManager != null;
        databaseReference2.removeEventListener(mapOnMyFriendListener);
-       //databaseReference3.removeEventListener(voteStartListener);
        locationManager.removeUpdates(locationListener);
-
        finish();
     }
 
