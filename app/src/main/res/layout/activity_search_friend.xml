@@ -11,29 +11,37 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="12">
 
         <EditText
             android:id="@+id/et_search"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="9"
             android:hint="상대방의 id를 입력해주세요."
-            android:inputType="text" />
+            android:inputType="text"
+            android:gravity="center"/>
 
-        <Button
-            android:layout_width="100dp"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:background="@drawable/round_button"
+            android:layout_weight="3"
+            android:gravity="center"
             android:onClick="btn_SearchFriend"
-            android:text="검색" />
+            android:text="검색"
+            android:textColor="@color/white"
+            android:fontFamily="@font/kingsejong"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

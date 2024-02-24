@@ -474,6 +474,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 {
                     if(unExistPromisesArrayList.get(i)==true){
                         refreshPromisessArrayList.remove(i);
+                        //TODO: unExist 랑 refresh 랑 달라서 outOfBounds남
                     }
                 }
                 String newMyPromisesString="";
@@ -559,7 +560,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         if(!isCoinShow){
             ToolTip.Builder builder = new ToolTip.Builder(this, showCoinImage, homeRootLayout, current_coin, ToolTip.POSITION_BELOW);
             builder.setAlign(ToolTip.ALIGN_RIGHT);
-            builder.setBackgroundColor(Color.BLACK);
+            builder.setBackgroundColor(Color.argb(150, 0, 0, 0));
             builder.setGravity(ToolTip.GRAVITY_CENTER);
             toolTipsManager.show(builder.build());
             isCoinShow = true;

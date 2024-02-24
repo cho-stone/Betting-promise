@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/color_toolbar2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,10 @@
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingRight="16dp"
-        tools:context=".view.Create_Room">
+        android:layout_margin="20dp"
+        tools:context=".view.Create_Room"
+        android:background="@drawable/main_ui"
+        android:layout_gravity="center">
 
         <TextView
             android:layout_width="match_parent"
@@ -23,8 +26,9 @@
             android:gravity="center"
             android:fontFamily="@font/kingsejong"
             android:text="@string/create_room"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="24sp" />
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lo_room_name"
@@ -52,12 +56,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:onClick="btn_date_set"
                 android:text="@string/select_date"
+                android:textSize="15sp"
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
 
@@ -83,12 +88,13 @@
 
             <TextView
                 android:id="@+id/time_set_btn"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:onClick="btn_time_set"
                 android:text="@string/select_time"
+                android:textSize="15sp"
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white"/>
 
@@ -113,12 +119,13 @@
             android:paddingTop="16dp">
 
             <TextView
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:onClick="intent_btn_search_local"
                 android:text="@string/select_location"
+                android:textSize="15sp"
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
 
@@ -143,13 +150,14 @@
             android:paddingTop="16dp">
 
             <TextView
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:onClick="btn_intent_invite_friend"
                 android:text="@string/join_friend"
+                android:textSize="15sp"
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
 
@@ -182,12 +190,13 @@
                 android:gravity="center"
                 android:onClick="btn_create_room"
                 android:text="@string/create"
+                android:textSize="17sp"
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white"
                 android:enabled="false"/>
 
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="75dp"
                 android:layout_height="100dp" />
 
             <TextView
@@ -198,6 +207,7 @@
                 android:gravity="center"
                 android:onClick="create_room_close"
                 android:text="@string/close"
+                android:textSize="17sp"
                 android:fontFamily="@font/kingsejong"
                 android:textColor="@color/white" />
         </LinearLayout>
