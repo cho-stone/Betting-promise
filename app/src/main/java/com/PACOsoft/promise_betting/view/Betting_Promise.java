@@ -70,7 +70,11 @@ public class Betting_Promise extends Dialog {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 int money = 0;
-                if(players == null) {return;}
+                if(players == null) {
+                    dismiss();
+                    databaseReference.removeEventListener(currVoteListener);
+                    map.onBackPressed();
+                    return;}
                 for(int z = 0; z < players.size(); z++){
                     String s = (String) players.get(z).get("playerUID");
                     usersUID.add(s);
@@ -192,7 +196,11 @@ public class Betting_Promise extends Dialog {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 int bMoney;
                 //배팅을 아직 안한사람 닉네임 띄우기와 동시에 배팅머니가 -1 이면 방 삭제 창 띄우기
-                if(players == null) {return;}
+                if(players == null) {
+                    dismiss();
+                    databaseReference.removeEventListener(currVoteListener);
+                    map.onBackPressed();
+                    return;}
                 for(int i = 0; i < players.size(); i++) {
                     bMoney = ((Long) players.get(i).get("bettingMoney")).intValue();
 
@@ -242,7 +250,11 @@ public class Betting_Promise extends Dialog {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
-                if(players == null) {return;}
+                if(players == null) {
+                    dismiss();
+                    databaseReference.removeEventListener(currVoteListener);
+                    map.onBackPressed();
+                    return;}
                 for(int i = 0; i < players.size(); i++) {
                     int bm = Integer.parseInt(players.get(i).get("bettingMoney").toString());
                     if(bm != -1) {
