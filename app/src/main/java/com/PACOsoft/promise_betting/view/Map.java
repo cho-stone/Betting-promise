@@ -314,7 +314,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
                 marks.clear();
-                if(!players.isEmpty()) {//NullPointerException 방지
+                if(players != null) {//NullPointerException 방지
                     for (int i = 0; i < players.size(); i++) {
                         if (players.get(i).get("playerUID").equals(UID)) {
                             continue;
