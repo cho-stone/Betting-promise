@@ -314,20 +314,19 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
                 marks.clear();
-
-                for(int i = 0; i < players.size(); i++){
-                    if(players.get(i).get("playerUID").equals(UID)) {
-                        continue;
-                    }
-                    else if(players.get(i).get("x") instanceof Long && players.get(i).get("y") instanceof Long){
-                        continue;
-                    }
-                    else{
-                        double x = (Double) players.get(i).get("x");
-                        double y = (Double) players.get(i).get("y");
-                        temp.setPosition(new LatLng(y, x));
-                        temp.setMap(naverMap);
-                        marks.add(temp);
+                if(!players.isEmpty()) {//NullPointerException 방지
+                    for (int i = 0; i < players.size(); i++) {
+                        if (players.get(i).get("playerUID").equals(UID)) {
+                            continue;
+                        } else if (players.get(i).get("x") instanceof Long && players.get(i).get("y") instanceof Long) {
+                            continue;
+                        } else {
+                            double x = (Double) players.get(i).get("x");
+                            double y = (Double) players.get(i).get("y");
+                            temp.setPosition(new LatLng(y, x));
+                            temp.setMap(naverMap);
+                            marks.add(temp);
+                        }
                     }
                 }
             }
