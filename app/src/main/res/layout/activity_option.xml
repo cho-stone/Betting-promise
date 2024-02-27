@@ -42,10 +42,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:background="@drawable/clickable_layout">
 
             <ImageView
-                android:onClick="btnChangeProfile"
                 android:id="@+id/iv_op_profile"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -59,22 +64,27 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/op_tv_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:fontFamily="@font/kingsejong"
-                    android:text="ID"
-                    android:textColor="@color/black"/>
-
-                <TextView
                     android:id="@+id/op_tv_nickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="@font/kingsejong"
                     android:text="닉네임"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/op_tv_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/kingsejong"
+                    android:text="ID"
+                    android:textSize="12sp"
                     android:textColor="@color/black"/>
+
+
 
             </LinearLayout>
         </LinearLayout>
@@ -85,9 +95,23 @@
             android:layout_margin="10dp"
             android:background="@drawable/round_button"
             android:gravity="center"
+            android:onClick="btnChangeProfile"
+            android:text="프로필변경"
+            android:textColor="@color/white"
+            android:fontFamily="@font/kingsejong"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_button"
+            android:gravity="center"
             android:onClick="btnSignOut"
             android:text="로그아웃"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/kingsejong"
+            android:textSize="15sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -97,7 +121,9 @@
             android:onClick="btnAppClose"
             android:gravity="center"
             android:text="앱 종료"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/kingsejong"
+            android:textSize="15sp"/>
 
         <TextView
             android:onClick="btn_revoke"
@@ -107,7 +133,9 @@
             android:background="@drawable/round_button"
             android:gravity="center"
             android:text="회원탈퇴"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:fontFamily="@font/kingsejong"
+            android:textSize="15sp"/>
     </LinearLayout>
 
 </LinearLayout>
