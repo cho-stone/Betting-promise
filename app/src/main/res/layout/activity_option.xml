@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_toolbar2">
 
-    <LinearLayout
+    <!--상단 리니어레이아웃-->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"
-            android:background="?android:attr/dividerVertical" />
+        android:layout_height="60dp"
+        android:background="@color/color_toolbar2">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@font/kingsejong"
+            android:gravity="center"
+            android:text="설정"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/main_ui"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/tv_UID"
             android:visibility="invisible"
             android:text="UID"
@@ -64,39 +79,35 @@
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"
-            android:background="?android:attr/dividerVertical" />
-
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="10dp"
             android:background="@drawable/round_button"
             android:gravity="center"
             android:onClick="btnSignOut"
             android:text="로그아웃"
-            android:textColor="@color/white"></Button>
+            android:textColor="@color/white"/>
 
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="10dp"
             android:background="@drawable/round_button"
             android:onClick="btnAppClose"
             android:gravity="center"
             android:text="앱 종료"
-            android:textColor="@color/white"></Button>
+            android:textColor="@color/white"/>
 
-        <Button
+        <TextView
             android:onClick="btn_revoke"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="회원탈퇴"/>
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_button"
+            android:gravity="center"
+            android:text="회원탈퇴"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 </LinearLayout>
