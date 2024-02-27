@@ -101,7 +101,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         myRanking = 0;
         myReceivePoint = 0;
 
-
         marks = new ArrayList<>();
 
         //네이버 지도
@@ -120,6 +119,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         UID = getIntent().getStringExtra("UID");
         Nop = getIntent().getStringExtra("Nop");
         num = -1;
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerView = findViewById(R.id.drawer);
 
         //약속 종료된 방인지 체크(약속 시간 이후 15분 경과 시 방 삭제 필요)
         database = FirebaseDatabase.getInstance();

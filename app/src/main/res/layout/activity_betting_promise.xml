@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#eeeeee"
     android:orientation="vertical">
@@ -30,21 +30,23 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/betting_txt1"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:fontFamily="@font/kingsejong"/>
+            android:fontFamily="@font/kingsejong"
+            android:layout_margin="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/betting_txt2"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:fontFamily="@font/kingsejong"/>
+            android:fontFamily="@font/kingsejong"
+            android:layout_margin="5dp"/>
 
         <View
             android:layout_width="match_parent"
@@ -53,21 +55,23 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/betting_txt3"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:fontFamily="@font/kingsejong"/>
+            android:fontFamily="@font/kingsejong"
+            android:layout_margin="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/betting_txt4"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:fontFamily="@font/kingsejong"/>
+            android:fontFamily="@font/kingsejong"
+            android:layout_margin="5dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -86,7 +90,8 @@
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:maxLength="9"
-                android:fontFamily="@font/kingsejong">
+                android:fontFamily="@font/kingsejong"
+                android:layout_margin="5dp">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -99,12 +104,13 @@
 
             <TextView
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/betting_max"
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                android:fontFamily="@font/kingsejong"/>
+                android:fontFamily="@font/kingsejong"
+                android:layout_margin="5dp"/>
 
             <TextView
                 android:layout_width="60dp"
@@ -113,12 +119,13 @@
             <TextView
                 android:id="@+id/tv_betting_coin"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="로딩중..."
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                android:fontFamily="@font/kingsejong"/>
+                android:fontFamily="@font/kingsejong"
+                android:layout_margin="5dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -129,12 +136,13 @@
 
             <TextView
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/curr_betting"
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                android:fontFamily="@font/kingsejong"/>
+                android:fontFamily="@font/kingsejong"
+                android:layout_margin="5dp"/>
 
             <TextView
                 android:layout_width="60dp"
@@ -143,12 +151,13 @@
             <TextView
                 android:id="@+id/tv_curr_betting"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="로딩중..."
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                android:fontFamily="@font/kingsejong"/>
+                android:fontFamily="@font/kingsejong"
+                android:layout_margin="5dp"/>
         </LinearLayout>
 
     </LinearLayout>
