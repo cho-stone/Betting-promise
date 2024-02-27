@@ -45,6 +45,7 @@ public class Search_Friend extends AppCompatActivity {
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID"); //Home에서 intent해준 UID를 받아옴
         TAG = "Search_Friend";
+        Add_Friend = null;
     }
 
     public void btn_SearchFriend(View view) {//검색 버튼 누르면 실행
@@ -118,9 +119,11 @@ public class Search_Friend extends AppCompatActivity {
 
     public void btn_UserClicked(View view) {
         //arrayList를 다이얼로그로 넘겨줌
-        Add_Friend = new Add_Friend(this, arrayList);
-        Add_Friend.setCancelable(false);//다이얼로그 띄우는 동안 뒷배경화면 클릭 방지
-        Add_Friend.show();
+        if(Add_Friend == null) {
+            Add_Friend = new Add_Friend(this, arrayList);
+            Add_Friend.setCancelable(false);//다이얼로그 띄우는 동안 뒷배경화면 클릭 방지
+            Add_Friend.show();
+        }
     }
 
     public void btn_add_friend(View view) {//친구 추가 버튼
@@ -128,9 +131,11 @@ public class Search_Friend extends AppCompatActivity {
         Add_Friend.cancel();
         Toast toast = Toast.makeText(getApplicationContext(), "친구 추가 완료", Toast.LENGTH_SHORT);
         toast.show();
+        Add_Friend = null;
     }
 
     public void btn_add_friend_cancel(View view) {//취소 버튼
         Add_Friend.cancel();
+        Add_Friend = null;
     }
 }

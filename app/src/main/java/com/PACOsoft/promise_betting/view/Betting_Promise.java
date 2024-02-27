@@ -1,5 +1,7 @@
 package com.PACOsoft.promise_betting.view;
 
+import static com.PACOsoft.promise_betting.view.Home.context;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,6 +75,7 @@ public class Betting_Promise extends Dialog {
                 if(players == null) {
                     dismiss();
                     databaseReference.removeEventListener(currVoteListener);
+                    Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     map.onBackPressed();
                     return;}
                 for(int z = 0; z < players.size(); z++){
@@ -199,6 +202,7 @@ public class Betting_Promise extends Dialog {
                 if(players == null) {
                     dismiss();
                     databaseReference.removeEventListener(currVoteListener);
+                    Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     map.onBackPressed();
                     return;}
                 for(int i = 0; i < players.size(); i++) {
@@ -253,6 +257,7 @@ public class Betting_Promise extends Dialog {
                 if(players == null) {
                     dismiss();
                     databaseReference.removeEventListener(currVoteListener);
+                    Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     map.onBackPressed();
                     return;}
                 for(int i = 0; i < players.size(); i++) {
