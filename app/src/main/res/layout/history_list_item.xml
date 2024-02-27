@@ -23,7 +23,9 @@
             android:layout_height="80dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="방 제목입니다." />
+            android:text="방 제목입니다."
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <TextView
             android:gravity="center"
@@ -32,7 +34,9 @@
             android:layout_height="80dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="+10000" />
+            android:text="+10000"
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <TextView
             android:gravity="center"
@@ -41,7 +45,9 @@
             android:layout_height="80dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="2023.07.04 14:00" />
+            android:text="2023.07.04 14:00"
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
 
     </LinearLayout>
 

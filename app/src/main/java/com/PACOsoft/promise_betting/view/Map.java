@@ -168,7 +168,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 assert p != null;
                 NumOfPlayers = p.getNumOfPlayer();
                 NameOfPromise = p.getPromiseName();
-                people_number.setText(String.valueOf(p.getNumOfPlayer()));  //TODO: 총 방 인원수 가져오기 해야함 -> 방 삭제에 필요 (베팅 프로미스, 보트 프로미스로 넘겨주기)
+                people_number.setText(String.valueOf(p.getNumOfPlayer()));
                 room_name.setText(p.getPromiseName());
                 for (PromisePlayer i : p.getPromisePlayer()) {
                     TextView tv = new TextView(getApplicationContext());

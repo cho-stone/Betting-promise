@@ -6,27 +6,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.Search_History">
-    <LinearLayout
+
+    <!--상단 리니어레이아웃-->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:background="@color/white">
-        <!--빈칸만들기-->
+        android:layout_height="60dp"
+        android:background="@color/color_toolbar2"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textColor="@color/black"
+            android:layout_height="match_parent"
             android:fontFamily="@font/kingsejong"
             android:gravity="center"
-            android:backgroundTint="@color/white"/>
-    </LinearLayout>
+            android:text="히스토리"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3"
-        android:background="@color/white">
+        android:background="@color/color_toolbar">
         <!--약속 이름-->
         <TextView
 
@@ -36,8 +39,7 @@
             android:text="약속 이름"
             android:textColor="@color/black"
             android:fontFamily="@font/kingsejong"
-            android:gravity="center"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center" />
         <!--총 베팅 포인트-->
         <TextView
             android:layout_width="match_parent"
@@ -46,8 +48,7 @@
             android:text="총 베팅 포인트"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/black"
-            android:gravity="center"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center" />
         <!--약속일-->
         <TextView
             android:layout_width="match_parent"
@@ -56,15 +57,13 @@
             android:text="약속일"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/black"
-            android:gravity="center"
-            android:backgroundTint="@color/white"/>
+            android:gravity="center" />
     </LinearLayout>
 
     <!-- 전적 검색 리사이클러뷰-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
