@@ -5,8 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.Search_Friend"
-    android:background="@color/white">
+    tools:context=".view.Search_Friend">
+
+    <!--상단 리니어레이아웃-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/color_toolbar2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/kingsejong"
+            android:gravity="center"
+            android:text="ID로 친구 추가"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -14,16 +31,18 @@
         android:layout_height="60dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:weightSum="12">
+        android:weightSum="12"
+        android:background="@color/white">
 
         <EditText
             android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:hint="상대방의 id를 입력해주세요."
+            android:hint="ID(Email)를 입력해주세요."
             android:inputType="text"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:fontFamily="@font/kingsejong"/>
 
         <TextView
             android:layout_width="0dp"
@@ -42,6 +61,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:background="@color/white"/>
 
 </LinearLayout>

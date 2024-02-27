@@ -5,46 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#eeeeee"
     tools:context=".view.Add_Friend">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/et_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="53dp"
+            android:background="@color/color_toolbar"
             android:gravity="center"
-            android:inputType="text"
+            android:fontFamily="@font/kingsejong"
             android:text="친구 추가"
-            android:textAlignment="center"
-            android:textSize="25sp" />
-
-
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
-    <!--레이아웃 경계선-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginLeft="4dip"
-        android:layout_marginRight="4dip"
-        android:background="?android:attr/dividerVertical" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/addFriendsRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <!--레이아웃 경계선-->
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginLeft="4dip"
-        android:layout_marginRight="4dip"
-        android:background="?android:attr/dividerVertical" />
+        android:layout_height="1dp"
+        android:background="#66bdbdbd" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,19 +42,27 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:layout_height="53dp"
+            android:layout_weight="5"
+            android:background="#00000000"
+            android:gravity="center"
+            android:fontFamily="@font/kingsejong"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             android:onClick="btn_add_friend"
             android:text="추가" />
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:onClick="btn_add_friend_cancel"
-            android:text="취소" />
+            android:layout_height="53dp"
+            android:layout_weight="5"
+            android:background="#00000000"
+            android:gravity="center"
+            android:fontFamily="@font/kingsejong"
+            android:text="닫기"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:onClick="btn_add_friend_cancel" />
     </LinearLayout>
 
 

@@ -2,6 +2,7 @@ package com.PACOsoft.promise_betting.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;

@@ -7,23 +7,49 @@
     android:orientation="vertical"
     tools:context=".view.Invite_Friend">
 
+    <!--상단 리니어레이아웃-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/color_toolbar2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/kingsejong"
+            android:gravity="center"
+            android:text="친구 초대"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="12"
+        android:background="@color/white">
 
         <EditText
             android:id="@+id/et_search"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="상대방의 id를 입력해주세요."
-            android:inputType="text" />
+            android:layout_weight="9"
+            android:hint="ID(Email)을 입력해주세요."
+            android:fontFamily="@font/kingsejong"
+            android:inputType="text"
+            android:gravity="center"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="3"
+            android:textColor="@color/black"
+            android:background="@drawable/round_button"
             android:onClick="btn_SearchFriend"
             android:text="검색" />
 

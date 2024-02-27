@@ -33,12 +33,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:textColorHint="@color/black"
-            app:boxStrokeColor="@color/edittext_box_stroke_color">
+            app:boxStrokeColor="@color/edittext_box_stroke_color"
+            app:hintTextColor="@color/color_stroke">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_coin"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:hint="충전금액"
                 android:fontFamily="@font/kingsejong"
                 android:inputType="number"

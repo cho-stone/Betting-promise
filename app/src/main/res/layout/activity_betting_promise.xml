@@ -14,11 +14,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:background="@color/cardview_dark_background"
+            android:background="@color/color_toolbar"
             android:gravity="center"
             android:text="@string/betting"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:fontFamily="@font/kingsejong"/>
     </LinearLayout>
 
     <LinearLayout
@@ -32,45 +33,60 @@
             android:layout_height="30dp"
             android:gravity="center"
             android:text="@string/betting_txt1"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:gravity="center"
             android:text="@string/betting_txt2"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#66bdbdbd" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:gravity="center"
             android:text="@string/betting_txt3"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:gravity="center"
             android:text="@string/betting_txt4"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:fontFamily="@font/kingsejong"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/black"
-            app:boxStrokeColor="@color/edittext_box_stroke_color"
             android:paddingRight="23dp"
-            android:paddingLeft="23dp">
+            android:paddingLeft="23dp"
+            app:hintTextColor="@color/color_stroke">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_betting"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:hint="배팅금액"
                 android:inputType="number"
+                android:textSize="15sp"
                 android:textColor="@color/black"
-                android:maxLength="9">
+                android:maxLength="9"
+                android:fontFamily="@font/kingsejong">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -86,7 +102,9 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="@string/betting_max"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:fontFamily="@font/kingsejong"/>
 
             <TextView
                 android:layout_width="60dp"
@@ -98,7 +116,9 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="로딩중..."
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:fontFamily="@font/kingsejong"/>
         </LinearLayout>
 
         <LinearLayout
@@ -112,7 +132,9 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="@string/curr_betting"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:fontFamily="@font/kingsejong"/>
 
             <TextView
                 android:layout_width="60dp"
@@ -124,7 +146,9 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="로딩중..."
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:fontFamily="@font/kingsejong"/>
         </LinearLayout>
 
     </LinearLayout>

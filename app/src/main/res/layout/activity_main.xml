@@ -32,7 +32,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="@color/color_stroke">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputLoginId"
@@ -40,7 +41,8 @@
                 android:layout_height="60dp"
                 android:hint="이메일"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/dark_60">
+                android:textColor="@color/dark_60"
+                android:fontFamily="@font/kingsejong">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -49,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:hintTextColor="@color/color_stroke">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputLoginPassword"
@@ -57,7 +60,8 @@
                 android:layout_height="60dp"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
-                android:textColor="@color/dark_60">
+                android:textColor="@color/dark_60"
+                android:fontFamily="@font/kingsejong">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
