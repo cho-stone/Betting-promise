@@ -37,10 +37,10 @@ public class Betting_Promise extends Dialog {
     private TextView tv_betting_max, tv_curr_betting;
     private FirebaseDatabase database, database2;
     private DatabaseReference databaseReference, databaseReference2, mDatabase; //mDatabase는 setValue전용
-    private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener, removePromiseInUser, subPromisePlayer;
+    private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener, removePromiseInUser, subPromisePlayer, findMyCoinListner;
     private ArrayList<String> usersUID;
     private Button btn_betting;
-    private int min, j, me_num, currBettingNum, numOfP; //TODO: numOfP 채워주기, 마지막 남은 인원이 1이면 방장임
+    private int min, j, me_num, currBettingNum, numOfP,mycoin; //TODO: numOfP 채워주기, 마지막 남은 인원이 1이면 방장임
     private boolean isBetting, isAllBetting, isAllOut;
     private Map map;
     private String rid, UID;
@@ -102,6 +102,20 @@ public class Betting_Promise extends Dialog {
                 database2 = FirebaseDatabase.getInstance();
                 for(int i = 0; i < players.size(); i++){
                     databaseReference2 = database2.getReference("User").child(usersUID.get(i)).child("account");
+                    if(usersUID.get(i).equals(UID))//내 현재 보유 코인을 mycoin에 저장
+                    {
+                        findMyCoinListner = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                 mycoin = snapshot.getValue(Integer.class);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("Map", String.valueOf(error.toException()));
+                            }
+                        };
+                        databaseReference2.addListenerForSingleValueEvent(findMyCoinListner);
+                    }
                     userCoinListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -186,6 +200,8 @@ public class Betting_Promise extends Dialog {
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(bettingM);
                 isBetting = true;
                 Toast.makeText(map, "배팅 성공!", Toast.LENGTH_SHORT).show();
+                mycoin = mycoin - bettingM;
+                mDatabase.child("User").child(UID).child("account").setValue(mycoin); //배팅 후 내 포인트 차감
             }
         });
     }
