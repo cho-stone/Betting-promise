@@ -197,7 +197,7 @@ public class Betting_Promise extends Dialog {
                 }
 
                 int bettingM = Integer.parseInt(et_betting_coin.getText().toString());
-                if(bettingM > min) {
+                if(bettingM >  min) {
                     Toast.makeText(map, "최대 배팅 금액보다 적게 배팅해 주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -253,7 +253,11 @@ public class Betting_Promise extends Dialog {
                         }
                     }
                     mDatabase.child("Promise").child(rid).child("bettingMoney").setValue(Map.allBettingMoney);
-                    map.voteComplete();
+
+                    if(((Long) players.get(me_num).get("bettingMoney")).intValue() >= 100){
+                        Log.v("tt", "위치 정상작동");
+                        map.voteComplete();
+                    }
                     dismiss();
                     databaseReference.removeEventListener(currVoteListener);
                 }

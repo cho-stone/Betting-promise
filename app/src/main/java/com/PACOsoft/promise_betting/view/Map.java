@@ -267,7 +267,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                             reach_location.setEnabled(false);
                         }
 
-                        if(promisePlayer_me != null){
+                        if(promisePlayer_me != null && !promisePlayer_me.getArrival()){
                             mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
                             mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
                         }
@@ -291,7 +291,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     public void voteComplete(){
-        if(hasPermission() && locationManager != null && promisePlayer_me.getBettingMoney() >= 100){
+        if(hasPermission() && locationManager != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
         }
     }
