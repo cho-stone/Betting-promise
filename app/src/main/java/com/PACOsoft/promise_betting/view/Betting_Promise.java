@@ -255,7 +255,6 @@ public class Betting_Promise extends Dialog {
                     mDatabase.child("Promise").child(rid).child("bettingMoney").setValue(Map.allBettingMoney);
 
                     if(((Long) players.get(me_num).get("bettingMoney")).intValue() >= 100){
-                        Log.v("tt", "위치 정상작동");
                         map.voteComplete();
                     }
                     dismiss();

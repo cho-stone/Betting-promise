@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#33FFFFFF">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/coin_show_image"
+                android:layout_width="250dp"
+                android:layout_height="580dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:onClick="btn_show_coin"
+                android:src="@drawable/home_help1" />
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="307dp"
+                android:layout_marginTop="259dp"
+                android:src="@drawable/direction_left"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="307dp"
+                android:layout_marginTop="305dp"
+                android:src="@drawable/direction_left"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="307dp"
+                android:layout_marginTop="351dp"
+                android:src="@drawable/direction_left"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="307dp"
+                android:layout_marginTop="397dp"
+                android:src="@drawable/direction_left"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="307dp"
+                android:layout_marginTop="443dp"
+                android:src="@drawable/direction_left"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="307dp"
+                android:layout_marginTop="489dp"
+                android:src="@drawable/direction_left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="357dp"
+                android:layout_marginTop="266dp"
+                android:text="설정"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="357dp"
+                android:layout_marginTop="314dp"
+                android:text="설정"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -18,7 +18,18 @@
         android:background="@color/color_toolbar2"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--포인트 출력 텍스트뷰-->
+        <ImageView
+            android:id="@+id/help_home"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/help_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="btn_help_home"/>
+
         <TextView
             android:id="@+id/tv_home_nick_name"
             android:layout_width="match_parent"
@@ -40,22 +51,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:onClick="btn_show_coin">
-
-        </ImageView>
-
-        <!--
-        <TextView
-            android:id="@+id/tv_point"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="0"
-            android:fontFamily="@font/kingsejong"
-            android:gravity="center"
-            android:text="0"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp" /> -->
+            android:onClick="btn_show_coin"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
