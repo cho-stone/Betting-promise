@@ -148,6 +148,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     LocalDateTime setTime = LocalDateTime.of(pYear, pMonth, pDay, pHour, pMinute);
                     if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
                         database.getReference("Promise").child(rid).removeValue();
+                        Toast.makeText(getApplicationContext(), "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     }
                 }
             }
