@@ -52,6 +52,7 @@ public class Search_History extends AppCompatActivity {
                 //파이어베이스 데이터베이스의 데이터를 받아오는 곳
                 historyArrayList.clear(); //기존 배열리스트를 초기화
                 User me = snapshot.getValue(User.class);
+                if(me.getHistoryKey().equals("")){return;}
                 historys = me.getHistoryKey().split(" ");//위에서 필터링한 객체의 PromiseKey를 공백을 기준으로 스플릿 해서 배열에 저장
                 for(String history : historys){
                     databaseReference2 =database.getReference("History").child(history);//DB테이블 연결, 파이어베이스 콘솔에서 History에 접근
