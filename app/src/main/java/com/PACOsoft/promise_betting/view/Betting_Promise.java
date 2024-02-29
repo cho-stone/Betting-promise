@@ -197,7 +197,11 @@ public class Betting_Promise extends Dialog {
                 }
 
                 int bettingM = Integer.parseInt(et_betting_coin.getText().toString());
-                //TODO
+                if(bettingM > min) {
+                    Toast.makeText(map, "최대 배팅 금액보다 적게 배팅해 주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(bettingM);
                 isBetting = true;
                 Toast.makeText(map, "배팅 성공!", Toast.LENGTH_SHORT).show();
