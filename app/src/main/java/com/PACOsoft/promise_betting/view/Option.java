@@ -7,12 +7,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Path;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.PACOsoft.promise_betting.R;
+import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.User;
 import com.PACOsoft.promise_betting.view.MainActivity;
 import com.bumptech.glide.Glide;
@@ -40,6 +42,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 public class Option extends AppCompatActivity {
@@ -106,44 +111,68 @@ public class Option extends AppCompatActivity {
         System.exit(0);
     }
 
-    private void revokeAccess() {//회원탈퇴
-        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
+//    private void revokeAccess() {//회원탈퇴
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d("success", "User account deleted.");
+//                            deleteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(deleteIntent);
+//                        }
+//                        else
+//                        {
+//                            Log.d("success", "FAIL");
+//                        }
+//                    }
+//                });
+//    }
+
+//    private void removeDB(){
+//        //database = FirebaseDatabase.getInstance();
+//        database.getReference("User").child(UID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.v("removeDB", "성공");
+//                System.out.println("error: 성공");
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                System.out.println("error: "+e.getMessage());
+//                System.out.println("error: 실패");
+//            }
+//        });
+//    }
+
+    private void removeDB(){//내 정보 삭제
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("User").child(UID);
+        database.getReference("User").child(UID).removeValue();
+    }
+
+    private void revokeAccess()//회원탈퇴
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d("success", "User account deleted.");
-                            deleteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Log.d("option", "User account deleted.");
+                            deleteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//실행 중인 모든 엑티비티 종료
                             startActivity(deleteIntent);
-                        }
-                        else
-                        {
-                            Log.d("success", "FAIL");
                         }
                     }
                 });
     }
 
-    private void removeDB(){
-        //database = FirebaseDatabase.getInstance();
-        database.getReference("User").child(UID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.v("removeDB", "성공");
-                System.out.println("error: 성공");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("error: "+e.getMessage());
-                System.out.println("error: 실패");
-            }
-        });
-    }
-
     public void btn_revoke(View view) {
-        //removeDB(); 동기화 문제로 인해서 회원 탈퇴과 DB에서의 삭제를 동시에 진행 불가능 그래서 DB는 그대로 두기로 함
         deleteIntent = new Intent(this, MainActivity.class);
+        removeDB(); //동기화 문제로 인해서 회원 탈퇴과 DB에서의 삭제를 동시에 진행 불가능 그래서 DB는 그대로 두기로 함
         revokeAccess();
     }
     @Override
