@@ -78,6 +78,16 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/kingsejong"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="357dp"
+                android:layout_marginTop="314dp"
+                android:text="설정"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
         </FrameLayout>
 
     </LinearLayout>
