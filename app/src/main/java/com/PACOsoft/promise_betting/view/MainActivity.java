@@ -206,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
-
                 }
             }
         });

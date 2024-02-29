@@ -574,4 +574,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         }
 
     }
+
+    public void btn_help_home(View view){
+    }
 }
