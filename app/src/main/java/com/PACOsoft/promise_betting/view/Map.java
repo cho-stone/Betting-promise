@@ -415,6 +415,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     date += ".";
                     date += String.valueOf(pMonth);
                     date += ".";
+                    date += String.valueOf(pDay);
+                    date += " ";
                     date += String.valueOf(pHour);
                     date += ":";
                     date += String.valueOf(pMinute);
