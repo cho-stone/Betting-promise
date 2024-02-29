@@ -172,7 +172,10 @@ public class Option extends AppCompatActivity {
 
     public void btn_revoke(View view) {
         deleteIntent = new Intent(this, MainActivity.class);
-        removeDB(); //동기화 문제로 인해서 회원 탈퇴과 DB에서의 삭제를 동시에 진행 불가능 그래서 DB는 그대로 두기로 함
+        boolean isFriendView = ((Home)Home.context).isFriendView;//내가 Home에서 어떤 목록을 보고있었는지 체크
+        if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);//친구목록 보고있었다면 친구 리스너 끔
+        else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);//약속목록 보고있었다면 약속 리스너 끔
+        removeDB();
         revokeAccess();
     }
     @Override
