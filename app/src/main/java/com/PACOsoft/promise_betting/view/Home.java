@@ -62,7 +62,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     private int coin;
     private String me_nickname;
     public static Context context;
-    public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener;
+    public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener,
+            refreshFriendListValueEventLister, refreshFriendListValueEventLister2, refreshFriendListValueEventLister3,
+            refreshPromiseListValueEventListener,refreshPromiseListValueEventListener2,refreshPromiseListValueEventListener3;
     public boolean isFriendView;
 
     //플로팅 버튼
@@ -133,6 +135,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         unExistFriendsArrayList = new ArrayList<Boolean>();
         refreshPromisessArrayList = new ArrayList<String>();
         unExistPromisesArrayList = new ArrayList<Boolean>();
+
         refresh_friends1();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -140,6 +143,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 refresh_friends2();
             }
         }, 2000);// 2초 딜레이를 준 후 시작
+
         refresh_promise1();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -147,6 +151,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 refresh_promise2();
             }
         }, 2000);// 2초 딜레이를 준 후 시작
+
         view_friends();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -351,10 +356,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshFriendsArrayList.clear();
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        if (isFriendView == false)
-            databaseReference.removeEventListener(getPromiseListValueEventListener);
-        isFriendView = true;
-        ValueEventListener getFriendListValueEventLister2 = new ValueEventListener() {
+//        if (isFriendView == false)
+//            databaseReference.removeEventListener(getPromiseListValueEventListener);
+//        isFriendView = true;
+        refreshFriendListValueEventLister2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue(User.class) == null) {
@@ -367,7 +372,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        getFriendListValueEventLister = new ValueEventListener() {
+        refreshFriendListValueEventLister = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -377,8 +382,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                     String friend = friends[i];
                     refreshFriendsArrayList.add(friend);
                     databaseReference2 = database.getReference("User").child(friend);
-                    databaseReference2.addListenerForSingleValueEvent(getFriendListValueEventLister2);
-                    databaseReference2.removeEventListener(getFriendListValueEventLister2);
+                    databaseReference2.addListenerForSingleValueEvent(refreshFriendListValueEventLister2);
+                    databaseReference2.removeEventListener(refreshFriendListValueEventLister2);
                 }
             }
 
@@ -386,17 +391,17 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addListenerForSingleValueEvent(getFriendListValueEventLister);
+        databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister);
     }
 
     public void refresh_friends2() {
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        if (isFriendView == false)
-            databaseReference.removeEventListener(getPromiseListValueEventListener);
-        isFriendView = true;
+//        if (isFriendView == false)
+//            databaseReference.removeEventListener(getPromiseListValueEventListener);
+//        isFriendView = true;
 
-        getFriendListValueEventLister = new ValueEventListener() {
+        refreshFriendListValueEventLister3 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (int i = 0; i < unExistFriendsArrayList.size(); i++) {
@@ -420,7 +425,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addListenerForSingleValueEvent(getFriendListValueEventLister);
+        databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister3);
     }
 
     public void refresh_promise1() {
@@ -428,9 +433,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshPromisessArrayList.clear();
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
-        isFriendView = false;
-        ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
+//        if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
+//        isFriendView = false;
+        refreshPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue(User.class) == null) {
@@ -445,7 +450,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        getPromiseListValueEventListener = new ValueEventListener() {
+        refreshPromiseListValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User me = snapshot.getValue(User.class);
@@ -453,8 +458,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 for (String promise : promises) {
                     refreshPromisessArrayList.add(promise);
                     databaseReference2 = database.getReference("Promise").child(promise);
-                    databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
-                    databaseReference2.removeEventListener(getPromiseListValueEventListener2);
+                    databaseReference2.addListenerForSingleValueEvent(refreshPromiseListValueEventListener2);
+                    databaseReference2.removeEventListener(refreshPromiseListValueEventListener2);
                 }
             }
 
@@ -462,15 +467,15 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addListenerForSingleValueEvent(getPromiseListValueEventListener);
+        databaseReference.addListenerForSingleValueEvent(refreshPromiseListValueEventListener);
     }
 
     public void refresh_promise2() {
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
-        isFriendView = false;
-        getPromiseListValueEventListener = new ValueEventListener() {
+//        if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
+//        isFriendView = false;
+        refreshPromiseListValueEventListener3 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (int i = 0; i < unExistPromisesArrayList.size(); i++) {
@@ -495,7 +500,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addListenerForSingleValueEvent(getPromiseListValueEventListener);
+        databaseReference.addListenerForSingleValueEvent(refreshPromiseListValueEventListener3);
     }
 
 

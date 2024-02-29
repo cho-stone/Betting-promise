@@ -173,6 +173,14 @@ public class Option extends AppCompatActivity {
     public void btn_revoke(View view) {
         deleteIntent = new Intent(this, MainActivity.class);
         boolean isFriendView = ((Home)Home.context).isFriendView;//내가 Home에서 어떤 목록을 보고있었는지 체크
+        if(isFriendView== true) {System.out.println("true");}
+        else if (isFriendView == false) {
+            System.out.println("false");
+        }
+        else
+        {
+            System.out.println("another");
+        }
         if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);//친구목록 보고있었다면 친구 리스너 끔
         else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);//약속목록 보고있었다면 약속 리스너 끔
         removeDB();
