@@ -1,5 +1,6 @@
 package com.PACOsoft.promise_betting.view;
 
+        import android.accounts.Account;
         import android.app.Activity;
         import android.content.Intent;
         import android.content.SharedPreferences;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         init();
         signInButton = findViewById(R.id.btn_google_sign_in);
 
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 googlesignIn();
             }
         });
-        System.out.println("error: 10");
     }
 
 
@@ -95,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Password err", Toast.LENGTH_LONG).show();
         } else {
             //로그인 성공
-            auth.signInWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
+            mAuth.signInWithEmailAndPassword(ID.getText().toString().trim(), Password.getText().toString().trim())
                     .addOnCompleteListener(
                             task -> {
                                 if (task.isSuccessful()) {
                                     //이메일 인증받은 계정인지 검사
-                                    if(auth.getCurrentUser().isEmailVerified()) {
-                                        updateUI(auth.getCurrentUser().getUid());
+                                    if(mAuth.getCurrentUser().isEmailVerified()) {
+                                        updateUI(mAuth.getCurrentUser().getUid());
                                     }
                                     else{
                                         Toast.makeText(getApplicationContext(), "verify Fail", Toast.LENGTH_LONG).show();
@@ -118,6 +118,36 @@ public class MainActivity extends AppCompatActivity {
     private void googlesignIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         activityResultLauncher.launch(signInIntent);
+        if (mAuth.getCurrentUser() != null) {
+            database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+            databaseReference = database.getReference("User").child(mAuth.getCurrentUser().getUid());//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+            ValueEventListener CheckMeListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User me = snapshot.getValue(User.class);
+                    if (me == null) {
+                        User user = new User();
+                        user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
+                        user.setAccount(0);
+                        user.setId(mAuth.getCurrentUser().getEmail());
+                        user.setNickName(mAuth.getCurrentUser().getDisplayName());
+                        user.setPromiseKey("");
+                        user.setFriendsUID("");
+                        user.setHistoryKey("");
+                        user.setUID(mAuth.getCurrentUser().getUid());
+                        databaseReference.setValue(user);
+                        updateUI(mAuth.getCurrentUser().getUid());
+                    }
+                    else {
+                        updateUI(mAuth.getCurrentUser().getUid());
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            };
+            databaseReference.addListenerForSingleValueEvent(CheckMeListener);
+        }
     }
     private void init(){
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -150,8 +180,11 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         //자동 로그인
-        if(mAuth.getCurrentUser()==null ? false : true)
-            updateUI(mAuth.getCurrentUser().getUid());
+            if (mAuth.getCurrentUser() == null ? false : true)
+            {
+                updateUI(mAuth.getCurrentUser().getUid());
+            }
+
     }
 
     private void updateUI(String UID) {
@@ -167,42 +200,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-                    databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            //파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                            ArrayList<User> users = new ArrayList<>();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                users.add(snapshot.getValue(User.class));
-                            }
-
-                            if (users.stream().parallel().anyMatch(u -> u.getId().equals(mAuth.getCurrentUser().getUid()))) {
-                                //myId와 동일한 id가 DB에 있는지 확인 이미 존재하며 아무 것도 안 함
-                            }
-                            else{
-                                //없다면 DB에 유저 정보 추가
-                                User user = new User();
-                                user.setProfile("https://firebasestorage.googleapis.com/v0/b/fir-listexample-4b146.appspot.com/o/free-icon-font-user-3917688.png?alt=media&token=6d701d27-9620-4b12-b315-46fa39a42210");
-                                user.setAccount(0);
-                                user.setId(mAuth.getCurrentUser().getEmail());
-                                user.setNickName(mAuth.getCurrentUser().getDisplayName());
-                                user.setPromiseKey("");
-                                user.setFriendsUID("");
-                                user.setHistoryKey("");
-                                user.setUID(auth.getCurrentUser().getUid());
-                                databaseReference.child(auth.getCurrentUser().getUid()).setValue(user);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            //DB를 가져오는 중에 에러 발생 시 어떤걸 띄울 것인가
-                            Log.e("MainActivity", String.valueOf(databaseError.toException()));//에러문 출력
-                        }
-                    });
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user.getUid());
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
@@ -211,7 +208,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
     //구글 로그인 끝
 }

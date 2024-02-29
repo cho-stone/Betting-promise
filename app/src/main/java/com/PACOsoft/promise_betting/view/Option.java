@@ -81,7 +81,6 @@ public class Option extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        //databaseReference.addListenerForSingleValueEvent(getMyInfoListener);
         databaseReference.addValueEventListener(getMyInfoListener);
     }
 
@@ -98,9 +97,9 @@ public class Option extends AppCompatActivity {
     public void btnSignOut(View view) {//로그아웃
         Intent intent = new Intent(this, MainActivity.class);
         boolean isFriendView = ((Home)Home.context).isFriendView;
-        if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);
-        else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);
-        databaseReference.removeEventListener(getMyInfoListener);
+        if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);//친구목록 보고있었다면 친구 리스너 끔
+        else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);//약속목록 보고있었다면 약속 리스너 끔
+        databaseReference.removeEventListener(getMyInfoListener);//옵션에 있는 리스너 꺼줌
         signOut();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//실행 중인 모든 엑티비티 종료
         startActivity(intent);
@@ -111,42 +110,6 @@ public class Option extends AppCompatActivity {
         System.runFinalization();
         System.exit(0);
     }
-
-//    private void revokeAccess() {//회원탈퇴
-//
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d("success", "User account deleted.");
-//                            deleteIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            startActivity(deleteIntent);
-//                        }
-//                        else
-//                        {
-//                            Log.d("success", "FAIL");
-//                        }
-//                    }
-//                });
-//    }
-
-//    private void removeDB(){
-//        //database = FirebaseDatabase.getInstance();
-//        database.getReference("User").child(UID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void aVoid) {
-//                Log.v("removeDB", "성공");
-//                System.out.println("error: 성공");
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                System.out.println("error: "+e.getMessage());
-//                System.out.println("error: 실패");
-//            }
-//        });
-//    }
 
     private void removeDB(){//내 정보 삭제
         database = FirebaseDatabase.getInstance();
@@ -174,17 +137,9 @@ public class Option extends AppCompatActivity {
     public void btn_revoke(View view) {
         deleteIntent = new Intent(this, MainActivity.class);
         boolean isFriendView = ((Home)Home.context).isFriendView;//내가 Home에서 어떤 목록을 보고있었는지 체크
-        if(isFriendView== true) {System.out.println("true");}
-        else if (isFriendView == false) {
-            System.out.println("false");
-        }
-        else
-        {
-            System.out.println("another");
-        }
         if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);//친구목록 보고있었다면 친구 리스너 끔
         else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);//약속목록 보고있었다면 약속 리스너 끔
-        databaseReference.removeEventListener(getMyInfoListener);
+        databaseReference.removeEventListener(getMyInfoListener);//옵션에 있는 리스너 꺼줌
         removeDB();
         revokeAccess();
     }

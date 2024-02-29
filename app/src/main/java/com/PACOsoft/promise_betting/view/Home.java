@@ -268,9 +268,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
 
                 coin = me.getAccount();//내 객체에서 account값 가져옴
-
-                //TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
-                //text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
                 current_coin = String.valueOf(coin) + "포인트";
 
                 me_nickname = me.getNickName();
@@ -330,9 +327,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 User me = snapshot.getValue(User.class);
                 String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 coin = me.getAccount();//내 객체에서 account값 가져옴
-
-                //TextView text = (TextView) findViewById(R.id.tv_point);//TextView 참조 객체 선언
-                //text.setText(String.valueOf(coin) + "포인트");//위에서 선언한 참조 객체에 값 넘겨줌
                 current_coin = String.valueOf(coin) + "포인트";
 
                 for (String promise : promises) {
@@ -356,9 +350,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshFriendsArrayList.clear();
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-//        if (isFriendView == false)
-//            databaseReference.removeEventListener(getPromiseListValueEventListener);
-//        isFriendView = true;
         refreshFriendListValueEventLister2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -397,10 +388,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     public void refresh_friends2() {
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-//        if (isFriendView == false)
-//            databaseReference.removeEventListener(getPromiseListValueEventListener);
-//        isFriendView = true;
-
         refreshFriendListValueEventLister3 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -433,8 +420,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshPromisessArrayList.clear();
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-//        if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
-//        isFriendView = false;
         refreshPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -473,8 +458,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     public void refresh_promise2() {
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
         databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-//        if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
-//        isFriendView = false;
         refreshPromiseListValueEventListener3 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
