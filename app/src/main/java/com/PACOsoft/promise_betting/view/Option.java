@@ -100,6 +100,7 @@ public class Option extends AppCompatActivity {
         boolean isFriendView = ((Home)Home.context).isFriendView;
         if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);
         else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);
+        databaseReference.removeEventListener(getMyInfoListener);
         signOut();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//실행 중인 모든 엑티비티 종료
         startActivity(intent);
@@ -183,6 +184,7 @@ public class Option extends AppCompatActivity {
         }
         if(isFriendView) databaseReference.removeEventListener(((Home)Home.context).getFriendListValueEventLister);//친구목록 보고있었다면 친구 리스너 끔
         else databaseReference.removeEventListener(((Home)Home.context).getPromiseListValueEventListener);//약속목록 보고있었다면 약속 리스너 끔
+        databaseReference.removeEventListener(getMyInfoListener);
         removeDB();
         revokeAccess();
     }
