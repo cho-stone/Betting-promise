@@ -46,7 +46,6 @@ public class Promise_List_Adapter extends RecyclerView.Adapter<Promise_List_Adap
         holder.tv_promiseName.setText(arrayList.get(position).getPromiseName().toString());
         holder.tv_numOfPlayer.setText(String.valueOf(arrayList.get(position).getNumOfPlayer()));//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_bettingMoney.setText(String.valueOf(arrayList.get(position).getbettingMoney()));
-
     }
 
     @Override
@@ -65,7 +64,6 @@ public class Promise_List_Adapter extends RecyclerView.Adapter<Promise_List_Adap
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
-
             this.tv_promiseKey = itemView.findViewById(R.id.tv_promiseKey);
             this.tv_promiseName = itemView.findViewById(R.id.tv_promiseName);
             this.tv_numOfPlayer = itemView.findViewById(R.id.tv_numOfPlayer);

@@ -62,10 +62,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
         init();
         signInButton = findViewById(R.id.btn_google_sign_in);
-
         signInButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 googlesignIn();
@@ -186,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() == null ? false : true) {
             if (mAuth.getCurrentUser().isEmailVerified()) {
                 updateUI(mAuth.getCurrentUser().getUid());
-                System.out.println("자동 로그인 성공");
             }
         }
 

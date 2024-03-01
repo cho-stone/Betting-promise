@@ -46,7 +46,6 @@ public class User_List_Adapter extends RecyclerView.Adapter<User_List_Adapter.Cu
         holder.tv_UID.setText(arrayList.get(position).getUID());//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_id.setText(arrayList.get(position).getId());//서버로부터 텍스트 받아와서 item에 삽입
         holder.tv_nickName.setText(arrayList.get(position).getNickName());
-
     }
 
     @Override

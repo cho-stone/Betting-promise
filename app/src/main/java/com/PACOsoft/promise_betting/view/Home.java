@@ -143,7 +143,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 refresh_friends2();
             }
         }, 2000);// 2초 딜레이를 준 후 시작
-
         refresh_promise1();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -151,7 +150,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 refresh_promise2();
             }
         }, 2000);// 2초 딜레이를 준 후 시작
-
         view_friends();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -266,7 +264,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 userArrayList.clear(); //기존 배열리스트를 초기화
                 User me = snapshot.getValue(User.class);
                 String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-
                 coin = me.getAccount();//내 객체에서 account값 가져옴
                 current_coin = String.valueOf(coin) + "포인트";
 
@@ -278,7 +275,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 for (String friend : friends) {
                     databaseReference2 = database.getReference("User").child(friend);
                     databaseReference2.addListenerForSingleValueEvent(getFriendListValueEventLister2);
-                    databaseReference2.removeEventListener(getFriendListValueEventLister2);
+                    //databaseReference2.removeEventListener(getFriendListValueEventLister2); //싱글 벨류여서 아마 지워도 될듯?
                 }
             }
 
@@ -332,7 +329,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
                     databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
-                    databaseReference2.removeEventListener(getPromiseListValueEventListener2);
+                    //databaseReference2.removeEventListener(getPromiseListValueEventListener2); //싱글 벨류여서 아마 지워도 될듯?
                 }
             }
 
@@ -374,7 +371,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                     refreshFriendsArrayList.add(friend);
                     databaseReference2 = database.getReference("User").child(friend);
                     databaseReference2.addListenerForSingleValueEvent(refreshFriendListValueEventLister2);
-                    databaseReference2.removeEventListener(refreshFriendListValueEventLister2);
+                    //databaseReference2.removeEventListener(refreshFriendListValueEventLister2); //싱글벨류여서 아마 지워도 될듯?
                 }
             }
 
@@ -423,7 +420,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(User.class) == null) {
+                if (snapshot.getValue(Promise.class) == null) {
                     unExistPromisesArrayList.add(true);
                     return;
                 } else {
@@ -444,7 +441,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                     refreshPromisessArrayList.add(promise);
                     databaseReference2 = database.getReference("Promise").child(promise);
                     databaseReference2.addListenerForSingleValueEvent(refreshPromiseListValueEventListener2);
-                    databaseReference2.removeEventListener(refreshPromiseListValueEventListener2);
+                    //databaseReference2.removeEventListener(refreshPromiseListValueEventListener2); //싱글 벨류여서 아마 지워도 될듯?
                 }
             }
 
