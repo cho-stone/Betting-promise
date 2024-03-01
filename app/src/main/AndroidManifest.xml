@@ -24,6 +24,9 @@
             android:name=".view.Coin"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
+            android:name=".view.Reset_Password"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
             android:name=".view.Search_History"
             android:exported="false" />
         <activity

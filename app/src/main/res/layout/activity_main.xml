@@ -132,15 +132,15 @@
             android:weightSum="10">
 
             <TextView
+                android:onClick="btn_reset_password"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="5"
                 android:background="@drawable/click_text_in_loginpage"
-                android:clickable="true"
                 android:gravity="center"
                 android:text="@string/forgotPW"
                 android:textSize="17sp"
-                android:textColor="@color/dark_60"
+                android:textColor="@color/loginBP"
                 android:fontFamily="@font/kingsejong"/>
 
             <TextView

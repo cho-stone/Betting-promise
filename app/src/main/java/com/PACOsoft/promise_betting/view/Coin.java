@@ -28,7 +28,6 @@ import java.util.Optional;
 
 public class Coin extends Activity {
     private int tempcoin;
-    private String myId;
     private String UID;
     private int originCoin;
     private TextInputEditText coin_tv;

@@ -4,7 +4,7 @@
     <!--로그인창-->
     <string name="loginT">로그인</string>
     <string name="loginBT">로그인</string>
-    <string name="forgotPW">아이디/비밀번호 찾기</string>
+    <string name="forgotPW">비밀번호 변경</string>
     <string name="createAcc">회원가입</string>
     <string name="id_dupli">중복확인</string>
     <!--회원가입창-->

@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         init();
         signInButton = findViewById(R.id.btn_google_sign_in);
 
-        signInButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 googlesignIn();
             }
         });
@@ -100,17 +100,13 @@ public class MainActivity extends AppCompatActivity {
                             task -> {
                                 if (task.isSuccessful()) {
                                     //이메일 인증받은 계정인지 검사
-                                    if(mAuth.getCurrentUser().isEmailVerified()) {
+                                    if (mAuth.getCurrentUser().isEmailVerified()) {
                                         updateUI(mAuth.getCurrentUser().getUid());
-                                        System.out.println("인증 성공 로그인 성공");
-                                    }
-                                    else{
-                                        Toast.makeText(getApplicationContext(), "verify Fail", Toast.LENGTH_LONG).show();
-                                        System.out.println("인증 실패");
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "이메일 인증 실패", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
                                     Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
-                                    System.out.println("로그인 실패");
                                 }
                             }
                     );
@@ -118,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //구글 로그인 시작
-    private void googlesignIn(){
+    private void googlesignIn() {
         if (mAuth.getCurrentUser() == null) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             activityResultLauncher.launch(signInIntent);
@@ -142,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
                         user.setUID(mAuth.getCurrentUser().getUid());
                         databaseReference.setValue(user);
                         updateUI(mAuth.getCurrentUser().getUid());
-                    }
-                    else {
+                    } else {
                         updateUI(mAuth.getCurrentUser().getUid());
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -154,14 +150,15 @@ public class MainActivity extends AppCompatActivity {
             databaseReference.addListenerForSingleValueEvent(CheckMeListener);
         }
     }
-    private void init(){
+
+    private void init() {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == Activity.RESULT_OK){
+                if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent intent = result.getData();
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(intent);
-                    try{
+                    try {
                         GoogleSignInAccount account = task.getResult(ApiException.class);
                         firebaseAuthWithGoogle(account);
                     } catch (ApiException e) {
@@ -181,17 +178,17 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
+
     @Override
     public void onStart() {
         super.onStart();
         //자동 로그인
-            if (mAuth.getCurrentUser() == null ? false : true)
-            {
-                if(mAuth.getCurrentUser().isEmailVerified()) {
-                    updateUI(mAuth.getCurrentUser().getUid());
-                    System.out.println("자동 로그인 성공");
-                }
+        if (mAuth.getCurrentUser() == null ? false : true) {
+            if (mAuth.getCurrentUser().isEmailVerified()) {
+                updateUI(mAuth.getCurrentUser().getUid());
+                System.out.println("자동 로그인 성공");
             }
+        }
 
     }
 
@@ -202,18 +199,23 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                }
-                else{
+                if (task.isSuccessful()) {
+                } else {
                     Toast.makeText(getApplicationContext(), "Auth Fail", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
     //구글 로그인 끝
+
+    //비밀번호 변경
+    public void btn_reset_password(View view) {
+        Intent intent = new Intent(getApplicationContext(), Reset_Password.class);
+        startActivity(intent);
+    }
 }
