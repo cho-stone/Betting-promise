@@ -37,7 +37,8 @@ public class Betting_Promise extends Dialog {
     private TextView tv_betting_max, tv_curr_betting;
     private FirebaseDatabase database, database2;
     private DatabaseReference databaseReference, databaseReference2, mDatabase; //mDatabase는 setValue전용
-    private ValueEventListener bettingCoinListener, userCoinListener, currVoteListener, removePromiseInUser, subPromisePlayer, findMyCoinListner;
+    private ValueEventListener currVoteListener; //상시 리스너
+    private ValueEventListener bettingCoinListener, userCoinListener,  removePromiseInUser, subPromisePlayer, findMyCoinListner; //싱글 벨류 리스너
     private ArrayList<String> usersUID;
     private Button btn_betting;
     private int min, j, me_num, currBettingNum, numOfP,mycoin; //TODO: numOfP 채워주기, 마지막 남은 인원이 1이면 방장임
@@ -74,7 +75,6 @@ public class Betting_Promise extends Dialog {
                 int money = 0;
                 if(players == null) {
                     dismiss();
-                    databaseReference.removeEventListener(currVoteListener);
                     Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     map.onBackPressed();
                     return;}
@@ -222,7 +222,6 @@ public class Betting_Promise extends Dialog {
                 //배팅을 아직 안한사람 닉네임 띄우기와 동시에 배팅머니가 -1 이면 방 삭제 창 띄우기
                 if(players == null) {
                     dismiss();
-                    databaseReference.removeEventListener(currVoteListener);
                     Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     map.onBackPressed();
                     return;}
@@ -280,7 +279,6 @@ public class Betting_Promise extends Dialog {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 if(players == null) {
                     dismiss();
-                    databaseReference.removeEventListener(currVoteListener);
                     Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     map.onBackPressed();
                     return;}

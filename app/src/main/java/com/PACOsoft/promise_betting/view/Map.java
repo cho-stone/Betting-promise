@@ -77,12 +77,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Nullable
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private ValueEventListener promiseDeleteListener,promiseSettingListener, promisePointListener, promiseArrivalListener, promiseVoteListener, mapOnMyFriendListener, voteStartListener, PointReceiveListener,addHistoryListener;
+    private ValueEventListener  mapOnMyFriendListener; //상시 리스너
+    private ValueEventListener promisePointListener, promiseDeleteListener,promiseSettingListener,  promiseArrivalListener, PointReceiveListener,addHistoryListener;//싱글 벨류 리스너
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
-    private AdView mAdView;
-    private Vote_Promise votePromise;
     private Betting_Promise bettingPromise;
 
     private int myRanking;
@@ -147,7 +146,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     LocalDateTime now = LocalDateTime.now();
                     LocalDateTime setTime = LocalDateTime.of(pYear, pMonth, pDay, pHour, pMinute);
                     if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
-                        database.getReference("Promise").child(rid).removeValue();
+                        database.getReference("Promise").child(rid).removeValue();//DB에서 방 삭제
+                        //Map의 모든 상시 리스너 종료
+                        databaseReference2.removeEventListener(mapOnMyFriendListener);
                         Toast.makeText(getApplicationContext(), "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -287,6 +288,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
         databaseReference.addListenerForSingleValueEvent(promisePointListener);
+
         mapOnFriendMark();
     }
 
@@ -340,6 +342,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
         databaseReference2.addValueEventListener(mapOnMyFriendListener);
+
     }
 
     //locationManager 퍼미션
