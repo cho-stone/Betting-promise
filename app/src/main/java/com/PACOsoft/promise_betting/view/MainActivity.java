@@ -116,8 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
     //구글 로그인 시작
     private void googlesignIn(){
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        activityResultLauncher.launch(signInIntent);
+        if (mAuth.getCurrentUser() == null) {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            activityResultLauncher.launch(signInIntent);
+        }
         if (mAuth.getCurrentUser() != null) {
             database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
             databaseReference = database.getReference("User").child(mAuth.getCurrentUser().getUid());//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
