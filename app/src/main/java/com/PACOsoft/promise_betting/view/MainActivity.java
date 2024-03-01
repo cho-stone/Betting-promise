@@ -102,12 +102,15 @@ public class MainActivity extends AppCompatActivity {
                                     //이메일 인증받은 계정인지 검사
                                     if(mAuth.getCurrentUser().isEmailVerified()) {
                                         updateUI(mAuth.getCurrentUser().getUid());
+                                        System.out.println("인증 성공 로그인 성공");
                                     }
                                     else{
                                         Toast.makeText(getApplicationContext(), "verify Fail", Toast.LENGTH_LONG).show();
+                                        System.out.println("인증 실패");
                                     }
                                 } else {
                                     Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                                    System.out.println("로그인 실패");
                                 }
                             }
                     );
@@ -184,7 +187,10 @@ public class MainActivity extends AppCompatActivity {
         //자동 로그인
             if (mAuth.getCurrentUser() == null ? false : true)
             {
-                updateUI(mAuth.getCurrentUser().getUid());
+                if(mAuth.getCurrentUser().isEmailVerified()) {
+                    updateUI(mAuth.getCurrentUser().getUid());
+                    System.out.println("자동 로그인 성공");
+                }
             }
 
     }
