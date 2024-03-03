@@ -160,7 +160,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
                         database.getReference("Promise").child(rid).removeValue();//DB에서 방 삭제
                         //Map의 모든 상시 리스너 종료
-                        if(locationManager != null){
+                        if(locationListener != null){
                             locationManager.removeUpdates(locationListener);
                         }
                         if(databaseReference2 != null){
@@ -540,7 +540,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
        super.onBackPressed();
-       if(locationManager == null && databaseReference2 == null){
+       if(locationListener == null && databaseReference2 == null){
            Toast.makeText(getApplicationContext(), "지금은 맵을 종료할 수 없습니다.", Toast.LENGTH_SHORT).show();
            return;
        }
