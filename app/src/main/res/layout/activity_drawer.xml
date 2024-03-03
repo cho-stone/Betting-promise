@@ -5,17 +5,18 @@
     android:layout_width="240dp"
     android:layout_height="match_parent"
     android:layout_gravity="end"
-    android:background="#dcfdd5"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    android:background="@color/color_toolbar2"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="참가자" />
+        android:text="참가자"
+        android:fontFamily="@font/kingsejong"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="300dp">
@@ -28,15 +29,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/delete_room"
-        android:textSize="18sp"
-        android:background="@drawable/round_button"
-        android:onClick="btn_delete_room"/>
-
 </LinearLayout>

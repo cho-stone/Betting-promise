@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/transparent">
+        android:background="@color/transparent"
+        android:onClick="home_help_close">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -243,16 +244,16 @@
 
             <ImageView
                 android:layout_width="26dp"
-                android:layout_height="17dp"
-                android:layout_marginLeft="52dp"
-                android:layout_marginTop="121dp"
-                android:src="@drawable/direction_right"/>
+                android:layout_height="37dp"
+                android:layout_marginLeft="92dp"
+                android:layout_marginTop="94dp"
+                android:src="@drawable/direction_down2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="121dp"
+                android:layout_marginLeft="87dp"
+                android:layout_marginTop="87dp"
                 android:text="방 제목"
                 android:textSize="13sp"
                 android:textColor="@color/black"
