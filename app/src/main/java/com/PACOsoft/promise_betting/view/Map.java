@@ -160,7 +160,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
                         database.getReference("Promise").child(rid).removeValue();//DB에서 방 삭제
                         //Map의 모든 상시 리스너 종료
-                        databaseReference2.removeEventListener(mapOnMyFriendListener);
+                        if(locationManager != null){
+                            locationManager.removeUpdates(locationListener);
+                        }
+                        if(databaseReference2 != null){
+                            databaseReference2.removeEventListener(mapOnMyFriendListener);
+                        }
+
                         Toast.makeText(getApplicationContext(), "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                     }
                 }
