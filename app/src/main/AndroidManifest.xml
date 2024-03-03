@@ -40,6 +40,10 @@
             android:name=".view.Home"
             android:exported="false" />
         <activity
+            android:name=".view.Home_Help"
+            android:theme="@style/Transparent"
+            android:exported="false" />
+        <activity
             android:name=".view.Option"
             android:exported="false" />
         <activity

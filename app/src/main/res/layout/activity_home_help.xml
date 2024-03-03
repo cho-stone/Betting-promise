@@ -5,74 +5,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#33FFFFFF">
+    android:background="@color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#33FFFFFF">
+        android:background="@color/transparent">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:layout_gravity="center">
 
             <ImageView
-                android:id="@+id/coin_show_image"
-                android:layout_width="250dp"
-                android:layout_height="580dp"
+                android:layout_width="300dp"
+                android:layout_height="663dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:onClick="btn_show_coin"
-                android:src="@drawable/home_help1" />
+                android:layout_marginTop="40dp"
+                android:src="@drawable/home_help1"/>
+
+            <!--코인 표시 설명-->
 
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="35dp"
-                android:layout_marginLeft="307dp"
-                android:layout_marginTop="259dp"
-                android:src="@drawable/direction_left"/>
-
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="307dp"
-                android:layout_marginTop="305dp"
-                android:src="@drawable/direction_left"/>
-
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="307dp"
-                android:layout_marginTop="351dp"
-                android:src="@drawable/direction_left"/>
-
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="307dp"
-                android:layout_marginTop="397dp"
-                android:src="@drawable/direction_left"/>
-
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="307dp"
-                android:layout_marginTop="443dp"
-                android:src="@drawable/direction_left"/>
-
-            <ImageView
-                android:layout_width="55dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="307dp"
-                android:layout_marginTop="489dp"
-                android:src="@drawable/direction_left"/>
+                android:layout_marginLeft="293dp"
+                android:layout_marginTop="55dp"
+                android:src="@drawable/direction_down" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="357dp"
-                android:layout_marginTop="266dp"
+                android:layout_marginLeft="237dp"
+                android:layout_marginTop="48dp"
+                android:text="코인 정보"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <!--플로팅 버튼 설명-->
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="241dp"
+                android:layout_marginTop="322dp"
+                android:src="@drawable/direction_right"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="241dp"
+                android:layout_marginTop="377dp"
+                android:src="@drawable/direction_right"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="241dp"
+                android:layout_marginTop="433dp"
+                android:src="@drawable/direction_right"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="241dp"
+                android:layout_marginTop="488dp"
+                android:src="@drawable/direction_right"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="241dp"
+                android:layout_marginTop="544dp"
+                android:src="@drawable/direction_right"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="236dp"
+                android:layout_marginTop="600dp"
+                android:src="@drawable/direction_right"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="219dp"
+                android:layout_marginTop="326dp"
                 android:text="설정"
                 android:textSize="15sp"
                 android:textColor="@color/black"
@@ -81,10 +102,159 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="357dp"
-                android:layout_marginTop="314dp"
-                android:text="설정"
+                android:layout_marginLeft="219dp"
+                android:layout_marginTop="381dp"
+                android:text="기록"
                 android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="185dp"
+                android:layout_marginTop="438dp"
+                android:text="친구 추가"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="201dp"
+                android:layout_marginTop="492dp"
+                android:text="방 생성"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="187dp"
+                android:layout_marginTop="548dp"
+                android:text="코인 충전"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="214dp"
+                android:layout_marginTop="604dp"
+                android:text="메뉴"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <!--레이아웃 설명-->
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="314dp"
+                android:src="@drawable/direction_up"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="335dp"
+                android:text="친구 정보"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <!--친구 레이아웃 상세 설명-->
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="182dp"
+                android:layout_marginTop="156dp"
+                android:src="@drawable/direction_left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="211dp"
+                android:layout_marginTop="157dp"
+                android:text="닉네임"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="243dp"
+                android:layout_marginTop="177dp"
+                android:src="@drawable/direction_left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="270dp"
+                android:layout_marginTop="177dp"
+                android:text="아이디"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="663dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:src="@drawable/home_help2"/>
+
+            <!--인원 수-->
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="118dp"
+                android:src="@drawable/direction_left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="157dp"
+                android:layout_marginTop="118dp"
+                android:text="인원 수"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <!--방 제목-->
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="52dp"
+                android:layout_marginTop="121dp"
+                android:src="@drawable/direction_right"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="121dp"
+                android:text="방 제목"
+                android:textSize="13sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/kingsejong"/>
 

@@ -265,7 +265,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 User me = snapshot.getValue(User.class);
                 String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 coin = me.getAccount();//내 객체에서 account값 가져옴
-                current_coin = String.valueOf(coin) + "포인트";
+                current_coin = String.valueOf(coin) + "코인";
 
                 me_nickname = me.getNickName();
 
@@ -324,7 +324,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 User me = snapshot.getValue(User.class);
                 String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 coin = me.getAccount();//내 객체에서 account값 가져옴
-                current_coin = String.valueOf(coin) + "포인트";
+                current_coin = String.valueOf(coin) + "코인";
 
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
@@ -556,5 +556,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     }
 
     public void btn_help_home(View view){
+        Intent intent = new Intent(this, Home_Help.class);
+        startActivity(intent);
     }
 }
