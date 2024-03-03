@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
@@ -13,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -165,6 +167,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         //방세팅
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
+        Typeface tf = ResourcesCompat.getFont(this, R.font.kingsejong);
         promiseSettingListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -179,6 +182,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     tv.setText(i.getNickName());
                     tv.setTextSize(15);
                     tv.setGravity(1);
+                    tv.setTypeface(tf);
                     players.addView(tv);
                 }
             }
