@@ -11,7 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,8 +23,10 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +35,8 @@ import com.PACOsoft.promise_betting.R;
 import com.PACOsoft.promise_betting.obj.History;
 import com.PACOsoft.promise_betting.obj.Promise;
 import com.PACOsoft.promise_betting.obj.PromisePlayer;
+import com.PACOsoft.promise_betting.obj.User;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -72,7 +78,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private TextView people_number, room_name, reach_location;
     private LinearLayout players;
     private FirebaseDatabase database, database2, database3;
-    private DatabaseReference databaseReference,databaseReference1, databaseReference2,databaseReference3, databaseReference4, databaseReference5,databaseReference6;
+    private DatabaseReference databaseReference,databaseReference1, databaseReference2,databaseReference3, databaseReference4, databaseReference5;
     private String rid;
     private String UID;
     private String Nop;
@@ -80,7 +86,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private ValueEventListener  mapOnMyFriendListener; //상시 리스너
-    private ValueEventListener promisePointListener, promiseDeleteListener,promiseSettingListener,  promiseArrivalListener, PointReceiveListener,addHistoryListener;//싱글 벨류 리스너
+    private ValueEventListener promisePointListener, promiseDeleteListener,promiseSettingListener,  promiseArrivalListener, PointReceiveListener,addHistoryListener, menuSettingListner;//싱글 벨류 리스너
     private PromisePlayer promisePlayer_me;
     private int num;
     private ArrayList<Marker> marks;
@@ -93,6 +99,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private int pYear,pMonth,pDay,pHour,pMinute,NumOfPlayers;
     private String NameOfPromise;
     public static int allBettingMoney = 0; // 배팅금액 총합
+
+    //drawer에 띄울 플레이어 프로필 변수
+    private ImageView mapPlayersImg;
+    private TextView mapPlayersTxt, mapArrivalTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +177,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         //방세팅
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Promise").child(rid);
-        Typeface tf = ResourcesCompat.getFont(this, R.font.kingsejong);
         promiseSettingListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -177,13 +186,32 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 NameOfPromise = p.getPromiseName();
                 people_number.setText(String.valueOf(p.getNumOfPlayer()));
                 room_name.setText(p.getPromiseName());
+
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); //인플레이터에 레이아웃 추가
+                players.removeAllViews();
+
                 for (PromisePlayer i : p.getPromisePlayer()) {
-                    TextView tv = new TextView(getApplicationContext());
-                    tv.setText(i.getNickName());
-                    tv.setTextSize(15);
-                    tv.setGravity(1);
-                    tv.setTypeface(tf);
-                    players.addView(tv);
+                    databaseReference3 = database.getReference("User").child(i.getPlayerUID());
+                    menuSettingListner = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            LinearLayout ln = (LinearLayout) inflater.inflate(R.layout.map_list_item, null, false);
+                            mapPlayersImg = ln.findViewById(R.id.map_profile);
+                            mapPlayersTxt = ln.findViewById(R.id.map_nickname);
+                            mapArrivalTxt = ln.findViewById(R.id.map_arrival_bool);
+                            Glide.with(mapPlayersImg).load(user.getProfile()).into(mapPlayersImg);
+                            mapPlayersTxt.setText(user.getNickName());
+                            mapArrivalTxt.setText(String.valueOf(i.getArrival()));
+                            players.addView(ln);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("Drawer", String.valueOf(error.toException()));
+                        }
+                    };
+                    databaseReference3.addListenerForSingleValueEvent(menuSettingListner);
                 }
             }
             @Override
@@ -498,6 +526,11 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         databaseReference.addListenerForSingleValueEvent(promiseArrivalListener);
 
     }
+
+    public void btn_map_help(View view){
+
+    }
+
     @Override
     public void onBackPressed() {
        super.onBackPressed();
@@ -510,6 +543,5 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
        locationManager.removeUpdates(locationListener);
        finish();
     }
-
 
 }

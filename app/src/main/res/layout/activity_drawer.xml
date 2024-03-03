@@ -29,4 +29,20 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:textSize="15sp"
+        android:text="도움말"
+        android:textColor="@color/black"
+        android:fontFamily="@font/kingsejong"
+        android:onClick="btn_map_help"/>
 </LinearLayout>
