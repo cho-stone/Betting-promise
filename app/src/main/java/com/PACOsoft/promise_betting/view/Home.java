@@ -559,4 +559,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         Intent intent = new Intent(this, Home_Help.class);
         startActivity(intent);
     }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "called onDestroy");
+        customProgressDialog.dismiss();
+        super.onDestroy();}
 }

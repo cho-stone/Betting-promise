@@ -168,7 +168,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
 
                         Toast.makeText(getApplicationContext(), "만료된 약속입니다.", Toast.LENGTH_LONG).show();
-                        finish();
+                        finish();//만료된 약속인 것을 알리고 Map에서 나감
                     }
                 }
             }
@@ -550,5 +550,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
        locationManager.removeUpdates(locationListener);
        finish();
     }
+
 
 }
