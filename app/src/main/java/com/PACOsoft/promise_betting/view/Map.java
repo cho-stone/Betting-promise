@@ -168,6 +168,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
 
                         Toast.makeText(getApplicationContext(), "만료된 약속입니다.", Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }
             }
