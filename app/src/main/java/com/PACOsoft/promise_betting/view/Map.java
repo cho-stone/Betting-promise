@@ -13,6 +13,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -133,6 +134,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerView = findViewById(R.id.drawer);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //약속 종료된 방인지 체크(약속 시간 이후 15분 경과 시 방 삭제 필요)
         database = FirebaseDatabase.getInstance();
@@ -535,7 +537,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void btn_map_help(View view){
-
+        Intent intent = new Intent(this, Map_Help.class);
+        startActivity(intent);
     }
 
     @Override

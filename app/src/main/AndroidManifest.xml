@@ -53,6 +53,10 @@
             android:name=".view.Map"
             android:exported="false" />
         <activity
+            android:name=".view.Map_Help"
+            android:theme="@style/Transparent"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
