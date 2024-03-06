@@ -37,18 +37,6 @@
                 android:textColor="@color/black"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/help_home"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/help_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="btn_help_crete_room"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

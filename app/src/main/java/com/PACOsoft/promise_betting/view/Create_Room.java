@@ -333,11 +333,6 @@ public class Create_Room extends AppCompatActivity implements TimePickerDialog.O
         finish();
     }
 
-    public void btn_help_crete_room(View view){
-        Intent intent = new Intent(this, Create_Room_Help.class);
-        startActivity(intent);
-    }
-
     //UUID 짧게 변환
     @NonNull
     @Contract("_, _ -> new")
