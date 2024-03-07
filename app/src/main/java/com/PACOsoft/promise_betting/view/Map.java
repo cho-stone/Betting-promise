@@ -370,6 +370,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                             double x = (Double) players.get(i).get("x");
                             double y = (Double) players.get(i).get("y");
                             temp.setPosition(new LatLng(y, x));
+                            temp.setIconTintColor(Color.BLUE);
                             temp.setMap(naverMap);
                             marks.add(temp);
                         }
