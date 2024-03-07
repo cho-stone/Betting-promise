@@ -58,7 +58,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     private ArrayList<String> refreshFriendsArrayList, refreshPromisessArrayList;
     private ArrayList<Boolean> unExistFriendsArrayList, unExistPromisesArrayList;
     private FirebaseDatabase database;
+    private FirebaseDatabase new_database;
     private DatabaseReference databaseReference, databaseReference2, databaseReference3, databaseReference4;
+    private DatabaseReference new_databaseReference, new_databaseReference2, new_databaseReference3, new_databaseReference4;
     private String TAG, UID;
     private int coin;
     private String me_nickname;
@@ -615,14 +617,15 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
 /////////////////////////////////////////////////TestZone/////////////////////////////////////////////////////
 
     public void new_refresh_friends1() {
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        new_databaseReference = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         refreshFriendListValueEventLister2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue(User.class) != null) {
-                    User me = snapshot.getValue(User.class); //해당 유저가 존재하면 그 값 가져옴
-                    newMyFriendsString += me.getUID();//그 유저의 UID를 내 친구 스트링에 추가
+                    //User me = snapshot.getValue(User.class); //해당 유저가 존재하면 그 값 가져옴
+                    newMyFriendsString += snapshot.getValue(User.class).getUID();
+                    //newMyFriendsString += me.getUID();//그 유저의 UID를 내 친구 스트링에 추가
                     newMyFriendsString += " ";//친구들 간의 구별을 위해 한 칸 공백 넣어줌
                 }
             }
@@ -633,44 +636,43 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshFriendListValueEventLister = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User me = snapshot.getValue(User.class);
-                String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+                //User me = snapshot.getValue(User.class);
+                String[] friends = snapshot.getValue(User.class).getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 for (int i = 0; i < friends.length; i++) {
-                    databaseReference2 = database.getReference("User").child(friends[i]);
-                    databaseReference2.addListenerForSingleValueEvent(refreshFriendListValueEventLister2);
+                    new_databaseReference2 = new_database.getReference("User").child(friends[i]);
+                    new_databaseReference2.addListenerForSingleValueEvent(refreshFriendListValueEventLister2);
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister);
+        new_databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister);
     }
     public void new_refresh_friends2(){
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        new_databaseReference = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         if(newMyFriendsString.length() != 0)
         {newMyFriendsString = newMyFriendsString.substring(0, newMyFriendsString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
-        databaseReference.child("friendsUID").setValue(newMyFriendsString);//DB에 저장
+        new_databaseReference.child("friendsUID").setValue(newMyFriendsString);//DB에 저장
         System.out.println(newMyFriendsString);//확인용 출력
     }
 
 
 /////////////////////////////////////////////////TestZone/////////////////////////////////////////////////////
-
     public void new_refresh_promise1() {
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference3 = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        new_databaseReference3 = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         refreshPromiseListValueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getValue(Promise.class) != null) {
-                    Promise myPromise = snapshot.getValue(Promise.class);
-                    newMyPromisesString += myPromise.getPromiseKey();
+                    //Promise myPromise = snapshot.getValue(Promise.class);
+                    //newMyPromisesString += myPromise.getPromiseKey();
+                    newMyPromisesString += snapshot.getValue(Promise.class).getPromiseKey();
                     newMyPromisesString += " ";
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -678,30 +680,28 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         refreshPromiseListValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User me = snapshot.getValue(User.class);
-                String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
+                //User me = snapshot.getValue(User.class);
+                String[] promises = snapshot.getValue(User.class).getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 for (int i = 0; i < promises.length; i++) {
-                    databaseReference4 = database.getReference("Promise").child(promises[i]);
-                    databaseReference4.addListenerForSingleValueEvent(refreshPromiseListValueEventListener2);
+                    new_databaseReference4 = new_database.getReference("Promise").child(promises[i]);
+                    new_databaseReference4.addListenerForSingleValueEvent(refreshPromiseListValueEventListener2);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference3.addListenerForSingleValueEvent(refreshPromiseListValueEventListener);
+        new_databaseReference3.addListenerForSingleValueEvent(refreshPromiseListValueEventListener);
     }
 
     public void new_refresh_promise2() {
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference3 = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        new_databaseReference3 = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         if(newMyPromisesString.length() != 0)
         {newMyPromisesString = newMyPromisesString.substring(0, newMyPromisesString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
-        databaseReference3.child("promiseKey").setValue(newMyPromisesString);//DB에 저장
+        new_databaseReference3.child("promiseKey").setValue(newMyPromisesString);//DB에 저장
         System.out.println(newMyPromisesString);//확인용 출력
     }
-
     /////////////////////////////////////////////////TestZone/////////////////////////////////////////////////////
 
 }
