@@ -9,6 +9,9 @@ public class User {
     private String promiseKey = "";//약속 고유 코드 리스트
     private String historyKey = "";//약속 기록 고유 코드 리스트
     private String friendsUID = "";//친구 아이디 리스트
+//    private String attendDate = "";//출석체크한 날
+//    private Boolean isAttend = false;//출석체크 여부
+
 
     public User() {
     }
@@ -76,4 +79,20 @@ public class User {
     public void setFriendsUID(String friendsUID) {
         this.friendsUID = friendsUID;
     }
+
+//    public String getAttendDate() {
+//        return attendDate;
+//    }
+//
+//    public void setAttendDate(String attendDate) {
+//        this.attendDate = attendDate;
+//    }
+//
+//    public Boolean getIsAttend() {
+//        return isAttend;
+//    }
+//
+//    public void setIsAttend(Boolean isAttend) {
+//        this.isAttend = isAttend;
+//    }
 }

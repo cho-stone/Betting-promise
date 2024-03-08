@@ -47,6 +47,7 @@ import com.tomergoldst.tooltips.ToolTip;
 import com.tomergoldst.tooltips.ToolTipsManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -54,8 +55,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Promise> promiseArrayList;
-    private ArrayList<String> refreshFriendsArrayList, refreshPromisessArrayList;
+    //private ArrayList<Promise> promiseArrayList;
+    private ArrayList<String> refreshFriendsArrayList, refreshPromisessArrayList, myPromiseArrayList;
     private ArrayList<Boolean> unExistFriendsArrayList, unExistPromisesArrayList;
     private FirebaseDatabase database;
     private FirebaseDatabase new_database;
@@ -130,62 +131,51 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         isCoinShow = false;
 
         //로딩창 객체 생성
-        customProgressDialog = new ProgressDialog(this);
-        customProgressDialog.setCancelable(false); // 로딩창 주변 클릭 시 종료 막기
-        //로딩창을 투명하게 하는 코드
-        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
-        //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
-        customProgressDialog.show();
+//        customProgressDialog = new ProgressDialog(this);
+//        customProgressDialog.setCancelable(false); // 로딩창 주변 클릭 시 종료 막기
+//        //로딩창을 투명하게 하는 코드
+//        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
+//        //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
+//        customProgressDialog.show();
         refreshFriendsArrayList = new ArrayList<String>();
         unExistFriendsArrayList = new ArrayList<Boolean>();
         refreshPromisessArrayList = new ArrayList<String>();
         unExistPromisesArrayList = new ArrayList<Boolean>();
         newMyFriendsString = new String();
         newMyPromisesString = new String();
+        myPromiseArrayList = new ArrayList<String>();
 
-        new_refresh_friends1();
+
+
+        Thread T_friends1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                refresh_friends();
+            }
+        });
+        Thread T_friends2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                refresh_promise();
+            }
+        });
+
+        try {
+            T_friends1.start();//스레드 사용해서 첫번째꺼 끝나면 두번째꺼 실행되도록 함
+            T_friends1.join();
+            T_friends2.start();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                new_refresh_friends2();
+                view_friends();
             }
-        }, 3000);// 2초 딜레이를 준 후 시작
+        }, 1000);// 1초 딜레이를 준 후 시작
 
-        new_refresh_promise1();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                new_refresh_promise2();
-            }
-        }, 3000);// 2초 딜레이를 준 후 시작
-        /////////////////////////////
-//        기존 코드
-//        refresh_friends1();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                refresh_friends2();
-//            }
-//        }, 2000);// 2초 딜레이를 준 후 시작
-//
-//        refresh_promise1();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                refresh_promise2();
-//            }
-//        }, 2000);// 2초 딜레이를 준 후 시작
-        ///////////////////////////////////////////
-
-
-        view_friends();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                customProgressDialog.dismiss();
-            }
-        }, 3000);// 3초 딜레이를 준 후 시작
     }
 
     //Home에서 SearchFriend로 이동하는 버튼 구현
@@ -371,146 +361,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
     }
 
-    public void refresh_friends1() {
-        unExistFriendsArrayList.clear();
-        refreshFriendsArrayList.clear();
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        refreshFriendListValueEventLister2 = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(User.class) == null) {
-                    unExistFriendsArrayList.add(true);
-                    return;
-                } else unExistFriendsArrayList.add(false);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        refreshFriendListValueEventLister = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                User me = snapshot.getValue(User.class);
-                String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-                for (int i = 0; i < friends.length; i++) {
-                    String friend = friends[i];
-                    refreshFriendsArrayList.add(friend);
-                    databaseReference2 = database.getReference("User").child(friend);
-                    databaseReference2.addListenerForSingleValueEvent(refreshFriendListValueEventLister2);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister);
-    }
-
-    public void refresh_friends2() {
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        refreshFriendListValueEventLister3 = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (int i = 0; i < unExistFriendsArrayList.size(); i++) {
-                    if (unExistFriendsArrayList.get(i) == true) {//만약 해당 친구가 더이상 존재하지 않는 유저라면 refreshFriendsArrayList의 해당 index의 값을 ""으로 변경
-                        refreshFriendsArrayList.set(i, "");
-                    }
-                }
-                String newMyFriendsString = "";
-                for (int i = 0; i < refreshFriendsArrayList.size(); i++) {
-                    String str = refreshFriendsArrayList.get(i);
-                    if(str.equals("")) {continue;} //만약 존재하지 않는 유저라면 continue로 넘어간다.
-                    else newMyFriendsString += str; //아니라면 새로운 친구 목록에 추가해준다.
-                    if (i != (refreshFriendsArrayList.size() - 1)) {
-                        newMyFriendsString += " ";
-                    }
-                }
-                databaseReference.child("friendsUID").setValue(newMyFriendsString);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister3);
-    }
-
-    public void refresh_promise1() {
-        unExistPromisesArrayList.clear();
-        refreshPromisessArrayList.clear();
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        refreshPromiseListValueEventListener2 = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(Promise.class) == null) {
-                    unExistPromisesArrayList.add(true);
-                    return;
-                } else {
-                    unExistPromisesArrayList.add(false);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        refreshPromiseListValueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User me = snapshot.getValue(User.class);
-                String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-                for (String promise : promises) {
-                    refreshPromisessArrayList.add(promise);
-                    databaseReference2 = database.getReference("Promise").child(promise);
-                    databaseReference2.addListenerForSingleValueEvent(refreshPromiseListValueEventListener2);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(refreshPromiseListValueEventListener);
-    }
-
-    public void refresh_promise2() {
-        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        refreshPromiseListValueEventListener3 = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (int i = 0; i < unExistPromisesArrayList.size(); i++) {
-                    if (unExistPromisesArrayList.get(i) == true) {
-                        refreshPromisessArrayList.set(i,"");
-                    }
-                }
-                String newMyPromisesString = "";
-                for (int i = 0; i < refreshPromisessArrayList.size(); i++) {
-                    String str = refreshPromisessArrayList.get(i);
-                    if(str.equals("")) {continue;} //만약 존재하지 않는 약속이라면 continue로 넘어간다.
-                    else newMyPromisesString += str;//아니라면 새로운 약속 리스트에 추가해준다.
-                    if (i != (refreshPromisessArrayList.size() - 1)) {
-                        newMyPromisesString += " ";
-                    }
-
-                }
-                databaseReference.child("promiseKey").setValue(newMyPromisesString);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(refreshPromiseListValueEventListener3);
-    }
-
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -594,114 +444,88 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         super.onDestroy();}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////TestZone/////////////////////////////////////////////////////
-
-    public void new_refresh_friends1() {
+    public void refresh_friends() {
         new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        new_databaseReference = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        refreshFriendListValueEventLister2 = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(User.class) != null) {
-                    //User me = snapshot.getValue(User.class); //해당 유저가 존재하면 그 값 가져옴
-                    newMyFriendsString += snapshot.getValue(User.class).getUID();
-                    //newMyFriendsString += me.getUID();//그 유저의 UID를 내 친구 스트링에 추가
-                    newMyFriendsString += " ";//친구들 간의 구별을 위해 한 칸 공백 넣어줌
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
+        new_databaseReference = new_database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         refreshFriendListValueEventLister = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //User me = snapshot.getValue(User.class);
-                String[] friends = snapshot.getValue(User.class).getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-                for (int i = 0; i < friends.length; i++) {
-                    new_databaseReference2 = new_database.getReference("User").child(friends[i]);
-                    new_databaseReference2.addListenerForSingleValueEvent(refreshFriendListValueEventLister2);
+                ArrayList<User> everyone = new ArrayList<>();
+                for (DataSnapshot s : snapshot.getChildren()) { //모든 유저 전부 everyone 배열에 담는다.
+                    everyone.add(s.getValue(User.class));
                 }
+                Optional<User> me = everyone.stream().parallel().filter(u->u.getUID().equals(UID)).findFirst();//내 객체 찾는다.
+                String[] friends = me.get().getFriendsUID().split(" ");//내 친구 분리해서 friends 배열에 담는다
+                String[] promises = me.get().getPromiseKey().split(" ");//내 친구 분리해서 friends 배열에 담는다
+                for(String p : promises)
+                {
+                    myPromiseArrayList.add(p);//내 약속 분리해서 myPromiseArrayList 배열에 담는다
+                }
+                for (int i = 0; i < friends.length; i++) {
+                    String friend = friends[i];
+                    System.out.println(friend);
+                    Optional<User> f = everyone.stream().parallel().filter(u->u.getUID().equals(friend)).findFirst();//실제로 존재하는 친구인지 찾는다.
+                    if(!f.equals(Optional.empty())){//존재한다면 스트링에 추가
+                        newMyFriendsString += f.get().getUID();
+                        newMyFriendsString += " ";//친구들 간의 구별을 위해 한 칸 공백 넣어줌
+                     }
+                }
+                new_databaseReference2 = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+                if(newMyFriendsString.length() != 0)
+                {
+                    char c = newMyFriendsString.charAt(newMyFriendsString.length()-1);
+                    if(c == ' ')
+                    {
+                        newMyFriendsString = newMyFriendsString.substring(0, newMyFriendsString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
+                    }
+
+                    new_databaseReference2.child("friendsUID").setValue(newMyFriendsString);//DB에 저장
+                    System.out.println(newMyFriendsString);//확인용 출력
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
+
         };
         new_databaseReference.addListenerForSingleValueEvent(refreshFriendListValueEventLister);
     }
-    public void new_refresh_friends2(){
-        new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        new_databaseReference = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        if(newMyFriendsString.length() != 0)
-        {newMyFriendsString = newMyFriendsString.substring(0, newMyFriendsString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
-        new_databaseReference.child("friendsUID").setValue(newMyFriendsString);//DB에 저장
-        System.out.println(newMyFriendsString);//확인용 출력
-    }
 
 
-/////////////////////////////////////////////////TestZone/////////////////////////////////////////////////////
-    public void new_refresh_promise1() {
+
+    public void refresh_promise() {
         new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        new_databaseReference3 = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        refreshPromiseListValueEventListener2 = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(Promise.class) != null) {
-                    //Promise myPromise = snapshot.getValue(Promise.class);
-                    //newMyPromisesString += myPromise.getPromiseKey();
-                    newMyPromisesString += snapshot.getValue(Promise.class).getPromiseKey();
-                    newMyPromisesString += " ";
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
+        new_databaseReference3 = new_database.getReference("Promise");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         refreshPromiseListValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //User me = snapshot.getValue(User.class);
-                String[] promises = snapshot.getValue(User.class).getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-                for (int i = 0; i < promises.length; i++) {
-                    new_databaseReference4 = new_database.getReference("Promise").child(promises[i]);
-                    new_databaseReference4.addListenerForSingleValueEvent(refreshPromiseListValueEventListener2);
+                ArrayList<Promise> everyPromise = new ArrayList<>();
+                for (DataSnapshot s : snapshot.getChildren()) { //모든 유저 전부 everyone 배열에 담는다.
+                    everyPromise.add(s.getValue(Promise.class));
                 }
-            }
-            @Override
+
+                for (int i = 0; i < myPromiseArrayList.size(); i++) {
+                    String promise = myPromiseArrayList.get(i);
+                    System.out.println(promise);
+                    Optional<Promise> f = everyPromise.stream().parallel().filter(e->e.getPromiseKey().equals(promise)).findFirst();//실제로 존재하는 친구인지 찾는다.
+                    if(!f.equals(Optional.empty())){//존재한다면 스트링에 추가
+                        newMyPromisesString += f.get().getPromiseKey();
+                        newMyPromisesString += " ";//친구들 간의 구별을 위해 한 칸 공백 넣어줌
+                    }
+                }
+                new_databaseReference4 = new_database.getReference("User").child(UID);
+                if(newMyPromisesString.length() != 0)
+                {
+                    char c = newMyPromisesString.charAt(newMyPromisesString.length()-1);
+                    if(c ==' ')//마지막 글자가 공백인 경우만 공백 제거
+                    {
+                        newMyPromisesString = newMyPromisesString.substring(0, newMyPromisesString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
+                    }
+                new_databaseReference4.child("promiseKey").setValue(newMyPromisesString);//DB에 저장
+                System.out.println(newMyPromisesString);//확인용 출력
+                 }
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
         new_databaseReference3.addListenerForSingleValueEvent(refreshPromiseListValueEventListener);
     }
-
-    public void new_refresh_promise2() {
-        new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        new_databaseReference3 = new_database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        if(newMyPromisesString.length() != 0)
-        {newMyPromisesString = newMyPromisesString.substring(0, newMyPromisesString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
-        new_databaseReference3.child("promiseKey").setValue(newMyPromisesString);//DB에 저장
-        System.out.println(newMyPromisesString);//확인용 출력
-    }
-    /////////////////////////////////////////////////TestZone/////////////////////////////////////////////////////
-
 }
