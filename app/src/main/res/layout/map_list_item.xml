@@ -30,16 +30,5 @@
             android:textColor="@color/black"
             android:fontFamily="@font/kingsejong"/>
 
-        <TextView
-            android:id="@+id/map_arrival_bool"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="도착여부"
-            android:layout_marginLeft="20dp"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/kingsejong"/>
-
     </LinearLayout>
 </LinearLayout>

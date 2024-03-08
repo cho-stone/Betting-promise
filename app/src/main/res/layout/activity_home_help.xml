@@ -358,9 +358,135 @@
                 android:layout_width="300dp"
                 android:layout_height="663dp"
                 android:layout_gravity="center"
-                android:src="@drawable/home_help3"/>
+                android:src="@drawable/home_help4"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="95dp"
+                android:layout_marginTop="42dp"
+                android:src="@drawable/direction_left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="123dp"
+                android:layout_marginTop="42dp"
+                android:text="인원 수"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="170dp"
+                android:layout_marginTop="63dp"
+                android:src="@drawable/direction_up"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="129dp"
+                android:layout_marginTop="83dp"
+                android:text="방 제목"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="288dp"
+                android:layout_marginTop="63dp"
+                android:src="@drawable/direction_up"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="269dp"
+                android:layout_marginTop="83dp"
+                android:text="메뉴"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="199dp"
+                android:layout_marginTop="166dp"
+                android:src="@drawable/direction_right"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="144dp"
+                android:layout_marginTop="171dp"
+                android:text="친구 위치"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="116dp"
+                android:layout_marginTop="296dp"
+                android:src="@drawable/direction_right"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="63dp"
+                android:layout_marginTop="300dp"
+                android:text="약속 위치"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="285dp"
+                android:layout_marginTop="520dp"
+                android:src="@drawable/direction_down" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="213dp"
+                android:layout_marginTop="513dp"
+                android:text="내 위치 고정"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kingsejong"/>
 
         </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="약속 당일, 약속 위치의 초록색 반경 안에 들어오면 도착 버튼이 활성화 됩니다."
+            android:textSize="18sp"
+            android:fontFamily="@font/kingsejong"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도착을 하면 "
+            android:textSize="18sp"
+            android:fontFamily="@font/kingsejong"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"/>
 
     </LinearLayout>
 </ScrollView>

@@ -19,7 +19,7 @@
         android:fontFamily="@font/kingsejong"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="250dp">
         <LinearLayout
             android:id="@+id/player_list_lo"
             android:layout_width="match_parent"
@@ -30,9 +30,26 @@
         </LinearLayout>
     </ScrollView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="도착한 사람"
+        android:fontFamily="@font/kingsejong"/>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="250dp">
+        <LinearLayout
+            android:id="@+id/arrival_list_lo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+        </LinearLayout>
     </ScrollView>
 
     <TextView

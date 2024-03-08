@@ -57,6 +57,8 @@ import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import org.w3c.dom.Text;
+
 import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -77,7 +79,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private DrawerLayout drawerLayout;
     private View drawerView;
     private TextView people_number, room_name, reach_location;
-    private LinearLayout players;
+    private LinearLayout players, arrivalPlayers;
     private FirebaseDatabase database, database2, database3;
     private DatabaseReference databaseReference,databaseReference1, databaseReference2,databaseReference3, databaseReference4, databaseReference5;
     private String rid;
@@ -85,7 +87,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private String Nop;
     @Nullable
     private LocationManager locationManager;
-    private LocationListener locationListener;
+    private LocationListener locationListener; //상시 리스너
     private ValueEventListener  mapOnMyFriendListener; //상시 리스너
     private ValueEventListener promisePointListener, promiseDeleteListener,promiseSettingListener,  promiseArrivalListener, PointReceiveListener,addHistoryListener, menuSettingListner;//싱글 벨류 리스너
     private PromisePlayer promisePlayer_me;
@@ -102,7 +104,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     public static int allBettingMoney = 0; // 배팅금액 총합
 
     //drawer에 띄울 플레이어 프로필 변수
-    private ImageView mapPlayersImg;
+    private ImageView mapPlayersImg, mapArrivalImg;
     private TextView mapPlayersTxt, mapArrivalTxt;
 
     @Override
@@ -125,6 +127,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         people_number = findViewById(R.id.tv_room_people_count);
         room_name = findViewById(R.id.tv_room_promise);
         players = findViewById(R.id.player_list_lo);
+        arrivalPlayers = findViewById(R.id.arrival_list_lo);
         reach_location = findViewById(R.id.reach_location_btn);
 
         rid = getIntent().getStringExtra("rid");
@@ -208,10 +211,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                             LinearLayout ln = (LinearLayout) inflater.inflate(R.layout.map_list_item, null, false);
                             mapPlayersImg = ln.findViewById(R.id.map_profile);
                             mapPlayersTxt = ln.findViewById(R.id.map_nickname);
-                            mapArrivalTxt = ln.findViewById(R.id.map_arrival_bool);
                             Glide.with(mapPlayersImg).load(user.getProfile()).into(mapPlayersImg);
                             mapPlayersTxt.setText(user.getNickName());
-                            mapArrivalTxt.setText(String.valueOf(i.getArrival()));
                             players.addView(ln);
                         }
 
@@ -340,7 +341,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
 
-    //친구위치 맵에 찍어주기
+    //친구위치 맵에 찍어주기, 도착한 사람 누군지 찍어주기
     public void mapOnFriendMark(){
         database2 = FirebaseDatabase.getInstance();
         databaseReference2 = database2.getReference("Promise").child(rid).child("promisePlayer");
@@ -374,6 +375,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                             temp.setMap(naverMap);
                             marks.add(temp);
                         }
+                    }
+                }
+                arrivalPlayers.removeAllViews();
+                //도착한 사람 구분 해주기
+                for(int i = 0; i < players.size(); i++){
+                    if((boolean) players.get(i).get("arrival")){
+                        mapArrivalTxt = new TextView(getApplicationContext());
+                        mapArrivalTxt.setText(players.get(i).get("nickName").toString());
+                        arrivalPlayers.addView(mapArrivalTxt);
                     }
                 }
             }
