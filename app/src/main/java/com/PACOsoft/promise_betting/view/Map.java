@@ -18,12 +18,14 @@ import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.fonts.Font;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -60,6 +62,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 import org.w3c.dom.Text;
 
 import java.sql.SQLOutput;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -104,8 +107,12 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     public static int allBettingMoney = 0; // 배팅금액 총합
 
     //drawer에 띄울 플레이어 프로필 변수
-    private ImageView mapPlayersImg, mapArrivalImg;
+    private ImageView mapPlayersImg;
     private TextView mapPlayersTxt, mapArrivalTxt;
+    private Typeface tf;
+
+    //날짜 비교 - 도착버튼 활성화에 영향
+    private boolean isToday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +145,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerView = findViewById(R.id.drawer);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        tf = ResourcesCompat.getFont(this, R.font.kingsejong);
 
         //약속 종료된 방인지 체크(약속 시간 이후 15분 경과 시 방 삭제 필요)
         database = FirebaseDatabase.getInstance();
@@ -198,6 +206,27 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 NameOfPromise = p.getPromiseName();
                 people_number.setText(String.valueOf(p.getNumOfPlayer()));
                 room_name.setText(p.getPromiseName());
+
+                //도착버튼 날짜 비교
+                isToday = false;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    LocalDate now = LocalDate.now();
+                    String[] date_ = p.getDate().toString().split(" ");
+                    int[] temp_date = new int[3];
+                    temp_date[0] = Integer.parseInt(date_[0]);
+                    temp_date[1] = Integer.parseInt(date_[1]);
+                    temp_date[2] = Integer.parseInt(date_[2]);
+                    LocalDate setTime = LocalDate.of(temp_date[0], temp_date[1], temp_date[2]);
+
+                    if(setTime.isEqual(now)) {
+                        isToday = true;
+                    }
+                    else {
+                        isToday = false;
+                    }
+
+
+                }
 
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); //인플레이터에 레이아웃 추가
                 players.removeAllViews();
@@ -303,15 +332,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         B.setLongitude(x);
 
                         double distance = A.distanceTo(B);
-                        //TODO: if문에 시간 조건도 추가하기
-                        if ((distance <= 50.0) && !promisePlayer_me.getArrival()) {
+                        if ((distance <= 50.0) && !promisePlayer_me.getArrival() && isToday) {
                             reach_location.setEnabled(true);
                         }
                         else{
                             reach_location.setEnabled(false);
                         }
 
-                        if(promisePlayer_me != null && !promisePlayer_me.getArrival()){
+                        if(promisePlayer_me != null){
                             mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
                             mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
                         }
@@ -383,6 +411,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     if((boolean) players.get(i).get("arrival")){
                         mapArrivalTxt = new TextView(getApplicationContext());
                         mapArrivalTxt.setText(players.get(i).get("nickName").toString());
+                        mapArrivalTxt.setGravity(Gravity.CENTER);
+                        mapArrivalTxt.setTextSize(15);
+                        mapArrivalTxt.setTypeface(tf);
+                        mapArrivalTxt.setTextColor(Color.BLACK);
                         arrivalPlayers.addView(mapArrivalTxt);
                     }
                 }
@@ -548,8 +580,9 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void btn_map_help(View view){
-        Intent intent = new Intent(this, Map_Help.class);
-        startActivity(intent);
+        Toast.makeText(getApplicationContext(), "추후에 업데이트 예정입니다.", Toast.LENGTH_SHORT).show();
+        //Intent intent = new Intent(this, Map_Help.class);
+        //startActivity(intent);
     }
 
     @Override

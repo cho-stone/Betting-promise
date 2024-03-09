@@ -302,7 +302,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="방을 생성하면 위와 같이 약속에 대한 배팅을 시작 합니다."
+            android:text="방을 생성하면 위와 같이 약속에 대한 배팅을 시작합니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"
@@ -479,14 +479,56 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="도착을 하면 "
+            android:text="도착을 하면 기록창에 방 정보가 기록되며 1등은 3/6, 2등은 2/6, 3등은 1/6의 코인을 받습니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"
             android:gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="663dp"
+                android:layout_gravity="center"
+                android:src="@drawable/home_help5"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도착 후 메뉴의 도착한 사람 명단에 등록됩니다."
+            android:textSize="18sp"
+            android:fontFamily="@font/kingsejong"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가적인 도움말은 맵의 도움말 탭에 있습니다. 감사합니다!"
+            android:textSize="18sp"
+            android:fontFamily="@font/kingsejong"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 </ScrollView>

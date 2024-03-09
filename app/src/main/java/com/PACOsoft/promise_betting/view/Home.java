@@ -232,6 +232,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     }
 
     public void btn_home_promise(View view) {
+        TextView tv = findViewById(R.id.tv_home_nick_name);
+        String str = tv.getText().toString();
+        if(str.equals("로딩중...")){
+            Toast.makeText(getApplicationContext(), "잠시 후에 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         view_promise();
         room_show_button.setBackground(getDrawable(R.drawable.round_button));
         friend_show_button.setBackground(null);
@@ -462,7 +469,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 }
                 for (int i = 0; i < friends.length; i++) {
                     String friend = friends[i];
-                    System.out.println(friend);
                     Optional<User> f = everyone.stream().parallel().filter(u->u.getUID().equals(friend)).findFirst();//실제로 존재하는 친구인지 찾는다.
                     if(!f.equals(Optional.empty())){//존재한다면 스트링에 추가
                         newMyFriendsString += f.get().getUID();
@@ -479,7 +485,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                     }
 
                     new_databaseReference2.child("friendsUID").setValue(newMyFriendsString);//DB에 저장
-                    System.out.println(newMyFriendsString);//확인용 출력
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -504,7 +509,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
 
                 for (int i = 0; i < myPromiseArrayList.size(); i++) {
                     String promise = myPromiseArrayList.get(i);
-                    System.out.println(promise);
                     Optional<Promise> f = everyPromise.stream().parallel().filter(e->e.getPromiseKey().equals(promise)).findFirst();//실제로 존재하는 친구인지 찾는다.
                     if(!f.equals(Optional.empty())){//존재한다면 스트링에 추가
                         newMyPromisesString += f.get().getPromiseKey();
@@ -520,7 +524,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                         newMyPromisesString = newMyPromisesString.substring(0, newMyPromisesString.length()-1);}//스트링 맨 마지막에 공백 한 칸 있는거 제거해준다.
                     }
                 new_databaseReference4.child("promiseKey").setValue(newMyPromisesString);//DB에 저장
-                System.out.println(newMyPromisesString);//확인용 출력
+
                  }
             public void onCancelled(@NonNull DatabaseError error) {
             }
