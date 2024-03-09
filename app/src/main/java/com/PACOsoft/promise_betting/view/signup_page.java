@@ -202,6 +202,8 @@ public class signup_page extends AppCompatActivity {
                                             user.setFriendsUID("");
                                             user.setHistoryKey("");
                                             user.setUID(auth.getCurrentUser().getUid());
+                                            user.setAttendDate("2000 6 26");
+                                            user.setIsAttend(false);
                                             databaseReference.child("User").child(auth.getCurrentUser().getUid()).setValue(user);
                                             finish();
                                         } else {//이메일 인증 실패

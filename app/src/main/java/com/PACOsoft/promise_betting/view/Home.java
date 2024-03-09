@@ -348,7 +348,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
                     databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
-                    //databaseReference2.removeEventListener(getPromiseListValueEventListener2); //싱글 벨류여서 아마 지워도 될듯?
                 }
             }
 

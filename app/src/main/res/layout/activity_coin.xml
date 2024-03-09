@@ -40,11 +40,11 @@
                 android:id="@+id/et_coin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="충전금액"
+                android:hint="충전금액 : 5000코인"
                 android:fontFamily="@font/kingsejong"
                 android:inputType="number"
                 android:textColor="@color/black"
-                android:maxLength="9">
+                android:maxLength="0">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>

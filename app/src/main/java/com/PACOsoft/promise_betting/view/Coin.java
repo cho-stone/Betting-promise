@@ -23,7 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 public class Coin extends Activity {
@@ -46,26 +48,20 @@ public class Coin extends Activity {
         coin_tv = findViewById(R.id.et_coin);
         after_coin_tv = findViewById(R.id.tv_afterCoin);
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
-        user = new User();
+        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        //user = new User();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot DataSnapshot) {
-                ArrayList<User> users = new ArrayList<>();
-                for (DataSnapshot snapshot : DataSnapshot.getChildren()) {//데이터 베이스 내의 User객체들은 전부 User타입의 배열리스트 users에 추가
-                    users.add(snapshot.getValue(User.class));
-                }
-                if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//그 중 myId와 같은 id 있는지 탐색
-                    //myId와 같은 id가 있다면 그게 내 객체이므로 그 객체를 anyElement에 저장
-                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
+                    User me = DataSnapshot.getValue(User.class);
                     //나의 account 불러와서 originCoin에 넣어줌
-                    originCoin = anyElement.get().getAccount();
-                    after_coin_tv.setText(String.valueOf(originCoin));
+                    originCoin = me.getAccount();
+                    after_coin_tv.setText(String.valueOf(originCoin+5000));
+
                 }
-            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
 
         coin_tv.addTextChangedListener(new TextWatcher() {
@@ -81,14 +77,16 @@ public class Coin extends Activity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                charge_coin = 0;
-                if(0 < coin_tv.getText().length() && coin_tv.getText().length() < 11) {
-                    charge_coin += Integer.valueOf(coin_tv.getText().toString());
-                    after_coin_tv.setText(String.valueOf(charge_coin + originCoin));
-                }
-                else if(coin_tv.getText().length() <= 0){
-                    after_coin_tv.setText(String.valueOf(originCoin));
-                }
+//                charge_coin = 0;
+//                if(0 < coin_tv.getText().length() && coin_tv.getText().length() < 11) {
+//                    charge_coin += Integer.valueOf(coin_tv.getText().toString());
+//                    after_coin_tv.setText(String.valueOf(charge_coin + originCoin));
+//                }
+//                else if(coin_tv.getText().length() <= 0){
+//                    after_coin_tv.setText(String.valueOf(originCoin));
+//                }
+
+//                after_coin_tv.setText(String.valueOf(originCoin + 5000));
             }
         });
     }
@@ -114,30 +112,33 @@ public class Coin extends Activity {
     }
 
     public void btn_coin_charge(View view) {
-        if(coin_tv.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(), "코인을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        //코인 값 전달 코드
-        TextInputEditText et_coin = findViewById(R.id.et_coin);
-        tempcoin = Integer.valueOf(String.valueOf(et_coin.getText()));
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot DataSnapshot) {
-                ArrayList<User> users = new ArrayList<>();
-                for (DataSnapshot snapshot : DataSnapshot.getChildren()) {//데이터 베이스 내의 User객체들은 전부 User타입의 배열리스트 users에 추가
-                    users.add(snapshot.getValue(User.class));
+                User me = DataSnapshot.getValue(User.class);
+                String recentAttend = me.getAttendDate();
+                String[] attendDate = recentAttend.split(" ");
+                int DByyyy = Integer.parseInt(attendDate[0].toString());
+                int DBMM = Integer.parseInt(attendDate[1].toString());
+                int DBdd = Integer.parseInt(attendDate[2].toString());
+                int nowyyyy = Integer.parseInt(dateFormat("yyyy"));
+                int nowMM = Integer.parseInt(dateFormat("MM"));
+                int nowdd = Integer.parseInt(dateFormat("dd"));
+                if(nowyyyy != DByyyy || nowMM != DBMM || nowdd != DBdd)
+                {
+                    databaseReference.child("isAttend").setValue(false);
                 }
-                if (users.stream().parallel().anyMatch(u -> u.getUID().equals(UID))) {//그 중 myId와 같은 id 있는지 탐색
-                    //myId와 같은 id가 있다면 그게 내 객체이므로 그 객체를 anyElement에 저장
-                    Optional<User> anyElement = users.stream().parallel().filter(u -> u.getUID().equals(UID)).findFirst();
-                    //나의 account 불러와서 내가 충전에 입력한 coin과 더해줌
-                    int tempcoin2 = anyElement.get().getAccount();
-                    tempcoin = tempcoin + tempcoin2;
+                if(nowyyyy == DByyyy&& nowMM == DBMM && nowdd == DBdd && me.getIsAttend() == true)
+                {
+                    Toast.makeText(getApplicationContext(), "오늘은 이미 코인을 충전하셨습니다.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                databaseReference.child(UID).child("account").setValue(tempcoin);//더해준 최종 값 DB에 추가
-                TextView text = (TextView) findViewById(R.id.tv_afterCoin);//코인 충전 후 TextView 참조 객체 선언
-                text.setText(String.valueOf(tempcoin));//위에서 선언한 참조 객체에 값 넘겨줌
+                else {
+                    databaseReference.child("account").setValue(me.getAccount() + 5000);//더해준 최종 값 DB에 추가
+                    databaseReference.child("attendDate").setValue(nowyyyy+" "+nowMM+" "+nowdd);
+                    databaseReference.child("isAttend").setValue(true);
+                    Toast.makeText(getApplicationContext(), "충전 완료", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -145,5 +146,10 @@ public class Coin extends Activity {
             }
         });
         finish();
+    }
+
+    public String dateFormat(String pattern) {
+        Date date = new Date();
+        return new SimpleDateFormat(pattern).format(date);
     }
 }

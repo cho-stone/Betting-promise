@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                         user.setFriendsUID("");
                         user.setHistoryKey("");
                         user.setUID(mAuth.getCurrentUser().getUid());
+                        user.setAttendDate("2000 6 26");
+                        user.setIsAttend(false);
                         databaseReference.setValue(user);
                         updateUI(mAuth.getCurrentUser().getUid());
                     } else {
