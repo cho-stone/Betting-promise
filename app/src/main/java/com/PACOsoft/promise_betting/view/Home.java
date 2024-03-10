@@ -55,9 +55,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    //private ArrayList<Promise> promiseArrayList;
-    private ArrayList<String> refreshFriendsArrayList, refreshPromisessArrayList, myPromiseArrayList;
-    private ArrayList<Boolean> unExistFriendsArrayList, unExistPromisesArrayList;
+
+    private ArrayList<String>  myPromiseArrayList;
+
     private FirebaseDatabase database;
     private FirebaseDatabase new_database;
     private DatabaseReference databaseReference, databaseReference2, databaseReference3, databaseReference4;
@@ -66,9 +66,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
     private int coin;
     private String me_nickname;
     public static Context context;
-    public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener,
-            refreshFriendListValueEventLister, refreshFriendListValueEventLister2, refreshFriendListValueEventLister3,
-            refreshPromiseListValueEventListener,refreshPromiseListValueEventListener2,refreshPromiseListValueEventListener3;
+    public static ValueEventListener getFriendListValueEventLister, getPromiseListValueEventListener, refreshFriendListValueEventLister, refreshPromiseListValueEventListener;
     public boolean isFriendView;
 
     //플로팅 버튼
@@ -138,10 +136,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
 //        //getWindow (): 현재 액티비티의 Window 객체를 가져와서 Window 객체를 통해 뷰들의 위치 크기, 색상 조절
 //        //Window는 View 의 상위 개념으로, 뷰들을(버튼, 텍스트뷰, 이미지뷰) 감쌓고 있는 컨테이너 역할을 함
 //        customProgressDialog.show();
-        refreshFriendsArrayList = new ArrayList<String>();
-        unExistFriendsArrayList = new ArrayList<Boolean>();
-        refreshPromisessArrayList = new ArrayList<String>();
-        unExistPromisesArrayList = new ArrayList<Boolean>();
+
         newMyFriendsString = new String();
         newMyPromisesString = new String();
         myPromiseArrayList = new ArrayList<String>();
@@ -175,7 +170,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                 view_friends();
             }
         }, 1000);// 1초 딜레이를 준 후 시작
-
+        view_Nickname();
+        view_Coin();
     }
 
     //Home에서 SearchFriend로 이동하는 버튼 구현
@@ -261,7 +257,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<User> userArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        databaseReference = database.getReference("User").child(UID).child("friendsUID");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         if (isFriendView == false)
             databaseReference.removeEventListener(getPromiseListValueEventListener);
         isFriendView = true;
@@ -279,7 +275,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
                     adapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -288,23 +283,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userArrayList.clear(); //기존 배열리스트를 초기화
-                User me = snapshot.getValue(User.class);
-                String[] friends = me.getFriendsUID().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-                coin = me.getAccount();//내 객체에서 account값 가져옴
-                current_coin = String.valueOf(coin) + "코인";
-
-                me_nickname = me.getNickName();
-
-                TextView text2 = (TextView) findViewById(R.id.tv_home_nick_name);
-                text2.setText(me_nickname + "님 환영합니다!");
-
+                String[] friends = snapshot.getValue(String.class).split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 for (String friend : friends) {
                     databaseReference2 = database.getReference("User").child(friend);
                     databaseReference2.addListenerForSingleValueEvent(getFriendListValueEventLister2);
-                    //databaseReference2.removeEventListener(getFriendListValueEventLister2); //싱글 벨류여서 아마 지워도 될듯?
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -321,7 +305,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<Promise> promiseArrayList = new ArrayList<>();// User 객체를 담을 ArrayList(Adapter쪽으로 날릴 것임)
         database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
-        databaseReference = database.getReference("User").child(UID);//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        databaseReference = database.getReference("User").child(UID).child("promiseKey");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
         if (isFriendView) databaseReference.removeEventListener(getFriendListValueEventLister);
         isFriendView = false;
         ValueEventListener getPromiseListValueEventListener2 = new ValueEventListener() {
@@ -347,17 +331,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 promiseArrayList.clear(); //기존 배열리스트를 초기화
-                User me = snapshot.getValue(User.class);
-                String[] promises = me.getPromiseKey().split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
-                coin = me.getAccount();//내 객체에서 account값 가져옴
-                current_coin = String.valueOf(coin) + "코인";
-
+                String[] promises = snapshot.getValue(String.class).split(" ");//위에서 필터링한 객체의 FriendsId를 공백을 기준으로 스플릿 해서 배열에 저장
                 for (String promise : promises) {
                     databaseReference2 = database.getReference("Promise").child(promise);
                     databaseReference2.addListenerForSingleValueEvent(getPromiseListValueEventListener2);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -365,6 +344,41 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         databaseReference.addValueEventListener(getPromiseListValueEventListener);
         adapter = new Promise_List_Adapter(promiseArrayList, this);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+    }
+
+
+    public void view_Coin()
+    {
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference3 = database.getReference("User").child(UID).child("account");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        ValueEventListener getCoinListValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                coin = snapshot.getValue(Integer.class);//내 객체에서 account값 가져옴
+                current_coin = String.valueOf(coin) + "코인";
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference3.addValueEventListener(getCoinListValueEventListener);
+    }
+
+    public void view_Nickname(){
+        database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
+        databaseReference4 = database.getReference("User").child(UID).child("nickName");//DB테이블 연결, 파이어베이스 콘솔에서 User에 접근
+        ValueEventListener getNickNameListValueEventLister = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                me_nickname = snapshot.getValue(String.class);
+                TextView text2 = (TextView) findViewById(R.id.tv_home_nick_name);
+                text2.setText(me_nickname + "님 환영합니다!");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference4.addListenerForSingleValueEvent(getNickNameListValueEventLister);
     }
 
     @Override
@@ -443,11 +457,11 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "called onDestroy");
-        customProgressDialog.dismiss();
-        super.onDestroy();}
+//    @Override
+//    protected void onDestroy() {
+//        Log.d(TAG, "called onDestroy");
+//        customProgressDialog.dismiss();
+//        super.onDestroy();}
 
 
     public void refresh_friends() {
