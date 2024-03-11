@@ -290,7 +290,6 @@ public class Betting_Promise extends Dialog {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("Map", String.valueOf(error.toException()));

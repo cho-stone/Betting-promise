@@ -552,14 +552,20 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String myHistory = dataSnapshot.getValue(String.class);
-
+                        System.out.println(myHistory);
+                        Log.e("a", myHistory);
                         //기존 내 히스토리에 새 히스토리 추가
-                        if(myHistory!=null)
+                        if(myHistory!=null && myHistory!="")
                         { myHistory += " ";}
                         myHistory += rid;
+                        char c = myHistory.charAt(0);
+                        if(c == ' ')
+                        {
+                            myHistory = myHistory.substring(1,myHistory.length());
+                        }
                         mDatabase2.child("User").child(UID).child("historyKey").setValue(myHistory);
                         Toast.makeText(getApplicationContext(), "히스토리 생성 완료!", Toast.LENGTH_SHORT).show();
-
+                        System.out.println("히스토리 생성 완료!");
                     }
 
                     @Override
