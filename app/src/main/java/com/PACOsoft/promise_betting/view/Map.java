@@ -64,6 +64,7 @@ import org.w3c.dom.Text;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,7 +113,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     private Typeface tf;
 
     //날짜 비교 - 도착버튼 활성화에 영향
-    private boolean isToday;
+    private boolean isToday, isLate;
 
     private boolean isDel;
 
@@ -125,6 +126,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         myReceivePoint = 0;
 
         isDel = false;
+        isLate = false;
 
         marks = new ArrayList<>();
 
@@ -231,7 +233,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         isToday = false;
                     }
 
-
+                    LocalTime nowT = LocalTime.now();
+                    String[] time_ = p.getTime().toString().split(" ");
+                    int[] temp_time = new int[2];
+                    temp_time[0] = Integer.parseInt(time_[0]);
+                    temp_time[1] = Integer.parseInt(time_[1]);
+                    LocalTime setTime2 = LocalTime.of(temp_time[0], temp_time[1]);
+                    if(nowT.isAfter(setTime2) && ChronoUnit.MINUTES.between(nowT, setTime2) <= -5){
+                        isLate = true;
+                    }
                 }
 
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE); //인플레이터에 레이아웃 추가
@@ -473,6 +483,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             return;
         }
 
+        if(isLate){
+            Toast.makeText(getApplicationContext(), "지각 입니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
