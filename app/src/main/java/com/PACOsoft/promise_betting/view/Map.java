@@ -277,8 +277,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         naverMap.setLocationSource(locationSource); //현재 위치 반영
         ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE);
 
-        System.out.println("이거 실행했음");
-
         //지도에 도착 마커와 범위 찍기
         databaseReference = database.getReference("Promise").child(rid);
         promisePointListener = new ValueEventListener() {
