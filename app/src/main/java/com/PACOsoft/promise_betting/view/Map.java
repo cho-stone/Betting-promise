@@ -114,6 +114,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     //날짜 비교 - 도착버튼 활성화에 영향
     private boolean isToday;
 
+    private boolean isDel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +123,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         myRanking = 0;
         myReceivePoint = 0;
+
+        isDel = false;
 
         marks = new ArrayList<>();
 
@@ -171,6 +175,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     LocalDateTime now = LocalDateTime.now();
                     LocalDateTime setTime = LocalDateTime.of(pYear, pMonth, pDay, pHour, pMinute);
                     if (now.isAfter(setTime) && ChronoUnit.MINUTES.between(now, setTime) <= -15) {
+                        isDel = true;
                         database.getReference("Promise").child(rid).removeValue();//DB에서 방 삭제
                         //Map의 모든 상시 리스너 종료
                         if(locationListener != null){
@@ -182,6 +187,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
                         Toast.makeText(getApplicationContext(), "만료된 약속입니다.", Toast.LENGTH_LONG).show();
                         finish();//만료된 약속인 것을 알리고 Map에서 나감
+                        return;
                     }
                 }
             }
@@ -271,6 +277,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         naverMap.setLocationSource(locationSource); //현재 위치 반영
         ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_REQUEST_CODE);
 
+        System.out.println("이거 실행했음");
+
         //지도에 도착 마커와 범위 찍기
         databaseReference = database.getReference("Promise").child(rid);
         promisePointListener = new ValueEventListener() {
@@ -339,7 +347,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                             reach_location.setEnabled(false);
                         }
 
-                        if(promisePlayer_me != null){
+                        if(promisePlayer_me != null && !isDel){
                             mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("x").setValue(A.getLongitude());
                             mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("y").setValue(A.getLatitude());
                         }
