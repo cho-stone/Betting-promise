@@ -275,7 +275,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2. 사용법 - 배팅"
+            android:text="2. 사용법 - 베팅"
             android:textSize="20sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"
@@ -302,7 +302,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="방을 생성하면 위와 같이 약속에 대한 배팅을 시작합니다."
+            android:text="방을 생성하면 위와 같이 약속에 대한 베팅을 시작합니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"
@@ -313,7 +313,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="배팅 금액은 최소 100코인 이며 최대 배팅 금액은 가장 적게 코인을 가진 사람 기준으로 정해집니다."
+            android:text="베팅 금액은 최소 100코인 이며 최대 베팅 금액은 가장 적게 코인을 가진 사람 기준으로 정해집니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"
@@ -325,7 +325,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="배팅은 순차적으로 진행되며 모두 배팅이 끝나면 맵이 시작됩니다."
+            android:text="베팅은 순차적으로 진행되며 모두 배팅이 끝나면 맵이 시작됩니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"
