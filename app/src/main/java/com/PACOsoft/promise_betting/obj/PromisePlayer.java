@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class PromisePlayer {
     private boolean arrival = false;//도착여부
-    private int bettingMoney = 0;//배팅 금액
+    private int bettingMoney = 0;//베팅 금액
     private String nickName = "";//방에 있는 사람 닉네임
     private String playerUID = "";//방에 있는 사람 아이디
     private int ranking = 0; //이 사람의 랭킹

@@ -325,7 +325,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="베팅은 순차적으로 진행되며 모두 배팅이 끝나면 맵이 시작됩니다."
+            android:text="베팅은 순차적으로 진행되며 모두 베팅이 끝나면 맵이 시작됩니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"

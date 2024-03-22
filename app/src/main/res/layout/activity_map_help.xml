@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="저희 약속배팅은 클라우드 DB를 사용합니다. 때문에 인터넷 환경이나 클라우드 서버 상태에 따라 앱이 많이 늦게 작동할 수도 있습니다."
+            android:text="저희 약속베팅은 클라우드 DB를 사용합니다. 때문에 인터넷 환경이나 클라우드 서버 상태에 따라 앱이 많이 늦게 작동할 수도 있습니다."
             android:textSize="18sp"
             android:fontFamily="@font/kingsejong"
             android:textColor="@color/white"

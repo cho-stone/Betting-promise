@@ -105,7 +105,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     private int pYear,pMonth,pDay,pHour,pMinute,NumOfPlayers;
     private String NameOfPromise;
-    public static int allBettingMoney = 0; // 배팅금액 총합
+    public static int allBettingMoney = 0; // 베팅금액 총합
 
     //drawer에 띄울 플레이어 프로필 변수
     private ImageView mapPlayersImg;
@@ -312,7 +312,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 circle.setOutlineColor(Color.argb(70, 0, 0, 0));
                 circle.setMap(naverMap);
 
-                Map.allBettingMoney = p.getbettingMoney(); //매번 총배팅금액 가져와서 전역변수에 넣어줌
+                Map.allBettingMoney = p.getbettingMoney(); //매번 총베팅금액 가져와서 전역변수에 넣어줌
 
                 //객체에서 내 PromisePlayer 객체 찾기
                 ArrayList<PromisePlayer> promisePlayers;
@@ -326,7 +326,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 }
 
-                // 방의 배팅머니가 0이면 팝업창 띄우기
+                // 방의 팅팅머니가 0이면 팝업창 띄우기
                 if(p.getbettingMoney() == 0){
                     bettingPromise = new Betting_Promise(Map.this, rid, UID, Nop);
                     bettingPromise.show();
@@ -361,7 +361,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                         }
                     }
                 };
-                //퍼미션여부, 로케이션매니저가 담겼는지, 배팅이 완료되었는지, 관전자가 아닌지
+                //퍼미션여부, 로케이션매니저가 담겼는지, 팅이 완료되었는지, 관전자가 아닌지
                 if(hasPermission() && locationManager != null && p.getbettingMoney() != 0 && promisePlayer_me.getBettingMoney() >= 100){
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 0.5f, locationListener);//5초마다, 50cm움직이면 갱신
                 }
@@ -512,7 +512,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 myRanking += 1;
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(num)).child("ranking").setValue(myRanking);
-                //랭킹에 따라서 포인트 지급 1등은 총 배팅 금액의 3/6 2등은 2/6 3등은 1/6을 지급 받음
+                //랭킹에 따라서 포인트 지급 1등은 총 팅팅 금액의 3/6 2등은 2/6 3등은 1/6을 지급 받음
                 myReceivePoint = 0;
                 if(myRanking == 1)//1등
                 {

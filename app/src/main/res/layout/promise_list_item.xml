@@ -60,7 +60,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="5dp"
-                    android:text="총 배팅 금액"
+                    android:text="총 베팅 금액"
                     android:textSize="13sp"
                     android:fontFamily="@font/kingsejong"
                     android:textColor="@color/black"/>
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="배팅 총 금액"
+                    android:text="베팅 총 금액"
                     android:textSize="13sp"
                     android:fontFamily="@font/kingsejong"
                     android:textColor="@color/black"/>

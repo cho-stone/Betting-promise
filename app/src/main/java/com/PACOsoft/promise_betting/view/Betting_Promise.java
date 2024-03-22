@@ -88,7 +88,7 @@ public class Betting_Promise extends Dialog {
                         me_num = z;
                     }
                 }
-                //자신이 이미 배팅 했는지 판별
+                //자신이 이미 베팅 했는지 판별
                 if(money != 0){
                     isBetting = true;
                 }
@@ -129,7 +129,7 @@ public class Betting_Promise extends Dialog {
 
                             //max값 세팅
                             if(j == players.size()-1 && min == 0){
-                                tv_betting_max.setText("배팅 불가");
+                                tv_betting_max.setText("베팅 불가");
                             }
                             else if(j == players.size()-1){
                                 tv_betting_max.setText(String.valueOf(min));
@@ -163,19 +163,19 @@ public class Betting_Promise extends Dialog {
                 }
 
                 if(currBettingNum != me_num){
-                    Toast.makeText(map, "아직 자신의 배팅 순서가 아닙니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(map, "아직 자신의 베팅 순서가 아닙니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(isBetting){
-                    Toast.makeText(map, "이미 배팅 완료 하였습니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(map, "이미 베팅 완료 하였습니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(et_betting_coin.getText().toString().equals("0")){
                     /* 방 삭제 로직
-                    0코인 배팅 시 show_alert_dial_0coin 로그를 띄움
-                    실시간 리스너에서 배팅값이 -1 이면 방삭제 진행
+                    0코인 베팅 시 show_alert_dial_0coin 로그를 띄움
+                    실시간 리스너에서 베팅값이 -1 이면 방삭제 진행
                     show_alert_dial_removePromise를 띄워 모든 사용자에게 알림
                     확인 클릭 시 자신의 User객체에서 해당 방을 삭제함
                     ->방장이 끝까지 남아서 다른 사람이 다 나갈때 나갈수있음 -> 방삭제
@@ -186,32 +186,32 @@ public class Betting_Promise extends Dialog {
                 else if(et_betting_coin.getText().toString().equals("1")){
                     mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(1);
                     isBetting = true;
-                    Toast.makeText(map, "관전자 모드로 배팅 성공!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(map, "관전자 모드로 베팅 성공!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 int val = Integer.parseInt(et_betting_coin.getText().toString());
                 if(1 < val && val < 100){
-                    Toast.makeText(map, "100코인 이상 배팅해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(map, "100코인 이상 베팅해 주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 int bettingM = Integer.parseInt(et_betting_coin.getText().toString());
                 if(bettingM >  min) {
-                    Toast.makeText(map, "최대 배팅 금액보다 적게 배팅해 주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(map, "최대 베팅 금액보다 적게 베팅해 주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(bettingM);
                 isBetting = true;
-                Toast.makeText(map, "배팅 성공!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(map, "베팅 성공!", Toast.LENGTH_SHORT).show();
                 mycoin = mycoin - bettingM;
-                mDatabase.child("User").child(UID).child("account").setValue(mycoin); //배팅 후 내 포인트 차감
+                mDatabase.child("User").child(UID).child("account").setValue(mycoin); //베팅 후 내 포인트 차감
             }
         });
     }
 
-    //현재 배팅 상황을 실시간으로 중계
+    //현재 베팅 상황을 실시간으로 중계
     public void startCurrVoteListener(){
         databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
         currVoteListener = new ValueEventListener() {
@@ -219,7 +219,7 @@ public class Betting_Promise extends Dialog {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<HashMap<String, Object>> players = (List<HashMap<String, Object>>) snapshot.getValue();
                 int bMoney;
-                //배팅을 아직 안한사람 닉네임 띄우기와 동시에 배팅머니가 -1 이면 방 삭제 창 띄우기
+                //베팅을 아직 안한사람 닉네임 띄우기와 동시에 베팅머니가 -1 이면 방 삭제 창 띄우기
                 if(players == null) {
                     dismiss();
                     Toast.makeText(context, "만료된 약속입니다.", Toast.LENGTH_LONG).show();
@@ -234,7 +234,7 @@ public class Betting_Promise extends Dialog {
                     }
 
                     if(bMoney == 0) {
-                        tv_curr_betting.setText(players.get(i).get("nickName").toString() + "님이 배팅중 입니다.");
+                        tv_curr_betting.setText(players.get(i).get("nickName").toString() + "님이 베팅중 입니다.");
                         currBettingNum = i;
                         isAllBetting = false;
                         break;
@@ -243,7 +243,7 @@ public class Betting_Promise extends Dialog {
                         isAllBetting = true;
                     }
                 }
-                //배팅이 완료되면
+                //베팅이 완료되면
                 if(isAllBetting){
                     for(int i = 0; i < players.size(); i++){
                         //관전자 제외
@@ -269,7 +269,7 @@ public class Betting_Promise extends Dialog {
         databaseReference.addValueEventListener(currVoteListener);
     }
 
-    //마지막으로 남아있는게 방장인지 판별 -> 배팅머니가 모두 -1인지
+    //마지막으로 남아있는게 방장인지 판별 -> 베팅머니가 모두 -1인지
     public void isLastPlayer() {
         isAllOut = true;
         databaseReference = database.getReference("Promise").child(rid).child("promisePlayer");
@@ -353,7 +353,7 @@ public class Betting_Promise extends Dialog {
                     return;
                 }
 
-                //배팅머니를 -1로 만들어주기 (-1이 되면 퇴장처리)
+                //베팅머니를 -1로 만들어주기 (-1이 되면 퇴장처리)
                 mDatabase.child("Promise").child(rid).child("promisePlayer").child(String.valueOf(me_num)).child("bettingMoney").setValue(-1);
                 startRemovePromiseInUser(); // 유저 객체에서 프로미스 지워주기
                 //홈으로 돌아가기
@@ -367,7 +367,7 @@ public class Betting_Promise extends Dialog {
         AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(map);
         //alert의 title과 Messege 세팅
         myAlertBuilder.setTitle("주의");
-        myAlertBuilder.setMessage("정말로 0코인을 배팅 하시겠습니까?");
+        myAlertBuilder.setMessage("정말로 0코인을 베팅 하시겠습니까?");
         // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
         myAlertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog,int which){

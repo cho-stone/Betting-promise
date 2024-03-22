@@ -85,7 +85,7 @@
                 android:id="@+id/et_betting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="배팅금액"
+                android:hint="베팅금액"
                 android:inputType="number"
                 android:textSize="15sp"
                 android:textColor="@color/black"
@@ -180,7 +180,7 @@
             android:layout_weight="5"
             android:background="#00000000"
             android:gravity="center"
-            android:text="배팅!"
+            android:text="베팅!"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
