@@ -9,13 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
-import android.util.Log;
-import android.util.StateSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.PACOsoft.promise_betting.Adapter.History_List_Adapter;
 import com.PACOsoft.promise_betting.Adapter.Promise_List_Adapter;
 import com.PACOsoft.promise_betting.Adapter.User_List_Adapter;
 import com.PACOsoft.promise_betting.R;
@@ -450,13 +444,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Too
         Intent intent = new Intent(this, Home_Help.class);
         startActivity(intent);
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        Log.d(TAG, "called onDestroy");
-//        customProgressDialog.dismiss();
-//        super.onDestroy();}
-
 
     public void refresh_friends() {
         new_database = FirebaseDatabase.getInstance();//파이어베이스 데이터베이스 연결
