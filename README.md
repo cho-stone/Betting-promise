@@ -15,24 +15,24 @@
 * 프로그래밍
 > <table>
 >  <tr>
->    <th style="text-align: center;">이름</th>
->    <th colspan="5" style="text-align: center;">기능 구현</th>
+>    <th align="center">이름</th>
+>    <th colspan="5" align="center">기능 구현</th>
 >  </tr>
 >  <tr>
->    <td style="text-align: center;">배광호</td>
->    <td style="text-align: center;">홈</td>
->    <td style="text-align: center;">로그인</td>
->    <td style="text-align: center;">친구 관리</td>
->    <td style="text-align: center;">코인 추가</td>
->    <td style="text-align: center;">옵션</td>
+>    <td align="center">배광호</td>
+>    <td align="center">홈</td>
+>    <td align="center">로그인</td>
+>    <td align="center">친구 관리</td>
+>    <td align="center">코인 추가</td>
+>    <td align="center">옵션</td>
 >  </tr>
 >  <tr>
->    <td style="text-align: center;">조석진</td>
->    <td style="text-align: center;">회원가입</td>
->    <td style="text-align: center;">도움말</td>
->    <td style="text-align: center;">방 생성</td>
->    <td style="text-align: center;">약속 로직</td>
->    <td style="text-align: center;">베팅 관리</td>
+>    <td align="center">조석진</td>
+>    <td align="center">회원가입</td>
+>    <td align="center">도움말</td>
+>    <td align="center">방 생성</td>
+>    <td align="center">약속 로직</td>
+>    <td align="center">베팅 관리</td>
 >  </tr>
 > </table>
 
@@ -46,4 +46,4 @@
 ## ⚙ 기능
 <br>
 
-##주요 구현 내용
+## 💻 주요 구현 내용
