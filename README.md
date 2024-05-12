@@ -1,5 +1,5 @@
 # 📱 약속 베팅
-![PBdemo2](https://github.com/cho-stone/Promise-bet/assets/74195857/e738edc1-0df6-43d3-a6b4-9a7a3d2f9b97) ![PBdemo](https://github.com/cho-stone/Promise-bet/assets/74195857/430259e7-1cd6-459e-927d-1d16f836145b)
+![PBdemo](https://github.com/cho-stone/Promise-bet/assets/74195857/430259e7-1cd6-459e-927d-1d16f836145b)
 > 항상 약속 시간에 늦는 친구가 있으신가요?  
 > 친구들이 제대로 오고 있는지 확인하고 싶으신가요?  
 > 그런 당신을 위해 준비했습니다. 약속 베팅!  
