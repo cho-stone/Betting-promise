@@ -35,7 +35,7 @@
 >    <td align="center">회원가입</td>
 >    <td align="center">도움말</td>
 >    <td align="center">방 생성</td>
->    <td align="center">약속 로직</td>
+>    <td align="center">약속 진행</td>
 >    <td align="center">베팅 관리</td>
 >  </tr>
 > </table>
