@@ -24,7 +24,7 @@
 >  </tr>
 >  <tr>
 >    <td align="center">배광호</td>
->    <td align="center">홈</td>
+>    <td align="center">약속 관리</td>
 >    <td align="center">로그인</td>
 >    <td align="center">친구 관리</td>
 >    <td align="center">코인 추가</td>
