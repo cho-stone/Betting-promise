@@ -48,7 +48,17 @@
 <br>
 
 ## ⚙ 기능
-![PBdemo](https://github.com/cho-stone/Promise-bet/assets/74195857/430259e7-1cd6-459e-927d-1d16f836145b)  
+![PBFriend](https://github.com/cho-stone/Promise-bet/assets/74195857/b2446858-d10f-498c-90c7-6d06a3704f26) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![PBAddF](https://github.com/cho-stone/Promise-bet/assets/74195857/73a505f6-2498-4f3f-a5be-cc89e5aaf9f5)  
+* 친구와 약속 목록을 직관적으로 설계하였습니다.
+* 친구의 이메일을 입력하면 내 친구 목록에 추가할 수 있습니다.
+<br>
+
+![PBAddCoin](https://github.com/cho-stone/Promise-bet/assets/74195857/3f1ef552-1611-4c7b-9af3-7e82470809ac) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![PBHelp](https://github.com/cho-stone/Promise-bet/assets/74195857/586ca585-6288-406a-9bd8-f31cea9fd73c)
+* 출석체크를 통해 하루마다 5000코인을 받을 수 있습니다.
+* 도움말 버튼을 통해 사용법을 익힐 수 있습니다.
+<br>
+
+
 기능 작성 예정
 <br>
 
