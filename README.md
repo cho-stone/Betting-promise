@@ -47,19 +47,17 @@
 > 엔터테인먼트, 위치추적, 약속
 <br>
 
-## ⚙ 기능
+## ⚙ 주요 기능
 ![PBFriend](https://github.com/cho-stone/Promise-bet/assets/74195857/b2446858-d10f-498c-90c7-6d06a3704f26) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![PBAddF](https://github.com/cho-stone/Promise-bet/assets/74195857/73a505f6-2498-4f3f-a5be-cc89e5aaf9f5)  
 * 친구와 약속 목록을 직관적으로 설계하였습니다.
 * 친구의 이메일을 입력하면 내 친구 목록에 추가할 수 있습니다.
 <br>
 
-![PBAddCoin](https://github.com/cho-stone/Promise-bet/assets/74195857/3f1ef552-1611-4c7b-9af3-7e82470809ac) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![PBHelp](https://github.com/cho-stone/Promise-bet/assets/74195857/586ca585-6288-406a-9bd8-f31cea9fd73c)
-* 출석체크를 통해 하루마다 5000코인을 받을 수 있습니다.
-* 도움말 버튼을 통해 사용법을 익힐 수 있습니다.
-<br>
+![PBAddCoin](https://github.com/cho-stone/Promise-bet/assets/74195857/3f1ef552-1611-4c7b-9af3-7e82470809ac) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![PBPromise](https://github.com/cho-stone/Promise-bet/assets/74195857/33e0fcb6-5104-4f54-87ae-6aa85ce6fb0f)
 
-
-기능 작성 예정
+* 출석 체크를 통해 하루마다 5000코인을 받을 수 있습니다.
+* 얻은 코인을 이용해 베팅을 하고 실시간으로 친구와 경쟁할 수 있습니다.
+* 코인은 등수에 따라 차등 지급됩니다
 <br>
 
 ## 💻 주요 구현 내용
