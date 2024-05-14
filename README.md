@@ -55,9 +55,5 @@
 <br>
 
 ![PBAddCoin](https://github.com/cho-stone/Promise-bet/assets/74195857/3f1ef552-1611-4c7b-9af3-7e82470809ac) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![PBPromise](https://github.com/cho-stone/Promise-bet/assets/74195857/33e0fcb6-5104-4f54-87ae-6aa85ce6fb0f)
-
 * 출석 체크를 통해 하루마다 5000코인을 받을 수 있습니다.
 * 친구와 약속을 잡을 때 얻은 코인을 이용해 베팅을 할 수 있습니다.
-<br>
-
-## 💻 주요 구현 내용
